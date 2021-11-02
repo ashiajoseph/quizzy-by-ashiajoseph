@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
@@ -29,20 +31,20 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_first_name_should_be_of_valid_length
-    @user.first_name = 'a' * 100
+    @user.first_name = "a" * 100
     assert_not @user.valid?
   end
 
   def test_last_name_should_be_of_valid_length
-    @user.last_name = 'a' * 100
+    @user.last_name = "a" * 100
     assert_not @user.valid?
   end
 
-  def test_email_should_be_unique_for_each_user 
+  def test_email_should_be_unique_for_each_user
     @user.save
     user2 = @user.dup
     assert_not user2.valid?
-    assert_includes user2.errors.full_messages, 'Email has already been taken'
+    assert_includes user2.errors.full_messages, "Email has already been taken"
   end
 
   def test_email_should_be_saved_as_lowecase
@@ -53,7 +55,8 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_validation_should_accept_valid_email_addresses
-    valid_emails= %w[user@example.com first_last@example.com USER@EXAMPLE.com first.last@example.com user+one@example.ac.in]
+    valid_emails = %w[user@example.com first_last@example.com USER@EXAMPLE.com first.last@example.com
+user+one@example.ac.in]
 
     valid_emails.each do |email|
       @user.email = email
@@ -72,9 +75,9 @@ class UserTest < ActiveSupport::TestCase
 
   def test_multiple_users_with_same_email_should_not_be_saved_irrespective_of_case
     user2 = @user.dup
-    user2.email = 'SAM@EXAMPLE.COM'
+    user2.email = "SAM@EXAMPLE.COM"
     user2.save!
     assert_not @user.valid?
-    assert_includes @user.errors.full_messages , 'Email has already been taken'
+    assert_includes @user.errors.full_messages, "Email has already been taken"
   end
 end
