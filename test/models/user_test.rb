@@ -80,4 +80,11 @@ user+one@example.ac.in]
     assert_not @user.valid?
     assert_includes @user.errors.full_messages, "Email has already been taken"
   end
+
+  def test_user_should_have_valid_role
+    assert_equal @user.role, "standard"
+    assert @user.valid?
+    @user.role = "administrator"
+    assert @user.valid?
+  end
 end
