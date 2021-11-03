@@ -28,22 +28,21 @@ class UserTest < ActiveSupport::TestCase
   def test_user_should_not_be_valid_and_saved_without_email
     @user.email = ""
     assert_not @user.valid?
-    @user.save
     assert_includes @user.errors.full_messages, "Email can't be blank", "Email is invalid"
   end
 
   def test_first_name_should_be_of_valid_length
-    @user.first_name = "a" * 100
+    @user.first_name = "a" * 51
     assert_not @user.valid?
   end
 
   def test_last_name_should_be_of_valid_length
-    @user.last_name = "a" * 100
+    @user.last_name = "a" * 51
     assert_not @user.valid?
   end
 
   def test_email_should_be_unique_for_each_user
-    @user.save
+    @user.save!
     user2 = @user.dup
     assert_not user2.valid?
     assert_includes user2.errors.full_messages, "Email has already been taken"
@@ -87,7 +86,7 @@ user+one@example.ac.in]
     assert_equal @user.role, "standard"
     assert @user.valid?
     @user.role = "administrator"
-    assert @user.save
+    assert @user.save!
   end
 
   def test_error_raised_when_user_with_invalid_role_is_created
@@ -98,7 +97,7 @@ user+one@example.ac.in]
 
   def test_user_should_not_be_saved_without_password
     @user.password = nil
-    assert_not @user.save
+    assert_not @user.valid?
     assert_includes @user.errors.full_messages, "Password can't be blank"
   end
 
