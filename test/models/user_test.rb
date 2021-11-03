@@ -50,8 +50,7 @@ class UserTest < ActiveSupport::TestCase
 
   def test_email_should_be_saved_as_lowecase
     email_upcased = @user.email.upcase
-    @user.email = email_upcased
-    @user.save!
+    @user.update!(email: email_upcased)
     assert_equal @user.email, email_upcased.downcase
   end
 
@@ -108,7 +107,7 @@ user+one@example.ac.in]
   end
 
   def test_password_should_be_of_valid_length
-    @user.password = "abcd"
+    @user.password = "abcde"
     assert_not @user.save
     assert_includes @user.errors.full_messages, "Password is too short (minimum is 6 characters)"
   end
