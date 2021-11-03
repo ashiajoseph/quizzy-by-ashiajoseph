@@ -19,7 +19,11 @@ const App = () => {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" render={() => <div>Home</div>} />
+        <Route
+          exact
+          path="/"
+          render={() => <div className="text-blue-600">Home</div>}
+        />
       </Switch>
     </Router>
   );
