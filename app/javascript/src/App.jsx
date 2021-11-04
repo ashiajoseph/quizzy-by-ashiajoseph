@@ -23,7 +23,7 @@ const App = () => {
     <Router>
       <ToastContainer />
       <Switch>
-        <Route exact path="/" render={() => <Login />} />
+        <Route exact path="/" component={Login} />
       </Switch>
     </Router>
   );

@@ -25,7 +25,7 @@ const Login = () => {
       });
       setAuthHeaders();
       setLoading(false);
-      //window.location.href = "/";
+      window.location.href = "/";
     } catch (error) {
       logger.error(error);
       setLoading(false);

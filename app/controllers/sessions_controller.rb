@@ -8,6 +8,10 @@ class SessionsController < ApplicationController
     end
   end
 
+  def destroy
+    @user = nil
+  end
+
   private
 
     def login_params

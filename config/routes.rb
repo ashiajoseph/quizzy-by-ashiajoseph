@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   defaults format: :json do
-    resource :sessions, only: :create
+    resource :sessions, only: %i[create destroy]
   end
 
   root "home#index"
