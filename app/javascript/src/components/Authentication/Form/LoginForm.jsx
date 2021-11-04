@@ -18,7 +18,7 @@ const LoginForm = ({ handleSubmit, setEmail, setPassword, loading }) => {
           <Input
             label="Email"
             type="email"
-            placeholder="oliver@example.com"
+            placeholder="sam@example.com"
             onChange={e => setEmail(e.target.value)}
           />
           <Input
