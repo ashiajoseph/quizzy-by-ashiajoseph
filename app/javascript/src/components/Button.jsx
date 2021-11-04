@@ -10,7 +10,7 @@ const Button = ({ type = "button", buttonText, onClick, loading, style }) => {
         onClick={onClick}
         className={`flex justify-center  px-4 py-2 bg-lime
         font-medium leading-5 transition duration-150
-         ease-in-out border border-transparent rounded-lg
+         ease-in-out border border-transparent 
          group focus:outline-none ${style}`}
       >
         {loading ? "Loading..." : buttonText}

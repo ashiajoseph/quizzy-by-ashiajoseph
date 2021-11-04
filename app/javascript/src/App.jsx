@@ -20,7 +20,6 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const authToken = getFromLocalStorage("authToken");
   const isLoggedIn = !(isNil(authToken) || isEmpty(authToken));
-  logger.info(isLoggedIn);
   useEffect(() => {
     /*eslint no-undef: "off"*/
     initializeLogger();

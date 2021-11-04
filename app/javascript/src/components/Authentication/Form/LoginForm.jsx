@@ -31,7 +31,7 @@ const LoginForm = ({ handleSubmit, setEmail, setPassword, loading }) => {
             type="submit"
             buttonText="Submit"
             loading={loading}
-            style="w-full hover:bg-black hover:text-lime text-md "
+            style="w-full hover:bg-black hover:text-lime text-md rounded-lg"
           />
         </form>
       </div>

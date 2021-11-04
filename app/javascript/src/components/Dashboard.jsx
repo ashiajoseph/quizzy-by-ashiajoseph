@@ -15,7 +15,7 @@ const Dashboard = () => {
         <div className="flex justify-end">
           <Button
             buttonText="Add new quiz"
-            style=" text-lg text-black hover:text-black	"
+            style=" text-lg text-black rounded-md"
           />
         </div>
       </div>
