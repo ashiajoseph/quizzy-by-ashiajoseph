@@ -13,7 +13,7 @@ const getFromLocalStorage = key => {
     localStorage.setItem(key, JSON.stringify(null));
     logger.error(error);
   }
-  //logger.info(key,storedValue)
+
   return storedValue;
 };
 
