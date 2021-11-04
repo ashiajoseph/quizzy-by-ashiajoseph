@@ -7,7 +7,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'lime' : '#7FD253'
+        'lime' : '#7FD253',
+        'btn-blue' : "#0CB5DB"
       },
       height: {
         '80' : '80%'

@@ -18,7 +18,7 @@ const LoginForm = ({ handleSubmit, setEmail, setPassword, loading }) => {
           <Input
             label="Email"
             type="email"
-            placeholder="oliver@example.com"
+            placeholder="sam@example.com"
             onChange={e => setEmail(e.target.value)}
           />
           <Input
@@ -27,7 +27,12 @@ const LoginForm = ({ handleSubmit, setEmail, setPassword, loading }) => {
             placeholder="********"
             onChange={e => setPassword(e.target.value)}
           />
-          <Button type="submit" buttonText="Submit" loading={loading} />
+          <Button
+            type="submit"
+            buttonText="Submit"
+            loading={loading}
+            style="w-full hover:bg-black hover:text-lime text-md rounded-lg"
+          />
         </form>
       </div>
     </div>
