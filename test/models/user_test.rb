@@ -102,19 +102,19 @@ user+one@example.ac.in]
 
   def test_user_should_not_be_saved_without_password_confirmation
     @user.password_confirmation = nil
-    assert_not @user.save
+    assert_not @user.valid?
     assert_includes @user.errors.full_messages, "Password confirmation can't be blank"
   end
 
   def test_password_should_be_of_valid_length
     @user.password = "abcde"
-    assert_not @user.save
+    assert_not @user.valid?
     assert_includes @user.errors.full_messages, "Password is too short (minimum is 6 characters)"
   end
 
   def test_user_should_have_matching_password_and_password_confirmation
     @user.password_confirmation = "#{@user.password}-12345"
-    assert_not @user.save
+    assert_not @user.valid?
     assert_includes @user.errors.full_messages, "Password confirmation doesn't match Password"
   end
 end
