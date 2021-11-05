@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 
+import quizzesApi from "apis/quizzes";
+
 import QuizForm from "./QuizForm";
 
 import Container from "../Container";
-//import quizzesApi from 'apis/quizzes'
 
-export const CreateQuiz = () => {
+export const CreateQuiz = ({ history }) => {
   const [title, setTitle] = useState("");
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    logger.info(title);
+    //logger.info(title);
+
+    try {
+      await quizzesApi.create({ quiz: { title } });
+      history.push("/");
+    } catch (error) {
+      logger.error(error);
+    }
   };
   return (
     <Container>

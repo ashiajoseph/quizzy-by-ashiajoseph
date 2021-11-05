@@ -50,7 +50,8 @@ const Dashboard = () => {
       </Container>
     );
   }
-  logger.info(quizList);
+
+  //logger.info(quizList);
   return (
     <Container>
       <div className="px-10 py-8 flex flex-col">

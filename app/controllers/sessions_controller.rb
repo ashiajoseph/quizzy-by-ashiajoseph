@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    @user = nil
+    @current_user = nil
   end
 
   private
