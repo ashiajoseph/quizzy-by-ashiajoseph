@@ -5,8 +5,8 @@ import { isNil, isEmpty, either } from "ramda";
 
 import quizzesApi from "apis/quizzes";
 
-import Button from "./Button";
 import Container from "./Container";
+import AddLink from "./Quiz/AddLink";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
@@ -36,10 +36,7 @@ const Dashboard = () => {
       <Container>
         <div className="px-10 py-8 flex flex-col">
           <div className="flex justify-end">
-            <Button
-              buttonText="Add new quiz"
-              style=" text-lg text-black rounded-md"
-            />
+            <AddLink name="Add new quiz" path="/quiz/create" style="" />
           </div>
           <Typography
             lineHeight="normal"
@@ -53,15 +50,12 @@ const Dashboard = () => {
       </Container>
     );
   }
-
+  logger.info(quizList);
   return (
     <Container>
       <div className="px-10 py-8 flex flex-col">
         <div className="flex justify-end">
-          <Button
-            buttonText="Add new quiz"
-            style=" text-lg text-black rounded-md"
-          />
+          <AddLink name="Add new quiz" path="/quiz/create" style="" />
         </div>
       </div>
     </Container>
