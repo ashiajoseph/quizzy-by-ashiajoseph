@@ -15,7 +15,7 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 6 }, if: -> { password.present? }
   validates :password_confirmation, presence: true, on: :create
 
-  before_save :to_lowercase
+  before_validation :to_lowercase
 
   private
 

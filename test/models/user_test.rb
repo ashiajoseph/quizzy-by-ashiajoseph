@@ -85,7 +85,7 @@ user+one@example.ac.in]
     assert_equal @user.role, "standard"
     assert @user.valid?
     @user.role = "administrator"
-    assert @user.save!
+    assert @user.valid?
   end
 
   def test_error_raised_when_user_with_invalid_role_is_created

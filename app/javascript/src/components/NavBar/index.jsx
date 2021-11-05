@@ -29,7 +29,7 @@ const NavBar = () => {
       <div className="px-2 mx-auto sm:px-4 lg:px-8">
         <div className="flex justify-between h-16 ">
           <div className="flex px-2 lg:px-0">
-            <NavItem name="Quizzy" path="/" style="text-3xl tracking-wider" />
+            <NavItem name="Quizzy" path="/" style="text-3xl tracking-wider " />
           </div>
           <div className="flex items-center">
             {userName && (
@@ -38,7 +38,7 @@ const NavBar = () => {
                 <NavItem
                   name="Logout"
                   path="/"
-                  style=" text-xl"
+                  style=" text-xl "
                   handleClick={handleLogout}
                 />
               </div>
