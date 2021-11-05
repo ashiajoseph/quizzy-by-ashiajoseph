@@ -1,14 +1,59 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
-import { Toastr } from "@bigbinary/neetoui/v2";
+import { Typography } from "@bigbinary/neetoui/v2";
+import { isNil, isEmpty, either } from "ramda";
+
+import quizzesApi from "apis/quizzes";
 
 import Button from "./Button";
 import Container from "./Container";
 
 const Dashboard = () => {
+  const [loading, setLoading] = useState(true);
+  const [quizList, setQuizList] = useState([]);
+
+  const fetchQuizList = async () => {
+    try {
+      const response = await quizzesApi.list();
+      setQuizList(response.data.quizzes);
+    } catch (error) {
+      logger.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    Toastr.success("Logged In Successfully");
+    fetchQuizList();
   }, []);
+
+  if (loading) {
+    return <div className="w-screen h-screen">Loading...</div>;
+  }
+
+  if (either(isNil, isEmpty)(quizList)) {
+    return (
+      <Container>
+        <div className="px-10 py-8 flex flex-col">
+          <div className="flex justify-end">
+            <Button
+              buttonText="Add new quiz"
+              style=" text-lg text-black rounded-md"
+            />
+          </div>
+          <Typography
+            lineHeight="normal"
+            style="h1"
+            weight="light"
+            className=" text-center mt-32 py-10 text-gray-600	"
+          >
+            You have not created any quiz
+          </Typography>
+        </div>
+      </Container>
+    );
+  }
+
   return (
     <Container>
       <div className="px-10 py-8 flex flex-col">
