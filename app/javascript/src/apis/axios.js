@@ -4,6 +4,7 @@ import axios from "axios";
 import { setToLocalStorage, getFromLocalStorage } from "helpers/storage.js";
 
 axios.defaults.baseURL = "/";
+
 const DEFAULT_ERROR_NOTIFICATION = "Something went wrong!";
 
 const setAuthHeaders = (setLoading = () => null) => {
