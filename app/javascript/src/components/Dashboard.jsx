@@ -7,15 +7,16 @@ import quizzesApi from "apis/quizzes";
 
 import Container from "./Container";
 import AddLink from "./Quiz/AddLink";
+import Table from "./Quiz/Table";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [quizList, setQuizList] = useState([]);
-
   const fetchQuizList = async () => {
     try {
       const response = await quizzesApi.list();
-      setQuizList(response.data.quizzes);
+      const data = await response.data;
+      setQuizList(data.quizzes);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -34,7 +35,7 @@ const Dashboard = () => {
   if (either(isNil, isEmpty)(quizList)) {
     return (
       <Container>
-        <div className="px-10 py-8 flex flex-col">
+        <div className="px-10 py-8 mt-4 flex flex-col">
           <div className="flex justify-end">
             <AddLink name="Add new quiz" path="/quiz/create" style="" />
           </div>
@@ -51,14 +52,15 @@ const Dashboard = () => {
     );
   }
 
-  //logger.info(quizList);
   return (
     <Container>
-      <div className="px-10 py-8 flex flex-col">
-        <div className="flex justify-end">
+      <div className="py-8 mt-4  flex flex-col">
+        <div className="flex justify-between items-center">
+          <h1 className="text-4xl text-gray-800	 ">List of Quizzes</h1>
           <AddLink name="Add new quiz" path="/quiz/create" style="" />
         </div>
       </div>
+      <Table quizList={quizList} setQuizList={setQuizList} />
     </Container>
   );
 };

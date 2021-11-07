@@ -8,8 +8,9 @@ const Container = ({ children }) => {
   return (
     <>
       <NavBar />
-      <div className="px-4 mx-auto">
-        <div className="mx-auto ">{children}</div>
+
+      <div className="px-8 mx-auto">
+        <div className="mx-20">{children}</div>
       </div>
     </>
   );

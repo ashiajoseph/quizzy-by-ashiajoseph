@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 
 import PropTypes from "prop-types";
 
 const Input = ({
+  from = "login",
   type = "text",
   label,
   value,
@@ -10,6 +11,11 @@ const Input = ({
   placeholder,
   required = true,
 }) => {
+  const inputRef = useRef();
+
+  useEffect(() => {
+    if (from != "login") inputRef.current.focus();
+  }, []);
   return (
     <div className="mt-6">
       {label && (
@@ -22,6 +28,7 @@ const Input = ({
       )}
       <div className="mt-1 rounded-sm shadow-sm">
         <input
+          ref={inputRef}
           type={type}
           required={required}
           value={value}

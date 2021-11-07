@@ -12,6 +12,9 @@ module.exports = {
       },
       height: {
         '80' : '80%'
+      },
+      width: {
+        '70' : '70%'
       }
     }
 
