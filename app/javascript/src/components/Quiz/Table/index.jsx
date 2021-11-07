@@ -1,17 +1,18 @@
 import React, { useMemo } from "react";
 
-import { Delete, Edit } from "@bigbinary/neeto-icons";
+import { Delete, Edit, UpArrow, DownArrow } from "@bigbinary/neeto-icons";
+import { Tooltip } from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
-import { useTable } from "react-table";
+import { useTable, useSortBy } from "react-table";
 
 import { COLS } from "./tableHeader";
 
 const Table = ({ quizlist }) => {
   const cols = useMemo(() => COLS, []);
   const data = useMemo(() => quizlist, []);
-  const tableInstance = useTable({ columns: cols, data: data });
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    tableInstance;
+    useTable({ columns: cols, data: data }, useSortBy);
+
   Logger.info(quizlist);
   return (
     <table
@@ -22,8 +23,21 @@ const Table = ({ quizlist }) => {
         {headerGroups.map((headerGroup, ind) => (
           <tr key={ind} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column, ind) => (
-              <th key={ind} {...column.getHeaderProps()} className="p-3 ">
+              <th
+                key={ind}
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+                className="p-3 "
+              >
                 {column.render("Header")}
+                {column.isSorted ? (
+                  column.isSortedDesc ? (
+                    <DownArrow className="inline text-lime" />
+                  ) : (
+                    <UpArrow className="inline text-lime" />
+                  )
+                ) : (
+                  " "
+                )}
               </th>
             ))}
           </tr>
@@ -36,21 +50,35 @@ const Table = ({ quizlist }) => {
           return (
             <tr key={ind} {...row.getRowProps()} className="text-lg ">
               {row.cells.map((cell, ind) => {
+                Logger.info(cell);
                 return (
                   <td
                     key={ind}
                     {...cell.getCellProps()}
-                    className={`py-4 pr-3 pl-8  capitalize	${bgColor}`}
+                    className={`py-4 pr-5 pl-8  capitalize break-all ${bgColor}`}
                   >
                     {cell.render("Cell")}
                   </td>
                 );
               })}
-              <td key="edit" className={`px-3 py-4 text-center ${bgColor}`}>
-                <Edit size={30} className="mx-auto" />
+              <td key="edit" className={`py-4 w-20 text-center ${bgColor}`}>
+                <Tooltip position="right-end" content="Edit">
+                  <button className="focus:outline-none ">
+                    {" "}
+                    <Edit size={30} className="mx-auto" />
+                  </button>
+                </Tooltip>
               </td>
-              <td key="del" className={`p-3 py-4 text-center ${bgColor}`}>
-                <Delete size={28} className="mx-auto neeto-ui-text-error" />
+              <td key="del" className={` py-4 w-28 text-center ${bgColor}`}>
+                <Tooltip position="right-end" content="Delete">
+                  <button className="focus:outline-none ">
+                    {" "}
+                    <Delete
+                      size={28}
+                      className="mx-auto neeto-ui-text-error "
+                    />
+                  </button>
+                </Tooltip>
               </td>
             </tr>
           );

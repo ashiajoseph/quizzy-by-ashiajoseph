@@ -4,7 +4,7 @@ class QuizzesController < ApplicationController
   before_action :authenticate_user_using_x_auth_token, only: [:index, :create]
 
   def index
-    @quizzes = Quiz.all
+    @quizzes = @current_user.quizzes
   end
 
   def create
