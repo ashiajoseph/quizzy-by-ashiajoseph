@@ -1,18 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+
+//import QuizForm from './QuizForm'
+import { useParams } from "react-router-dom";
+
+import quizzesApi from "apis/quizzes";
 
 import Container from "../Container";
-//import QuizForm from './QuizForm'
-//import { useParams } from "react-router-dom";
 
 const EditQuiz = () => {
-  // const [title, setTitle] = useState(" ")
-  // const {slug} = useParams()
+  const [title, setTitle] = useState(" ");
+  const { slug } = useParams();
 
-  const fetchQuizDetails = async () => {};
+  const fetchQuizDetails = async () => {
+    try {
+      const response = await quizzesApi.show(slug);
+      const { quiz } = response.data;
+      setTitle(quiz.title);
+    } catch (errors) {
+      logger.error(errors);
+    }
+  };
   useEffect(() => {
     fetchQuizDetails();
   }, []);
-  return <Container></Container>;
+
+  logger.info(title);
+  return <Container>edit</Container>;
 };
 
 export default EditQuiz;

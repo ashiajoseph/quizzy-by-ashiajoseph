@@ -17,6 +17,13 @@ class QuizzesController < ApplicationController
     end
   end
 
+  def show
+    @quiz = Quiz.find_by(slug: params[:slug])
+    unless @quiz
+      render status: :not_found, json: { error: "Quiz not found" }
+    end
+  end
+
   private
 
     def quiz_params
