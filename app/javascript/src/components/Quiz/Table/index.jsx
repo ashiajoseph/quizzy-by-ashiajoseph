@@ -131,6 +131,3 @@ const Table = ({ quizList, setQuizList }) => {
 };
 
 export default Table;
-/*
-
-*/
