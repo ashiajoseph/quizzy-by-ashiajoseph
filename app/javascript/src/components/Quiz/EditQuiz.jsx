@@ -39,7 +39,12 @@ const EditQuiz = ({ history }) => {
 
   return (
     <Container>
-      <QuizForm title={title} setTitle={setTitle} handleSubmit={handleSubmit} />
+      <QuizForm
+        action="update"
+        title={title}
+        setTitle={setTitle}
+        handleSubmit={handleSubmit}
+      />
     </Container>
   );
 };
