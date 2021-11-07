@@ -12,11 +12,11 @@ import Table from "./Quiz/Table";
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [quizList, setQuizList] = useState([]);
-
   const fetchQuizList = async () => {
     try {
       const response = await quizzesApi.list();
-      setQuizList(response.data.quizzes);
+      const data = await response.data;
+      setQuizList(data.quizzes);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -60,7 +60,7 @@ const Dashboard = () => {
           <AddLink name="Add new quiz" path="/quiz/create" style="" />
         </div>
       </div>
-      <Table quizlist={quizList} />
+      <Table quizList={quizList} setQuizList={setQuizList} />
     </Container>
   );
 };
