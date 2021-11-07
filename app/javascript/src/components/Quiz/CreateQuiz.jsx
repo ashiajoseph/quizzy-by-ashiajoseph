@@ -10,7 +10,6 @@ const CreateQuiz = ({ history }) => {
   const [title, setTitle] = useState("");
   const handleSubmit = async e => {
     e.preventDefault();
-
     try {
       await quizzesApi.create({ quiz: { title } });
       history.push("/");

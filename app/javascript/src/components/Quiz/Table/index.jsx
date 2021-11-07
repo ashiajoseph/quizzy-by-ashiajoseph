@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 
 import { Delete, Edit, UpArrow, DownArrow } from "@bigbinary/neeto-icons";
 import { Tooltip } from "@bigbinary/neetoui/v2";
-import Logger from "js-logger";
 import { useHistory } from "react-router-dom";
 import { useTable, useSortBy } from "react-table";
 
@@ -57,7 +56,6 @@ const Table = ({ quizlist }) => {
           return (
             <tr key={ind} {...row.getRowProps()} className="text-lg ">
               {row.cells.map((cell, ind) => {
-                Logger.info(cell);
                 return (
                   <td
                     key={ind}

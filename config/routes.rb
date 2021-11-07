@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   defaults format: :json do
     resource :sessions, only: %i[create destroy]
-    resources :quizzes, only: %i[index create show], param: :slug
+    resources :quizzes, only: %i[index create show update], param: :slug
   end
 
   root "home#index"
