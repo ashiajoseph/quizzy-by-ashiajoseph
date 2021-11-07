@@ -3,17 +3,24 @@ import React, { useMemo } from "react";
 import { Delete, Edit, UpArrow, DownArrow } from "@bigbinary/neeto-icons";
 import { Tooltip } from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
+import { useHistory } from "react-router-dom";
 import { useTable, useSortBy } from "react-table";
 
 import { COLS } from "./tableHeader";
 
 const Table = ({ quizlist }) => {
+  let history = useHistory();
   const cols = useMemo(() => COLS, []);
   const data = useMemo(() => quizlist, []);
+
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns: cols, data: data }, useSortBy);
 
-  Logger.info(quizlist);
+  const editQuiz = slug => {
+    history.push(`/quiz/${slug}/edit`);
+  };
+  const deleteQuiz = () => {};
+
   return (
     <table
       {...getTableProps()}
@@ -63,16 +70,20 @@ const Table = ({ quizlist }) => {
               })}
               <td key="edit" className={`py-4 w-20 text-center ${bgColor}`}>
                 <Tooltip position="right-end" content="Edit">
-                  <button className="focus:outline-none ">
-                    {" "}
+                  <button
+                    className="focus:outline-none "
+                    onClick={() => editQuiz(row.original.slug)}
+                  >
                     <Edit size={30} className="mx-auto" />
                   </button>
                 </Tooltip>
               </td>
               <td key="del" className={` py-4 w-28 text-center ${bgColor}`}>
                 <Tooltip position="right-end" content="Delete">
-                  <button className="focus:outline-none ">
-                    {" "}
+                  <button
+                    className="focus:outline-none "
+                    onClick={() => deleteQuiz(row.original.slug)}
+                  >
                     <Delete
                       size={28}
                       className="mx-auto neeto-ui-text-error "
@@ -89,3 +100,6 @@ const Table = ({ quizlist }) => {
 };
 
 export default Table;
+/*
+
+*/

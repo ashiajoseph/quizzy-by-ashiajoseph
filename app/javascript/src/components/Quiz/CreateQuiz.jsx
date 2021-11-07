@@ -6,11 +6,10 @@ import QuizForm from "./QuizForm";
 
 import Container from "../Container";
 
-export const CreateQuiz = ({ history }) => {
+const CreateQuiz = ({ history }) => {
   const [title, setTitle] = useState("");
   const handleSubmit = async e => {
     e.preventDefault();
-    //logger.info(title);
 
     try {
       await quizzesApi.create({ quiz: { title } });
@@ -25,3 +24,5 @@ export const CreateQuiz = ({ history }) => {
     </Container>
   );
 };
+
+export default CreateQuiz;

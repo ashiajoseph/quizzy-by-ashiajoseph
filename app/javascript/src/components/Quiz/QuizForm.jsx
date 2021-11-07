@@ -3,7 +3,7 @@ import React from "react";
 import Button from "../Button";
 import Input from "../Input";
 
-const QuizForm = ({ setTitle, handleSubmit }) => {
+const QuizForm = ({ title, setTitle, handleSubmit }) => {
   return (
     <div>
       <div className="flex items-center justify-center px-4 py-24">
@@ -17,6 +17,7 @@ const QuizForm = ({ setTitle, handleSubmit }) => {
               label="Quiz Title"
               type="text"
               placeholder=""
+              value={title}
               onChange={e => setTitle(e.target.value)}
             />
             <Button type="submit" buttonText="Submit" />
