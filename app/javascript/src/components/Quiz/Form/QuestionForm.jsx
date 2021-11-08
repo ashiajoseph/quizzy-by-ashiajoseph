@@ -129,9 +129,10 @@ const QuestionForm = ({
               </label>
               <select
                 name="answer"
-                className=" block w-full  px-3 py-2 transition duration-150 ease-in-out border border-gray-300 rounded-md bg-gray-800 text-white"
+                className=" block w-full  px-3 py-2 transition duration-150 ease-in-out border border-gray-300 rounded-md bg-gray-800 text-white focus:outline-none focus:shadow-outline-black"
                 onChange={handleChange}
               >
+                <option value=""> Please select an option </option>
                 {Object.keys(optionList).map((option, index) => (
                   <option key={index} value={option}>
                     {option}

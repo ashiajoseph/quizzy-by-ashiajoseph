@@ -14,8 +14,9 @@ const CreateQuestion = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    Logger.info(qa);
-    Logger.info(optionList);
+    if (qa.answer == "" || qa.answer == undefined) {
+      Logger.error("Please select the correct answer in the Form");
+    }
   };
   return (
     <Container>
