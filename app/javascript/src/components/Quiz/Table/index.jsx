@@ -3,6 +3,7 @@ import React, { useState, useMemo, useRef } from "react";
 import { Delete, Edit, UpArrow, DownArrow } from "@bigbinary/neeto-icons";
 import { Tooltip } from "@bigbinary/neetoui/v2";
 import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTable, useSortBy } from "react-table";
 
 import quizzesApi from "apis/quizzes";
@@ -81,13 +82,21 @@ const Table = ({ quizList, setQuizList }) => {
                     <td
                       key={ind}
                       {...cell.getCellProps()}
-                      className={`py-4 pr-5 pl-8  capitalize break-all ${bgColor}`}
+                      className={`py-4 pr-5 pl-8  capitalize break-all 	${bgColor}`}
                     >
-                      {cell.render("Cell")}
+                      <Link
+                        to={`quiz/${row.original.slug}`}
+                        className="hover:underline hover:font-medium"
+                      >
+                        {cell.render("Cell")}
+                      </Link>
                     </td>
                   );
                 })}
-                <td key="edit" className={`py-4 w-20 text-center ${bgColor}`}>
+                <td
+                  key="edit"
+                  className={`py-3 px-6 w-20 text-center ${bgColor}`}
+                >
                   <Tooltip position="right-end" content="Edit">
                     <button
                       className="focus:outline-none "
@@ -97,7 +106,10 @@ const Table = ({ quizList, setQuizList }) => {
                     </button>
                   </Tooltip>
                 </td>
-                <td key="del" className={` py-4 w-28 text-center ${bgColor}`}>
+                <td
+                  key="del"
+                  className={` py-3 px-8 w-28 text-center ${bgColor}`}
+                >
                   <Tooltip position="right-end" content="Delete">
                     <button
                       className="focus:outline-none "
