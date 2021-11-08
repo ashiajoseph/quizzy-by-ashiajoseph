@@ -84,8 +84,6 @@ const Table = ({ quizList, setQuizList }) => {
                       {...cell.getCellProps()}
                       className={`py-4 pr-5 pl-8  capitalize break-all 	${bgColor}`}
                     >
-                      {" "}
-                      {logger.info(cell)}
                       <Link
                         to={`quiz/${row.original.slug}`}
                         className="hover:underline hover:font-medium"

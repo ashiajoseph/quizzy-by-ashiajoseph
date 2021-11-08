@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
-import { Typography } from "@bigbinary/neetoui/v2";
 import { isNil, isEmpty, either } from "ramda";
 
 import quizzesApi from "apis/quizzes";
 
 import Container from "./Container";
-import AddLink from "./Quiz/AddLink";
+import EmptyList from "./Quiz/EmptyList";
 import PageHeader from "./Quiz/PageHeader";
 import Table from "./Quiz/Table";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [quizList, setQuizList] = useState([]);
+  const empty = useRef(false);
   const fetchQuizList = async () => {
     try {
       const response = await quizzesApi.list();
@@ -34,7 +34,27 @@ const Dashboard = () => {
   }
 
   if (either(isNil, isEmpty)(quizList)) {
-    return (
+    empty.current = true;
+  }
+
+  return (
+    <Container>
+      <PageHeader
+        head={empty.current ? " " : "List of Quizzes"}
+        link_name="Add new quiz"
+        link_path="/quiz/create"
+      />
+      {empty.current && <EmptyList content="You have not created any quiz" />}
+      {!empty.current && (
+        <Table quizList={quizList} setQuizList={setQuizList} />
+      )}
+    </Container>
+  );
+};
+
+export default Dashboard;
+/*
+return (
       <Container>
         <div className="px-10 py-8 mt-4 flex flex-col">
           <div className="flex justify-end">
@@ -51,18 +71,4 @@ const Dashboard = () => {
         </div>
       </Container>
     );
-  }
-
-  return (
-    <Container>
-      <PageHeader
-        head="List of Quizzes"
-        link_name="Add new quiz"
-        link_path="/quiz/create"
-      />
-      <Table quizList={quizList} setQuizList={setQuizList} />
-    </Container>
-  );
-};
-
-export default Dashboard;
+*/

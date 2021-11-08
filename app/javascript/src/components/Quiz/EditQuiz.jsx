@@ -27,7 +27,7 @@ const EditQuiz = ({ history }) => {
   const fetchQuizDetails = async () => {
     try {
       const response = await quizzesApi.show(slug);
-      const { quiz } = response.data;
+      const { quiz } = await response.data;
       setTitle(quiz.title);
     } catch (error) {
       logger.error(error);
