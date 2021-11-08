@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import quizzesApi from "apis/quizzes";
 
-import QuizForm from "./QuizForm";
+import QuizForm from "./Form/QuizForm";
 
 import Container from "../Container";
 

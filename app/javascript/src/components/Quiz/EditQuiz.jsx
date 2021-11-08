@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 import quizzesApi from "apis/quizzes";
 
-import QuizForm from "./QuizForm";
+import QuizForm from "./Form/QuizForm";
 
 import Container from "../Container";
 
