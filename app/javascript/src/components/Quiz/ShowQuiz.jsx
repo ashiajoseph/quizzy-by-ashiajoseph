@@ -27,9 +27,9 @@ const ShowQuiz = () => {
   return (
     <Container>
       <PageHeader
-        head={`${quiz} Quiz`}
+        heading={`${quiz} Quiz`}
         link_name="Add questions"
-        link_path=""
+        link_path={`/${slug}/question/create`}
       />
       <EmptyList content="There are no questions in this quiz" />
     </Container>
