@@ -93,7 +93,10 @@ const Table = ({ quizList, setQuizList }) => {
                     </td>
                   );
                 })}
-                <td key="edit" className={`py-4 w-20 text-center ${bgColor}`}>
+                <td
+                  key="edit"
+                  className={`py-3 px-6 w-20 text-center ${bgColor}`}
+                >
                   <Tooltip position="right-end" content="Edit">
                     <button
                       className="focus:outline-none "
@@ -103,7 +106,10 @@ const Table = ({ quizList, setQuizList }) => {
                     </button>
                   </Tooltip>
                 </td>
-                <td key="del" className={` py-4 w-28 text-center ${bgColor}`}>
+                <td
+                  key="del"
+                  className={` py-3 px-8 w-28 text-center ${bgColor}`}
+                >
                   <Tooltip position="right-end" content="Delete">
                     <button
                       className="focus:outline-none "
