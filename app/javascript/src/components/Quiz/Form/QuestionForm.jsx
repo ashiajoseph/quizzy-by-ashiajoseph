@@ -113,9 +113,8 @@ const QuestionForm = ({
                 <button
                   type="button"
                   onClick={addOption}
-                  className={`text-lg text-lime block mt-8 font-extrabold focus:outline-none hover:underline ${hide}`}
+                  className={`text-lg text-lime block mt-10 font-extrabold focus:outline-none hover:underline ${hide}`}
                 >
-                  {" "}
                   <Plus className="inline" /> Add Option
                 </button>
               </div>
