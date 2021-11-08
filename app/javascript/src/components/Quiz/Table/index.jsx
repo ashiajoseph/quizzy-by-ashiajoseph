@@ -3,6 +3,7 @@ import React, { useState, useMemo, useRef } from "react";
 import { Delete, Edit, UpArrow, DownArrow } from "@bigbinary/neeto-icons";
 import { Tooltip } from "@bigbinary/neetoui/v2";
 import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTable, useSortBy } from "react-table";
 
 import quizzesApi from "apis/quizzes";
@@ -81,9 +82,16 @@ const Table = ({ quizList, setQuizList }) => {
                     <td
                       key={ind}
                       {...cell.getCellProps()}
-                      className={`py-4 pr-5 pl-8  capitalize break-all ${bgColor}`}
+                      className={`py-4 pr-5 pl-8  capitalize break-all 	${bgColor}`}
                     >
-                      {cell.render("Cell")}
+                      {" "}
+                      {logger.info(cell)}
+                      <Link
+                        to={`quiz/${row.original.slug}`}
+                        className="hover:underline hover:font-medium"
+                      >
+                        {cell.render("Cell")}
+                      </Link>
                     </td>
                   );
                 })}

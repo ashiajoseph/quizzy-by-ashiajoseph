@@ -7,6 +7,7 @@ import quizzesApi from "apis/quizzes";
 
 import Container from "./Container";
 import AddLink from "./Quiz/AddLink";
+import PageHeader from "./Quiz/PageHeader";
 import Table from "./Quiz/Table";
 
 const Dashboard = () => {
@@ -54,12 +55,11 @@ const Dashboard = () => {
 
   return (
     <Container>
-      <div className="py-8 mt-4  flex flex-col">
-        <div className="flex justify-between items-center">
-          <h1 className="text-4xl text-gray-800	 ">List of Quizzes</h1>
-          <AddLink name="Add new quiz" path="/quiz/create" style="" />
-        </div>
-      </div>
+      <PageHeader
+        head="List of Quizzes"
+        link_name="Add new quiz"
+        link_path="/quiz/create"
+      />
       <Table quizList={quizList} setQuizList={setQuizList} />
     </Container>
   );
