@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
+import { PageLoader } from "@bigbinary/neetoui/v2";
 import { isNil, isEmpty, either } from "ramda";
 
 import quizzesApi from "apis/quizzes";
@@ -30,7 +31,11 @@ const Dashboard = () => {
   }, []);
 
   if (loading) {
-    return <div className="w-screen h-screen">Loading...</div>;
+    return (
+      <div className="py-10 mt-4">
+        <PageLoader />
+      </div>
+    );
   }
 
   if (either(isNil, isEmpty)(quizList)) {

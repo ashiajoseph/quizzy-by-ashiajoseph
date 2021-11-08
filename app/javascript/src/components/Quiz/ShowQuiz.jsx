@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 
 import quizzesApi from "apis/quizzes";
 
+import EmptyList from "./EmptyList";
 import PageHeader from "./PageHeader";
 
 import Container from "../Container";
@@ -30,6 +31,7 @@ const ShowQuiz = () => {
         link_name="Add questions"
         link_path=""
       />
+      <EmptyList content="There are no questions in this quiz" />
     </Container>
   );
 };
