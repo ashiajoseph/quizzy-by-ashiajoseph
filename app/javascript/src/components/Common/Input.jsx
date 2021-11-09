@@ -9,7 +9,9 @@ const Input = ({
   value,
   onChange,
   placeholder,
+  name,
   required = true,
+  style,
 }) => {
   const inputRef = useRef();
 
@@ -34,11 +36,12 @@ const Input = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="block w-full px-3 py-2 placeholder-gray-400
+          name={name}
+          className={`block w-full  px-3 py-2 placeholder-gray-400
           transition duration-150 ease-in-out border
           border-gray-300 rounded-md appearance-none
           focus:outline-none focus:shadow-outline-black
-          focus:border-black sm:text-sm sm:leading-5"
+          focus:border-black sm:text-sm sm:leading-5 ${style}`}
         />
       </div>
     </div>

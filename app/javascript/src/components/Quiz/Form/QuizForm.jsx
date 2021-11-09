@@ -1,11 +1,11 @@
 import React from "react";
 
-import Button from "../Button";
-import Input from "../Input";
+import Button from "components/Common/Button";
+import Input from "components/Common/Input";
 
 const QuizForm = ({ action = "create", title, setTitle, handleSubmit }) => {
   return (
-    <div>
+    <>
       <div className="flex items-center justify-center px-4 py-24">
         <div className="w-full max-w-sm">
           <h2 className="mt-6 text-3xl font-extrabold text-center ">
@@ -28,7 +28,7 @@ const QuizForm = ({ action = "create", title, setTitle, handleSubmit }) => {
           </form>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

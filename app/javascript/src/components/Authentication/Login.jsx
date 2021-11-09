@@ -3,9 +3,8 @@ import React, { useState } from "react";
 import authApi from "apis/auth";
 import { setAuthHeaders } from "apis/axios";
 import LoginForm from "components/Authentication/Form/LoginForm";
+import Container from "components/Common/Container";
 import { setToLocalStorage } from "helpers/storage";
-
-import Container from "../Container";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,9 +13,9 @@ const Login = () => {
 
   const handleSubmit = async event => {
     event.preventDefault();
+    setLoading(true);
     try {
       const response = await authApi.login({ login: { email, password } });
-
       setToLocalStorage({
         authToken: response.data.authentication_token,
         email,

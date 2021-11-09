@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     if user && auth_token && ActiveSupport::SecurityUtils.secure_compare(user.authentication_token, auth_token)
       @current_user = user
     else
-      render status: :unauthorized, json: { error: "Could not authenticate with the provided credentials" }
+      render status: :unauthorized, json: { error: t("could_not_auth") }
     end
   end
 end

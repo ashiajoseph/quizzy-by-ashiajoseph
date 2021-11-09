@@ -82,7 +82,7 @@ const Table = ({ quizList, setQuizList }) => {
                     <td
                       key={ind}
                       {...cell.getCellProps()}
-                      className={`py-4 pr-5 pl-8  capitalize break-all 	${bgColor}`}
+                      className={`py-4 pr-5 pl-10  capitalize break-all ${bgColor}`}
                     >
                       <Link
                         to={`quiz/${row.original.slug}`}
@@ -95,7 +95,7 @@ const Table = ({ quizList, setQuizList }) => {
                 })}
                 <td
                   key="edit"
-                  className={`py-3 px-6 w-20 text-center ${bgColor}`}
+                  className={`py-3 px-6 w-24 text-center ${bgColor}`}
                 >
                   <Tooltip position="right-end" content="Edit">
                     <button
@@ -108,7 +108,7 @@ const Table = ({ quizList, setQuizList }) => {
                 </td>
                 <td
                   key="del"
-                  className={` py-3 px-8 w-28 text-center ${bgColor}`}
+                  className={` py-3 px-8 w-32 text-center ${bgColor}`}
                 >
                   <Tooltip position="right-end" content="Delete">
                     <button

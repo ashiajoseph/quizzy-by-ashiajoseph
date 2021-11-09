@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 
 import quizzesApi from "apis/quizzes";
+import Container from "components/Common/Container";
 
-import QuizForm from "./QuizForm";
-
-import Container from "../Container";
+import QuizForm from "./Form/QuizForm";
 
 const CreateQuiz = ({ history }) => {
   const [title, setTitle] = useState("");
