@@ -21,11 +21,6 @@ class QuestionTest < ActiveSupport::TestCase
     assert_includes @question.errors.full_messages, "Question can't be blank"
   end
 
-  def test_question_title_should_not_exceed_maximum_length
-    @question.question = "q" * 151
-    assert_not @question.valid?
-  end
-
   def test_question_should_not_be_valid_without_quiz
     @question.quiz = nil
     assert @question.invalid?
