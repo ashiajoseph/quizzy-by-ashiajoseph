@@ -4,9 +4,9 @@ class OptionsController < ApplicationController
   before_action :load_question
 
   def create
-    puts option_params
-    @option = @question.options.new(option_params)
-    unless @option.save
+    option = @question.options.new(option_params)
+    puts option
+    unless option.save
       render status: :unprocessable_entity, json: { error: @question.errors.full_messages.to_sentence }
     end
   end
