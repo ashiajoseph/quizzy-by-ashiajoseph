@@ -14,6 +14,7 @@ const Login = () => {
 
   const handleSubmit = async event => {
     event.preventDefault();
+    setLoading(true);
     try {
       const response = await authApi.login({ login: { email, password } });
 
