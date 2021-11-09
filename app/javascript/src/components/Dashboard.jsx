@@ -6,8 +6,8 @@ import { isNil, isEmpty, either } from "ramda";
 import quizzesApi from "apis/quizzes";
 import Container from "components/Common/Container";
 
+import PageHeader from "./Common/PageHeader";
 import EmptyList from "./Quiz/EmptyList";
-import PageHeader from "./Quiz/PageHeader";
 import Table from "./Quiz/Table";
 
 const Dashboard = () => {
