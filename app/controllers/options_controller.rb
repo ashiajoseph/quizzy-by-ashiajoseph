@@ -10,7 +10,7 @@ class OptionsController < ApplicationController
         render status: :unprocessable_entity, json: { error: option.errors.full_messages.to_sentence }
       end
     end
-    render status: :ok, json: { notice: "Added Question successfully" }
+    render status: :ok, json: { notice: t("successfully_added") }
   end
 
   private
@@ -22,7 +22,7 @@ class OptionsController < ApplicationController
     def load_question
       @question = Question.find_by(id: option_params[:question_id])
       unless @question
-        render status: :not_found, json: { error: "Question not found" }
+        render status: :not_found, json: { error: t("not_found", entity: "Question") }
       end
     end
 end
