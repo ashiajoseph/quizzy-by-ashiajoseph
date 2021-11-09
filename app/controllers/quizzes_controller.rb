@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class QuizzesController < ApplicationController
-  before_action :authenticate_user_using_x_auth_token, only: [:index, :create]
+  before_action :authenticate_user_using_x_auth_token, except: [:new, :edit]
   before_action :load_quiz, only: %i[show update destroy]
   def index
     @quizzes = @current_user.quizzes

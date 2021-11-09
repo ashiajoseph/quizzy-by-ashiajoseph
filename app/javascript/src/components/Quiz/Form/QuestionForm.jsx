@@ -21,9 +21,8 @@ const QuestionForm = ({
         return { ...prev, [`${name}`]: value };
       });
     } else {
-      const val = name == "answer" ? optionList[value] : value;
       setQA(prev => {
-        return { ...prev, [name]: val };
+        return { ...prev, [name]: value };
       });
     }
   };
@@ -59,7 +58,7 @@ const QuestionForm = ({
         </div>
         <div className="w-10/12	my-4">
           <form onSubmit={handleSubmit}>
-            <div className="w-3/4 mx-auto">
+            <div className="w-70 mx-auto">
               <Input
                 from="create/edit"
                 label="Question"
@@ -70,8 +69,8 @@ const QuestionForm = ({
               />
             </div>
 
-            <div className="flex justify-around">
-              <div className="w-2/5 py-5">
+            <div className="flex justify-around w-3/4 mx-auto">
+              <div className="w-2/5 py-5 ">
                 <Input
                   label="Option 1"
                   type="text"
