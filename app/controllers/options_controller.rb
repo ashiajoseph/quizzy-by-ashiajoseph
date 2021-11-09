@@ -4,17 +4,19 @@ class OptionsController < ApplicationController
   before_action :load_question
 
   def create
-    option = @question.options.new(option_params)
-    puts option
-    unless option.save
-      render status: :unprocessable_entity, json: { error: @question.errors.full_messages.to_sentence }
+    option_params[:list].each do |option|
+      option = @question.options.new(option)
+      unless option.save
+        render status: :unprocessable_entity, json: { error: option.errors.full_messages.to_sentence }
+      end
     end
+    render status: :ok, json: { notice: "Added Question successfully" }
   end
 
   private
 
     def option_params
-      params.require(:option).permit(:content, :question_id, :answer)
+      params.require(:option).permit(:question_id, list: [:content, :answer, :question_id])
     end
 
     def load_question
