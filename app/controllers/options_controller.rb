@@ -16,7 +16,7 @@ class OptionsController < ApplicationController
   private
 
     def option_params
-      params.require(:option).permit(:question_id, list: [:content, :answer, :question_id])
+      params.require(:option).permit(:question_id, list: [:content, :answer])
     end
 
     def load_question
