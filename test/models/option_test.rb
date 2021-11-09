@@ -27,4 +27,9 @@ class OptionTest < ActiveSupport::TestCase
     selected = @question.options.select { |option| option.answer == true }
     assert_equal selected.length, 1
   end
+
+  def test_question_has_between_two_to_four_options
+    no_of_options = @question.options.length
+    assert_includes 2..4, no_of_options
+  end
 end
