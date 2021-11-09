@@ -3,10 +3,9 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import quizzesApi from "apis/quizzes";
+import Container from "components/Common/Container";
 
 import QuizForm from "./Form/QuizForm";
-
-import Container from "../Container";
 
 const EditQuiz = ({ history }) => {
   const [title, setTitle] = useState(" ");

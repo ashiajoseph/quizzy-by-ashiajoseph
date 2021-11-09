@@ -3,11 +3,10 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import quizzesApi from "apis/quizzes";
+import Container from "components/Common/Container";
 
 import EmptyList from "./EmptyList";
 import PageHeader from "./PageHeader";
-
-import Container from "../Container";
 
 const ShowQuiz = () => {
   const [quiz, setQuiz] = useState("");

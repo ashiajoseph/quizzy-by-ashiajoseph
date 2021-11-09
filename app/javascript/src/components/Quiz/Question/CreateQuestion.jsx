@@ -5,8 +5,8 @@ import { useParams, useLocation } from "react-router-dom";
 
 import optionsApi from "apis/options";
 import questionsApi from "apis/questions";
+import Container from "components/Common/Container";
 
-import Container from "../../Container";
 import QuestionForm from "../Form/QuestionForm";
 
 const CreateQuestion = ({ history }) => {

@@ -1,7 +1,7 @@
 import React from "react";
 
-import Button from "../../Button";
-import Input from "../../Input";
+import Button from "components/Common/Button";
+import Input from "components/Common/Input";
 
 const QuizForm = ({ action = "create", title, setTitle, handleSubmit }) => {
   return (
