@@ -12,11 +12,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_08_182130) do
+ActiveRecord::Schema.define(version: 2021_11_09_170809) do
 
   create_table "options", force: :cascade do |t|
     t.text "content", null: false
-    t.boolean "answer", default: false, null: false
+    t.boolean "answer", null: false
     t.integer "question_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
