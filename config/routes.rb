@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   defaults format: :json do
-    resource :sessions, only: %i[create destroy]
+    resource :session, only: %i[create destroy]
     resources :quizzes, except: %i[new edit], param: :slug
     resources :questions, only: :create
     resources :options, only: :create
