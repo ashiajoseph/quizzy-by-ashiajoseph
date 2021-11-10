@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 
-import Logger from "js-logger";
 import { useParams, useLocation } from "react-router-dom";
 
 import optionsApi from "apis/options";
@@ -46,7 +45,7 @@ const CreateQuestion = ({ history }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     if (qa.answer == "" || qa.answer == undefined) {
-      Logger.error("Please select the correct answer in the Form");
+      logger.error("Please select the correct answer in the Form");
     } else {
       await passQuestions();
       history.push(`/quiz/${slug}`);

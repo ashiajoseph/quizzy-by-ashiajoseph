@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
+import { PageLoader } from "@bigbinary/neetoui/v2";
+import { isNil, isEmpty, either } from "ramda";
 import { useParams } from "react-router-dom";
 
 import optionsApi from "apis/options";
@@ -9,11 +11,15 @@ import Container from "components/Common/Container";
 import PageHeader from "components/Common/PageHeader";
 
 import EmptyList from "./EmptyList";
+import ShowQA from "./Question/ShowQA";
 
 const ShowQuiz = () => {
+  const [loading, setLoading] = useState(true);
   const [quiz, setQuiz] = useState("");
   const [questionList, setQuestionList] = useState([]);
   const [optionList, setOptionList] = useState([]);
+  const empty = useRef(false);
+
   const { slug } = useParams();
   const fetchQuiz = async () => {
     try {
@@ -41,7 +47,8 @@ const ShowQuiz = () => {
       const data = await response.data;
       await setQuestionList(data.questions);
       const questionIdList = data.questions.map(question => question.id);
-      await fetchOptions(questionIdList);
+      if (questionIdList.length) await fetchOptions(questionIdList);
+      await setLoading(false);
     } catch (error) {
       logger.error(error);
     }
@@ -52,7 +59,17 @@ const ShowQuiz = () => {
     await fetchQuestions();
   }, []);
 
-  logger.info(questionList[0], optionList[0]);
+  if (loading) {
+    return (
+      <div className="py-10 mt-4">
+        <PageLoader />
+      </div>
+    );
+  }
+
+  if (either(isNil, isEmpty)(questionList)) {
+    empty.current = true;
+  }
 
   return (
     <Container>
@@ -61,7 +78,12 @@ const ShowQuiz = () => {
         link_name="Add questions"
         link_path={`/${slug}/question/create`}
       />
-      <EmptyList content="There are no questions in this quiz" />
+      {empty.current && (
+        <EmptyList content="There are no questions in this quiz" />
+      )}
+      {!empty.current && (
+        <ShowQA questionList={questionList} optionList={optionList} />
+      )}
     </Container>
   );
 };
