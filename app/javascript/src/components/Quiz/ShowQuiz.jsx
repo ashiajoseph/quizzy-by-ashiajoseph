@@ -11,6 +11,7 @@ import EmptyList from "./EmptyList";
 
 const ShowQuiz = () => {
   const [quiz, setQuiz] = useState("");
+  const [questionList, setQuestionList] = useState([]);
 
   const { slug } = useParams();
   const fetchQuiz = async () => {
@@ -23,10 +24,17 @@ const ShowQuiz = () => {
     }
   };
 
+  const fetchOptions = async questionIdList => {
+    logger.info(questionIdList);
+  };
+
   const fetchQuestions = async () => {
     try {
       const response = await questionsApi.list(slug);
-      logger.info(response.data);
+      const data = await response.data;
+      await setQuestionList(data.questions);
+      const questionIdList = data.questions.map(question => question.id);
+      await fetchOptions(questionIdList);
     } catch (error) {
       logger.error(error);
     }
@@ -36,6 +44,8 @@ const ShowQuiz = () => {
     await fetchQuiz();
     await fetchQuestions();
   }, []);
+
+  logger.info(questionList);
 
   return (
     <Container>
