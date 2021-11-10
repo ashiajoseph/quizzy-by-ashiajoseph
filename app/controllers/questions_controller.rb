@@ -2,7 +2,7 @@
 
 class QuestionsController < ApplicationController
   before_action :load_quiz, only: :create
-  before_action :load_question, only: :show
+  before_action :load_question, only: %i[show update]
 
   def index
     quiz = Quiz.find_by(slug: params[:slug])
@@ -17,6 +17,14 @@ class QuestionsController < ApplicationController
   end
 
   def show
+  end
+
+  def update
+    if @question.update(questions_params)
+      puts @question.options.delete_all
+    else
+      render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
+    end
   end
 
   private

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 
+import { Toastr } from "@bigbinary/neetoui/v2";
 import { useParams, useLocation } from "react-router-dom";
 
 import optionsApi from "apis/options";
@@ -45,7 +46,7 @@ const CreateQuestion = ({ history }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     if (qa.answer == "" || qa.answer == undefined) {
-      logger.error("Please select the correct answer in the Form");
+      Toastr.error(Error("Please select the Correct Answer"));
     } else {
       await passQuestions();
       history.push(`/quiz/${slug}`);
