@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 class QuestionsController < ApplicationController
-  before_action :load_quiz
+  before_action :load_quiz, only: :create
+
+  def index
+    quiz = Quiz.find_by(slug: params[:slug])
+    @questions = quiz.questions
+  end
 
   def create
     @question = @quiz.questions.new(question_params.except(:slug))
