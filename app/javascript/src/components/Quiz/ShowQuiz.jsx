@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 
+import optionsApi from "apis/options";
 import questionsApi from "apis/questions";
 import quizzesApi from "apis/quizzes";
 import Container from "components/Common/Container";
@@ -12,7 +13,7 @@ import EmptyList from "./EmptyList";
 const ShowQuiz = () => {
   const [quiz, setQuiz] = useState("");
   const [questionList, setQuestionList] = useState([]);
-
+  const [optionList, setOptionList] = useState([]);
   const { slug } = useParams();
   const fetchQuiz = async () => {
     try {
@@ -25,7 +26,13 @@ const ShowQuiz = () => {
   };
 
   const fetchOptions = async questionIdList => {
-    logger.info(questionIdList);
+    try {
+      const response = await optionsApi.list(questionIdList);
+      const data = await response.data;
+      setOptionList(data.options);
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   const fetchQuestions = async () => {
@@ -45,7 +52,7 @@ const ShowQuiz = () => {
     await fetchQuestions();
   }, []);
 
-  logger.info(questionList);
+  logger.info(questionList[0], optionList[0]);
 
   return (
     <Container>

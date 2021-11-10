@@ -1,7 +1,15 @@
 # frozen_string_literal: true
 
 class OptionsController < ApplicationController
-  before_action :load_question
+  before_action :load_question, only: :create
+
+  def index
+    @options = []
+    params[:idList].each do |id|
+      question = Question.find_by_id(id)
+      @options.push(question.options)
+    end
+  end
 
   def create
     option_params[:list].each do |option|
@@ -16,6 +24,8 @@ class OptionsController < ApplicationController
   private
 
     def option_params
+      puts "---"
+      puts params
       params.require(:option).permit(:question_id, list: [:content, :answer])
     end
 
