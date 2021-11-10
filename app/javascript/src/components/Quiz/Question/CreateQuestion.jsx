@@ -10,7 +10,7 @@ import QuestionForm from "../Form/QuestionForm";
 
 const CreateQuestion = ({ history }) => {
   const [qa, setQA] = useState({ question: "", answer: "" });
-  const [optionList, setOptionList] = useState({ option1: "", option2: "" });
+  const [optionList, setOptionList] = useState(["", ""]);
   const location = useLocation();
   const heading = location.state;
   const { slug } = useParams();
@@ -33,9 +33,9 @@ const CreateQuestion = ({ history }) => {
       });
       const data = await response.data;
       questionId.current = data.question_id;
-      const optList = Object.keys(optionList).map(option => {
-        const answer = qa.answer == option;
-        return { content: optionList[option], answer: answer };
+      const optList = optionList.map((value, index) => {
+        const answer = qa.answer == index;
+        return { content: value, answer: answer };
       });
       passOptions(optList);
     } catch (error) {
@@ -59,6 +59,7 @@ const CreateQuestion = ({ history }) => {
         optionList={optionList}
         setOptionList={setOptionList}
         setQA={setQA}
+        qa={qa}
       />
     </Container>
   );

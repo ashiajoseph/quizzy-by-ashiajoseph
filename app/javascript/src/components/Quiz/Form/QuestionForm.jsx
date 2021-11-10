@@ -10,6 +10,7 @@ const QuestionForm = ({
   action = "create",
   handleSubmit,
   heading,
+  qa,
   setQA,
   optionList,
   setOptionList,
@@ -17,9 +18,10 @@ const QuestionForm = ({
   const handleChange = e => {
     const { name, value } = e.target;
     if (name.includes("option")) {
-      setOptionList(prev => {
-        return { ...prev, [`${name}`]: value };
-      });
+      const index = parseInt(name);
+      const optList = [...optionList];
+      optList[index] = value;
+      setOptionList(optList);
     } else {
       setQA(prev => {
         return { ...prev, [name]: value };
@@ -27,24 +29,20 @@ const QuestionForm = ({
     }
   };
   const addOption = () => {
-    const len = Object.keys(optionList).length;
+    const len = optionList.length;
     if (len < 4) {
       setOptionList(optList => {
-        return { ...optList, [`option${len + 1}`]: "" };
+        return [...optList, ""];
       });
     }
   };
-  const removeOption = () => {
-    const res = Object.keys(optionList)
-      .slice(0, -1)
-      .reduce((res, opt) => {
-        const value = optionList[opt];
-        return { ...res, [`${opt}`]: value };
-      }, {});
-    setOptionList(res);
+  const removeOption = index => {
+    const optList = [...optionList];
+    optList.splice(index, 1);
+    setOptionList(optList);
   };
 
-  let hide = Object.keys(optionList).length == 4 ? "hidden" : null;
+  let hide = optionList.length == 4 ? "hidden" : null;
   return (
     <>
       <div className="flex flex-col items-center justify-center my-10 ">
@@ -65,6 +63,7 @@ const QuestionForm = ({
                 type="text"
                 placeholder=""
                 name="question"
+                value={qa.question}
                 onChange={handleChange}
               />
             </div>
@@ -74,41 +73,42 @@ const QuestionForm = ({
                 <Input
                   label="Option 1"
                   type="text"
-                  name="option1"
+                  name="0option"
+                  value={optionList[0]}
                   placeholder=""
                   onChange={handleChange}
                 />
                 <Input
                   label="Option 2"
                   type="text"
-                  name="option2"
+                  name="1option"
+                  value={optionList[1]}
                   placeholder=""
                   onChange={handleChange}
                 />
               </div>
               <div className="w-2/5 py-5">
-                {Object.keys(optionList)
-                  .slice(2)
-                  .map((name, index) => (
-                    <div key={index} className="relative">
-                      <Input
-                        label={`Option ${index + 3}`}
-                        type="text"
-                        name={name}
-                        placeholder=""
-                        onChange={handleChange}
-                      />
-                      <Tooltip position="right-end" content="Remove">
-                        <button
-                          type="button"
-                          onClick={() => removeOption()}
-                          className="absolute -bottom-1 right-0 bg-red-500 m-1 rounded-full focus:outline-none "
-                        >
-                          <Minus className="neeto-ui-text-white" />
-                        </button>
-                      </Tooltip>
-                    </div>
-                  ))}
+                {optionList.slice(2).map((name, index) => (
+                  <div key={index} className="relative">
+                    <Input
+                      label={`Option ${index + 3}`}
+                      type="text"
+                      name={`${index + 2}option`}
+                      value={optionList[index + 2]}
+                      placeholder=""
+                      onChange={handleChange}
+                    />
+                    <Tooltip position="right-end" content="Remove">
+                      <button
+                        type="button"
+                        onClick={() => removeOption(index + 2)}
+                        className="absolute -bottom-1 right-0 bg-red-500 m-1 rounded-full focus:outline-none "
+                      >
+                        <Minus className="neeto-ui-text-white" />
+                      </button>
+                    </Tooltip>
+                  </div>
+                ))}
                 <button
                   type="button"
                   onClick={addOption}
@@ -127,13 +127,14 @@ const QuestionForm = ({
               </label>
               <select
                 name="answer"
+                value={qa.answer}
                 className=" block w-full  px-3 py-2 transition duration-150 ease-in-out border border-gray-300 rounded-md bg-gray-800 text-white focus:outline-none focus:shadow-outline-black"
                 onChange={handleChange}
               >
                 <option value=""> Please select an option </option>
-                {Object.keys(optionList).map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
+                {optionList.map((val, index) => (
+                  <option key={index} value={index}>
+                    {`option ${index + 1}`}
                   </option>
                 ))}
               </select>

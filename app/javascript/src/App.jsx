@@ -12,13 +12,13 @@ import { ToastContainer } from "react-toastify";
 import { registerIntercepts, setAuthHeaders } from "apis/axios";
 import { initializeLogger } from "common/logger";
 import Login from "components/Authentication/Login";
+import Dashboard from "components/Dashboard";
+import CreateQuiz from "components/Quiz/CreateQuiz";
+import EditQuiz from "components/Quiz/EditQuiz";
+import CreateQuestion from "components/Quiz/Question/CreateQuestion";
+import EditQuestion from "components/Quiz/Question/EditQuestion";
+import ShowQuiz from "components/Quiz/ShowQuiz";
 import { getFromLocalStorage } from "helpers/storage";
-
-import Dashboard from "./components/Dashboard";
-import CreateQuiz from "./components/Quiz/CreateQuiz";
-import EditQuiz from "./components/Quiz/EditQuiz";
-import CreateQuestion from "./components/Quiz/Question/CreateQuestion";
-import ShowQuiz from "./components/Quiz/ShowQuiz";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -39,9 +39,10 @@ const App = () => {
       <Switch>
         <Route exact path="/login" component={Login} />
         <Route exact path="/quiz/create" component={CreateQuiz} />
-        <Route exact path="/quiz/:slug" component={ShowQuiz} />
         <Route exact path="/quiz/:slug/edit" component={EditQuiz} />
+        <Route exact path="/quiz/:slug" component={ShowQuiz} />
         <Route exact path="/:slug/question/create" component={CreateQuestion} />
+        <Route exact path="/:slug/question/:id/edit" component={EditQuestion} />
         {!isLoggedIn ? (
           <Redirect to="/login" />
         ) : (

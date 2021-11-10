@@ -2,20 +2,30 @@ import React from "react";
 
 import { Delete, Edit } from "@bigbinary/neeto-icons";
 import { Tooltip } from "@bigbinary/neetoui/v2";
+import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import Answer from "./Answer";
 
 const ShowQA = ({ questionList, optionList }) => {
+  const { slug } = useParams();
+  const history = useHistory();
+  const editQuestion = id => {
+    history.push(`/${slug}/question/${id}/edit`);
+  };
   return (
     <div className="flex flex-col w-3/4 mx-auto">
-      {questionList.map(({ question }, index) => (
+      {questionList.map(({ id, question }, index) => (
         <div
           key={index}
           className="mt-6 border-b-2 border-opacity-75	border-gray-300	pb-8"
         >
           <div className="flex justify-end mb-2">
             <Tooltip position="bottom" content="Edit">
-              <button className="focus:outline-none ml-5 " onClick={() => {}}>
+              <button
+                className="focus:outline-none ml-5 "
+                onClick={() => editQuestion(id)}
+              >
                 <Edit size={32} />
               </button>
             </Tooltip>
