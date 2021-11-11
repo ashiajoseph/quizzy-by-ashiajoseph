@@ -15,7 +15,7 @@ const ShowQA = ({ questionList, setQuestionList, optionList }) => {
   const { slug } = useParams();
   const history = useHistory();
   const editQuestion = id => {
-    history.push(`/${slug}/question/${id}/edit`);
+    history.push(`/${slug}/questions/${id}/edit`);
   };
   const { setotalQuestions } = useContext(quizContext);
 

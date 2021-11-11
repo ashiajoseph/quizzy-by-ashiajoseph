@@ -40,17 +40,17 @@ const App = () => {
           <PrivateRoute redirectRoute="/login" condition={isLoggedIn}>
             <Switch>
               <Route exact path="/" component={Dashboard} />
-              <Route exact path="/quiz/create" component={CreateQuiz} />
-              <Route exact path="/quiz/:slug/edit" component={EditQuiz} />
-              <Route exact path="/quiz/:slug" component={ShowQuiz} />
+              <Route exact path="/quizzes/new" component={CreateQuiz} />
+              <Route exact path="/quizzes/:slug/edit" component={EditQuiz} />
+              <Route exact path="/quizzes/:slug" component={ShowQuiz} />
               <Route
                 exact
-                path="/:slug/question/create"
+                path="/:slug/questions/new"
                 component={CreateQuestion}
               />
               <Route
                 exact
-                path="/:slug/question/:id/edit"
+                path="/:slug/questions/:id/edit"
                 component={EditQuestion}
               />
             </Switch>
