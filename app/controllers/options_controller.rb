@@ -12,12 +12,8 @@ class OptionsController < ApplicationController
   end
 
   def create
-    option_params[:list].each do |option|
-      option = @question.options.new(option)
-      unless option.save
-        render status: :unprocessable_entity, json: { error: option.errors.full_messages.to_sentence }
-      end
-    end
+    option = @question.options.create(option_params[:list])
+
     operation = option_params[:add] ? "added" : "updated"
     render status: :ok, json: { notice: t("successfully_added", operation: operation) }
   end
