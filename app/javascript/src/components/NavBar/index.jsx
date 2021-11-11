@@ -2,7 +2,7 @@ import React from "react";
 
 import authApi from "apis/auth";
 import { resetAuthTokens } from "apis/axios";
-import { getFromLocalStorage, setToLocalStorage } from "helpers/storage";
+import { getFromLocalStorage } from "helpers/storage";
 
 import NavItem from "./NavItem";
 
@@ -11,12 +11,7 @@ const NavBar = () => {
   const handleLogout = async () => {
     try {
       await authApi.logout();
-      setToLocalStorage({
-        authToken: "",
-        email: "",
-        userId: "",
-        userName: "",
-      });
+      localStorage.clear();
       resetAuthTokens();
       window.location.href = "/";
     } catch (error) {

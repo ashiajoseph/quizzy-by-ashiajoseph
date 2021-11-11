@@ -1,11 +1,9 @@
 import React from "react";
 
-import Logger from "js-logger";
 import PropTypes from "prop-types";
 import { Redirect } from "react-router-dom";
 
 const PrivateRoute = ({ condition, redirectRoute, children, ...props }) => {
-  Logger.info(children);
   if (!condition) {
     return (
       <Redirect
