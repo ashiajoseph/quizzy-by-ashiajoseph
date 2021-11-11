@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 
 import { PageLoader } from "@bigbinary/neetoui/v2";
 import { isNil, isEmpty, either } from "ramda";
@@ -12,6 +12,7 @@ import PageHeader from "components/Common/PageHeader";
 
 import EmptyList from "./EmptyList";
 import ShowQA from "./Question/ShowQA";
+import { quizContext } from "./QuizContext";
 
 const ShowQuiz = () => {
   const [loading, setLoading] = useState(true);
@@ -19,6 +20,7 @@ const ShowQuiz = () => {
   const [questionList, setQuestionList] = useState([]);
   const [optionList, setOptionList] = useState([]);
   const empty = useRef(false);
+  const { setotalQuestions } = useContext(quizContext);
 
   const { slug } = useParams();
   const fetchQuiz = async () => {
@@ -47,7 +49,9 @@ const ShowQuiz = () => {
       const data = await response.data;
       await setQuestionList(data.questions);
       const questionIdList = data.questions.map(question => question.id);
+      setotalQuestions(questionIdList.length);
       if (questionIdList.length) await fetchOptions(questionIdList);
+
       await setLoading(false);
     } catch (error) {
       logger.error(error);

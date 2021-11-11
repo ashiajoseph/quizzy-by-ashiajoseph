@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { Delete, Edit } from "@bigbinary/neeto-icons";
 import { Tooltip } from "@bigbinary/neetoui/v2";
@@ -9,17 +9,21 @@ import questionsApi from "apis/questions";
 
 import Answer from "./Answer";
 
+import { quizContext } from "../QuizContext";
+
 const ShowQA = ({ questionList, setQuestionList, optionList }) => {
   const { slug } = useParams();
   const history = useHistory();
   const editQuestion = id => {
     history.push(`/${slug}/question/${id}/edit`);
   };
+  const { setotalQuestions } = useContext(quizContext);
 
   const deleteQuestion = async Id => {
     try {
       await questionsApi.destroy(Id);
       setQuestionList(prevlist => prevlist.filter(({ id }) => id !== Id));
+      setotalQuestions(setotalQuestions.length - 1);
     } catch (error) {
       logger.error(error);
     }
