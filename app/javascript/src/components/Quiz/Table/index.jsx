@@ -22,7 +22,7 @@ const Table = ({ quizList, setQuizList, empty }) => {
     useTable({ columns: cols, data: data }, useSortBy);
 
   const editQuiz = slug => {
-    history.push(`/quizzes/${slug}/edit`);
+    history.push(`/quiz/${slug}/edit`);
   };
 
   const deleteQuiz = async slugg => {
@@ -90,7 +90,7 @@ const Table = ({ quizList, setQuizList, empty }) => {
                       className={`py-4 pr-5 pl-10  capitalize break-all ${bgColor}`}
                     >
                       <Link
-                        to={`quizzes/${row.original.slug}`}
+                        to={`quiz/${row.original.slug}`}
                         className="hover:underline hover:font-medium"
                       >
                         {cell.render("Cell")}

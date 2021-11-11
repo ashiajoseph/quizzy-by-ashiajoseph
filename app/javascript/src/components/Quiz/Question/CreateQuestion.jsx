@@ -53,7 +53,7 @@ const CreateQuestion = ({ history }) => {
     } else {
       setLoading(true);
       await passQuestions();
-      history.push(`/quizzes/${slug}`);
+      history.push(`/quiz/${slug}`);
     }
   };
   return (

@@ -50,7 +50,7 @@ const Dashboard = () => {
       <PageHeader
         heading={heading}
         link_name="Add new quiz"
-        link_path="/quizzes/new"
+        link_path="/quiz/new"
       />
       {empty.current && <EmptyList content="You have not created any quiz" />}
       {!empty.current && (
