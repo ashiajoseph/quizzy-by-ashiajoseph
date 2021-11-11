@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Loading } from "@bigbinary/neeto-icons";
 import PropTypes from "prop-types";
 
 const Button = ({ type = "button", buttonText, loading, style }) => {
@@ -12,7 +13,7 @@ const Button = ({ type = "button", buttonText, loading, style }) => {
          ease-in-out border border-transparent
          group focus:outline-none w-full hover:bg-black hover:text-lime text-md rounded-lg ${style}`}
       >
-        {loading ? "Loading..." : buttonText}
+        {loading ? <Loading /> : buttonText}
       </button>
     </div>
   );

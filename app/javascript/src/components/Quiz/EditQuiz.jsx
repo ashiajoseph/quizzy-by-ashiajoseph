@@ -10,17 +10,21 @@ import QuizForm from "./Form/QuizForm";
 const EditQuiz = ({ history }) => {
   const [title, setTitle] = useState(" ");
   const { slug } = useParams();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async e => {
     e.preventDefault();
+    setLoading(true);
     try {
       await quizzesApi.update({
         slug,
         payload: { quiz: { title: title } },
       });
+      setLoading(false);
       history.push("/");
     } catch (error) {
       logger.error(error);
+      setLoading(false);
     }
   };
   const fetchQuizDetails = async () => {
@@ -43,6 +47,7 @@ const EditQuiz = ({ history }) => {
         title={title}
         setTitle={setTitle}
         handleSubmit={handleSubmit}
+        loading={loading}
       />
     </Container>
   );

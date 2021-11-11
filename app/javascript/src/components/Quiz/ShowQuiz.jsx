@@ -51,8 +51,7 @@ const ShowQuiz = () => {
       const questionIdList = data.questions.map(question => question.id);
       setotalQuestions(questionIdList.length);
       if (questionIdList.length) await fetchOptions(questionIdList);
-
-      await setLoading(false);
+      setLoading(false);
     } catch (error) {
       logger.error(error);
     }

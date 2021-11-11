@@ -14,6 +14,7 @@ const QuestionForm = ({
   setQA,
   optionList,
   setOptionList,
+  loading,
 }) => {
   const handleChange = e => {
     const { name, value } = e.target;
@@ -143,6 +144,7 @@ const QuestionForm = ({
               <Button
                 type="submit"
                 buttonText={action == "create" ? "Submit" : "Update"}
+                loading={loading}
               />
             </div>
           </form>

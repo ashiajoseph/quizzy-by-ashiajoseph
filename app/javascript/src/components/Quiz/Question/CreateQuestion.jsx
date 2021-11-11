@@ -12,6 +12,7 @@ import QuestionForm from "../Form/QuestionForm";
 const CreateQuestion = ({ history }) => {
   const [qa, setQA] = useState({ question: "", answer: "" });
   const [optionList, setOptionList] = useState(["", ""]);
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
   const heading = location.state;
   const { slug } = useParams();
@@ -39,8 +40,10 @@ const CreateQuestion = ({ history }) => {
         return { content: value, answer: answer };
       });
       passOptions(optList);
+      setLoading(false);
     } catch (error) {
       logger.error(error);
+      setLoading(false);
     }
   };
   const handleSubmit = async e => {
@@ -48,6 +51,7 @@ const CreateQuestion = ({ history }) => {
     if (qa.answer == "" || qa.answer == undefined) {
       Toastr.error(Error("Please select the Correct Answer"));
     } else {
+      setLoading(true);
       await passQuestions();
       history.push(`/quizzes/${slug}`);
     }
@@ -61,6 +65,7 @@ const CreateQuestion = ({ history }) => {
         setOptionList={setOptionList}
         setQA={setQA}
         qa={qa}
+        loading={loading}
       />
     </Container>
   );

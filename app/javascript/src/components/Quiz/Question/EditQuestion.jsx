@@ -49,6 +49,7 @@ const EditQuestion = ({ history }) => {
       history.push(`/quizzes/${slug}`);
     }
   };
+
   const formatOptions = list => {
     const formatted_list = list.map(({ content, answer }, index) => {
       if (answer) {
@@ -73,6 +74,7 @@ const EditQuestion = ({ history }) => {
       setLoading(false);
     } catch (error) {
       logger.error(error);
+      setLoading(false);
     }
   };
   useEffect(() => {

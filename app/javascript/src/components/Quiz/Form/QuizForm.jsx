@@ -3,7 +3,13 @@ import React from "react";
 import Button from "components/Common/Button";
 import Input from "components/Common/Input";
 
-const QuizForm = ({ action = "create", title, setTitle, handleSubmit }) => {
+const QuizForm = ({
+  action = "create",
+  title,
+  setTitle,
+  handleSubmit,
+  loading,
+}) => {
   return (
     <>
       <div className="flex items-center justify-center px-4 py-24">
@@ -24,6 +30,7 @@ const QuizForm = ({ action = "create", title, setTitle, handleSubmit }) => {
             <Button
               type="submit"
               buttonText={action == "create" ? "Submit" : "Update"}
+              loading={loading}
             />
           </form>
         </div>
