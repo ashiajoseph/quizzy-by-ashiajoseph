@@ -44,17 +44,17 @@ const Dashboard = () => {
   if (either(isNil, isEmpty)(quizList)) {
     empty.current = true;
   }
-
+  const heading = empty.current ? " " : "List of Quizzes";
   return (
     <Container>
       <PageHeader
-        head={empty.current ? " " : "List of Quizzes"}
+        heading={heading}
         link_name="Add new quiz"
         link_path="/quiz/create"
       />
       {empty.current && <EmptyList content="You have not created any quiz" />}
       {!empty.current && (
-        <Table quizList={quizList} setQuizList={setQuizList} />
+        <Table quizList={quizList} setQuizList={setQuizList} empty={empty} />
       )}
     </Container>
   );

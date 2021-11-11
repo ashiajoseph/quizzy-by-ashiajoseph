@@ -18,7 +18,7 @@ const Answer = ({ options }) => {
               {content}
             </p>
             {answer && (
-              <CheckCircle size={21} className="neeto-ui-text-success mt-1 " />
+              <CheckCircle size={21} className="neeto-ui-text-success mt-1" />
             )}
           </div>
         </div>

@@ -12,7 +12,7 @@ const QuizForm = ({ action = "create", title, setTitle, handleSubmit }) => {
             {action == "create" ? "Add new quiz" : "Edit quiz"}
           </h2>
 
-          <form className="" onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <Input
               from="create/edit"
               label="Quiz Title"

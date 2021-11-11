@@ -128,7 +128,7 @@ const QuestionForm = ({
               <select
                 name="answer"
                 value={qa.answer}
-                className=" block w-full  px-3 py-2 transition duration-150 ease-in-out border border-gray-300 rounded-md bg-gray-800 text-white focus:outline-none focus:shadow-outline-black"
+                className="block w-full  px-3 py-2 transition duration-150 ease-in-out border border-gray-300 rounded-md bg-gray-800 text-white focus:outline-none focus:shadow-outline-black"
                 onChange={handleChange}
               >
                 <option value=""> Please select an option </option>

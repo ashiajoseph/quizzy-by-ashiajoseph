@@ -8,7 +8,7 @@ const EmptyList = ({ content }) => {
       lineHeight="normal"
       style="h1"
       weight="light"
-      className=" text-center mt-32 py-10 text-gray-600	"
+      className="text-center mt-32 py-10 text-gray-600	"
     >
       {content}
     </Typography>

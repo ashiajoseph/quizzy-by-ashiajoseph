@@ -14,7 +14,7 @@ const LoginForm = ({ handleSubmit, setEmail, setPassword, loading }) => {
           Login
         </h2>
 
-        <form className="" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <Input
             label="Email"
             type="email"
