@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 
 import { PageLoader } from "@bigbinary/neetoui/v2";
 import { isNil, isEmpty, either } from "ramda";
@@ -8,11 +8,13 @@ import Container from "components/Common/Container";
 
 import PageHeader from "./Common/PageHeader";
 import EmptyList from "./Quiz/EmptyList";
+import { quizContext } from "./Quiz/QuizContext";
 import Table from "./Quiz/Table";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [quizList, setQuizList] = useState([]);
+  const { setotalQuestions } = useContext(quizContext);
   const empty = useRef(false);
   const fetchQuizList = async () => {
     try {
@@ -27,6 +29,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    setotalQuestions(0);
     fetchQuizList();
   }, []);
 
@@ -41,17 +44,17 @@ const Dashboard = () => {
   if (either(isNil, isEmpty)(quizList)) {
     empty.current = true;
   }
-
+  const heading = empty.current ? " " : "List of Quizzes";
   return (
     <Container>
       <PageHeader
-        head={empty.current ? " " : "List of Quizzes"}
+        heading={heading}
         link_name="Add new quiz"
-        link_path="/quiz/create"
+        link_path="/quiz/new"
       />
       {empty.current && <EmptyList content="You have not created any quiz" />}
       {!empty.current && (
-        <Table quizList={quizList} setQuizList={setQuizList} />
+        <Table quizList={quizList} setQuizList={setQuizList} empty={empty} />
       )}
     </Container>
   );

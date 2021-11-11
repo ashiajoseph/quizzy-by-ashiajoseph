@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 
 import { Delete, Edit, UpArrow, DownArrow } from "@bigbinary/neeto-icons";
 import { Tooltip } from "@bigbinary/neetoui/v2";
@@ -12,7 +12,7 @@ import { COLS } from "./tableHeader";
 
 import DeleteAlert from "../DeleteAlert";
 
-const Table = ({ quizList, setQuizList }) => {
+const Table = ({ quizList, setQuizList, empty }) => {
   let history = useHistory();
   const [showAlert, setShowAlert] = useState(false);
   const cols = useMemo(() => COLS, []);
@@ -41,6 +41,11 @@ const Table = ({ quizList, setQuizList }) => {
     setShowAlert(true);
   };
 
+  useEffect(() => {
+    return () => {
+      empty.current = true;
+    };
+  }, []);
   return (
     <>
       <table
@@ -74,7 +79,7 @@ const Table = ({ quizList, setQuizList }) => {
         <tbody {...getTableBodyProps()}>
           {rows.map((row, ind) => {
             prepareRow(row);
-            const bgColor = ind % 2 == 0 ? "bg-gray-300" : " bg-gray-100";
+            const bgColor = ind % 2 == 0 ? "bg-gray-300" : "bg-gray-100";
             return (
               <tr key={ind} {...row.getRowProps()} className="text-lg ">
                 {row.cells.map((cell, ind) => {
@@ -99,7 +104,7 @@ const Table = ({ quizList, setQuizList }) => {
                 >
                   <Tooltip position="right-end" content="Edit">
                     <button
-                      className="focus:outline-none "
+                      className="focus:outline-none"
                       onClick={() => editQuiz(row.original.slug)}
                     >
                       <Edit size={30} className="mx-auto" />
@@ -112,14 +117,14 @@ const Table = ({ quizList, setQuizList }) => {
                 >
                   <Tooltip position="right-end" content="Delete">
                     <button
-                      className="focus:outline-none "
+                      className="focus:outline-none"
                       onClick={() =>
                         showPrompt(row.original.slug, row.original.title)
                       }
                     >
                       <Delete
                         size={28}
-                        className="mx-auto neeto-ui-text-error "
+                        className="mx-auto neeto-ui-text-error"
                       />
                     </button>
                   </Tooltip>

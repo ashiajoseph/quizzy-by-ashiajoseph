@@ -2,7 +2,7 @@ import React from "react";
 
 import authApi from "apis/auth";
 import { resetAuthTokens } from "apis/axios";
-import { getFromLocalStorage, setToLocalStorage } from "helpers/storage";
+import { getFromLocalStorage } from "helpers/storage";
 
 import NavItem from "./NavItem";
 
@@ -11,12 +11,7 @@ const NavBar = () => {
   const handleLogout = async () => {
     try {
       await authApi.logout();
-      setToLocalStorage({
-        authToken: null,
-        email: null,
-        userId: null,
-        userName: null,
-      });
+      localStorage.clear();
       resetAuthTokens();
       window.location.href = "/";
     } catch (error) {
@@ -29,18 +24,19 @@ const NavBar = () => {
       <div className="px-2 mx-auto sm:px-4 lg:px-8">
         <div className="flex justify-between h-16 ">
           <div className="flex px-2 lg:px-0">
-            <NavItem name="Quizzy" path="/" style="text-3xl tracking-wider " />
+            <NavItem name="Quizzy" path="/" style="text-3xl tracking-wider" />
           </div>
           <div className="flex items-center">
             {userName && (
-              <div className="flex flex-row justify-center items-center ">
-                <NavItem name={userName} path="" style="text-xl " />
-                <NavItem
-                  name="Logout"
-                  path="/"
-                  style=" text-xl "
-                  handleClick={handleLogout}
-                />
+              <div className="flex flex-row justify-center ">
+                <NavItem name={userName} path="/" style="text-xl" />
+
+                <button
+                  className="font-semibold inline-flex text-xl text-white pl-5 hover:text-lime focus:outline-none"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
               </div>
             )}
           </div>

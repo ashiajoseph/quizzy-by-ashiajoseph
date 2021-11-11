@@ -1,22 +1,28 @@
 # frozen_string_literal: true
 
 class OptionsController < ApplicationController
-  before_action :load_question
+  before_action :load_question, only: %i[create]
+
+  def index
+    @options = []
+    params[:idList].each do |id|
+      question = Question.find_by_id(id)
+      @options.push(question.options)
+    end
+  end
 
   def create
-    option_params[:list].each do |option|
-      option = @question.options.new(option)
-      unless option.save
-        render status: :unprocessable_entity, json: { error: option.errors.full_messages.to_sentence }
-      end
-    end
-    render status: :ok, json: { notice: t("successfully_added") }
+    option = @question.options.create(option_params[:list])
+
+    operation = option_params[:add] ? "added" : "updated"
+    render status: :ok, json: { notice: t("successfully_added", operation: operation) }
   end
 
   private
 
     def option_params
-      params.require(:option).permit(:question_id, list: [:content, :answer])
+      puts params
+      params.require(:option).permit(:question_id, :add, list: [:content, :answer])
     end
 
     def load_question
