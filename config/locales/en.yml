@@ -8,7 +8,7 @@ en:
     incorrect_credentials: "Incorrect credentials, Try again."
     could_not_auth: "Could not authenticate with the provided credentials."
   successfully_created: "Successfully created Quiz"
-  successfully_added: "Successfully added Question"
+  successfully_added: "Successfully %{operation} Question"
   successfully_updated: "Successfully updated %{entity}"
   deleted_successfully: "Deleted Successfully"
   not_found: "%{entity} not found."

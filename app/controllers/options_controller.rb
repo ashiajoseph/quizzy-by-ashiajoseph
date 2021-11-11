@@ -18,14 +18,15 @@ class OptionsController < ApplicationController
         render status: :unprocessable_entity, json: { error: option.errors.full_messages.to_sentence }
       end
     end
-    render status: :ok, json: { notice: t("successfully_added") }
+    operation = option_params[:add] ? "added" : "updated"
+    render status: :ok, json: { notice: t("successfully_added", operation: operation) }
   end
 
   private
 
     def option_params
       puts params
-      params.require(:option).permit(:question_id, list: [:content, :answer])
+      params.require(:option).permit(:question_id, :add, list: [:content, :answer])
     end
 
     def load_question

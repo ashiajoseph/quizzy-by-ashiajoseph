@@ -82,7 +82,11 @@ const ShowQuiz = () => {
         <EmptyList content="There are no questions in this quiz" />
       )}
       {!empty.current && (
-        <ShowQA questionList={questionList} optionList={optionList} />
+        <ShowQA
+          questionList={questionList}
+          setQuestionList={setQuestionList}
+          optionList={optionList}
+        />
       )}
     </Container>
   );

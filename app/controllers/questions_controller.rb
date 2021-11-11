@@ -2,7 +2,7 @@
 
 class QuestionsController < ApplicationController
   before_action :load_quiz, only: :create
-  before_action :load_question, only: %i[show update]
+  before_action :load_question, only: %i[show update destroy]
 
   def index
     quiz = Quiz.find_by(slug: params[:slug])
@@ -21,9 +21,18 @@ class QuestionsController < ApplicationController
 
   def update
     if @question.update(questions_params)
-      puts @question.options.delete_all
+      @question.options.delete_all
     else
       render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
+    end
+  end
+
+  def destroy
+    if @question.destroy
+      render status: :ok, json: { notice: t("deleted_successfully") }
+    else
+      render status: :unprocessable_entity,
+        json: { error: @task.errors.full_messages.to_sentence }
     end
   end
 

@@ -20,7 +20,7 @@ const CreateQuestion = ({ history }) => {
   const passOptions = async list => {
     try {
       await optionsApi.create({
-        option: { list: list, question_id: questionId.current },
+        option: { list: list, question_id: questionId.current, add: true },
       });
     } catch (error) {
       logger.error(error);
