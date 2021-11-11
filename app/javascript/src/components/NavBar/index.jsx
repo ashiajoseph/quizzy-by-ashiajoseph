@@ -12,10 +12,10 @@ const NavBar = () => {
     try {
       await authApi.logout();
       setToLocalStorage({
-        authToken: null,
-        email: null,
-        userId: null,
-        userName: null,
+        authToken: "",
+        email: "",
+        userId: "",
+        userName: "",
       });
       resetAuthTokens();
       window.location.href = "/";
@@ -33,14 +33,15 @@ const NavBar = () => {
           </div>
           <div className="flex items-center">
             {userName && (
-              <div className="flex flex-row justify-center items-center ">
+              <div className="flex flex-row justify-center ">
                 <NavItem name={userName} path="" style="text-xl " />
-                <NavItem
-                  name="Logout"
-                  path="/"
-                  style=" text-xl "
-                  handleClick={handleLogout}
-                />
+
+                <button
+                  className="font-semibold inline-flex text-xl text-white pl-5 hover:text-lime focus:outline-none"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
               </div>
             )}
           </div>
