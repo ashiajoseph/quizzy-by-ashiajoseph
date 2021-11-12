@@ -4,9 +4,11 @@ const quizContext = createContext();
 
 const QuizProvider = ({ children }) => {
   const [totalQuestions, setotalQuestions] = useState(0);
-
+  const [publish, setPublish] = useState(false);
   return (
-    <quizContext.Provider value={{ totalQuestions, setotalQuestions }}>
+    <quizContext.Provider
+      value={{ totalQuestions, setotalQuestions, publish, setPublish }}
+    >
       {children}
     </quizContext.Provider>
   );
