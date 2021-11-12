@@ -4,9 +4,9 @@ class Quiz < ApplicationRecord
   belongs_to :user
   has_many :questions, dependent: :destroy
   validates :title, presence: true, length: { maximum: 125 }
-  validates :slug, uniqueness: true
+  validates :slug, uniqueness: true, allow_nil: true
   validate :slug_not_changed
-  before_create :set_slug
+  # before_create :set_slug
 
   private
 
