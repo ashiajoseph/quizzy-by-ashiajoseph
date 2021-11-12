@@ -15,7 +15,7 @@ const CreateQuestion = ({ history }) => {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const heading = location.state;
-  const { slug } = useParams();
+  const { quizid } = useParams();
   const questionId = useRef();
 
   const passOptions = async list => {
@@ -31,7 +31,7 @@ const CreateQuestion = ({ history }) => {
   const passQuestions = async () => {
     try {
       const response = await questionsApi.create({
-        mcq: { question: qa.question, slug: slug },
+        mcq: { question: qa.question, id: quizid },
       });
       const data = await response.data;
       questionId.current = data.question_id;
@@ -53,7 +53,7 @@ const CreateQuestion = ({ history }) => {
     } else {
       setLoading(true);
       await passQuestions();
-      history.push(`/quiz/${slug}`);
+      history.push(`/quiz/${quizid}`);
     }
   };
   return (

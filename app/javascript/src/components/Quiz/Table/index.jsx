@@ -17,26 +17,26 @@ const Table = ({ quizList, setQuizList, empty }) => {
   const [showAlert, setShowAlert] = useState(false);
   const cols = useMemo(() => COLS, []);
   const data = useMemo(() => quizList, [quizList]);
-  const deletionData = useRef({ slug: "", title: "" });
+  const deletionData = useRef({ quizid: "", title: "" });
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns: cols, data: data }, useSortBy);
 
-  const editQuiz = slug => {
-    history.push(`/quiz/${slug}/edit`);
+  const editQuiz = quizid => {
+    history.push(`/quiz/${quizid}/edit`);
   };
 
-  const deleteQuiz = async slugg => {
+  const deleteQuiz = async quizid => {
     try {
-      await quizzesApi.destroy(slugg);
-      setQuizList(prevlist => prevlist.filter(({ slug }) => slug !== slugg));
+      await quizzesApi.destroy(quizid);
+      setQuizList(prevlist => prevlist.filter(({ id }) => id !== quizid));
     } catch (error) {
       logger.error(error);
     } finally {
       setShowAlert(false);
     }
   };
-  const showPrompt = (slug, title) => {
-    deletionData.current.slug = slug;
+  const showPrompt = (quizid, title) => {
+    deletionData.current.quizid = quizid;
     deletionData.current.title = title;
     setShowAlert(true);
   };
@@ -90,7 +90,7 @@ const Table = ({ quizList, setQuizList, empty }) => {
                       className={`py-4 pr-5 pl-10  capitalize break-all ${bgColor}`}
                     >
                       <Link
-                        to={`quiz/${row.original.slug}`}
+                        to={`quiz/${row.original.id}`}
                         className="hover:underline hover:font-medium"
                       >
                         {cell.render("Cell")}
@@ -105,7 +105,7 @@ const Table = ({ quizList, setQuizList, empty }) => {
                   <Tooltip position="right-end" content="Edit">
                     <button
                       className="focus:outline-none"
-                      onClick={() => editQuiz(row.original.slug)}
+                      onClick={() => editQuiz(row.original.id)}
                     >
                       <Edit size={30} className="mx-auto" />
                     </button>
@@ -119,7 +119,7 @@ const Table = ({ quizList, setQuizList, empty }) => {
                     <button
                       className="focus:outline-none"
                       onClick={() =>
-                        showPrompt(row.original.slug, row.original.title)
+                        showPrompt(row.original.id, row.original.title)
                       }
                     >
                       <Delete
@@ -136,7 +136,7 @@ const Table = ({ quizList, setQuizList, empty }) => {
       </table>
       {showAlert && (
         <DeleteAlert
-          slug={deletionData.current.slug}
+          quizid={deletionData.current.quizid}
           title={deletionData.current.title}
           showAlert
           setShowAlert={setShowAlert}

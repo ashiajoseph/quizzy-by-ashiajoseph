@@ -12,10 +12,10 @@ import Answer from "./Answer";
 import { quizContext } from "../QuizContext";
 
 const ShowQA = ({ questionList, setQuestionList, optionList }) => {
-  const { slug } = useParams();
+  const { quizid } = useParams();
   const history = useHistory();
   const editQuestion = id => {
-    history.push(`/${slug}/questions/${id}/edit`);
+    history.push(`/${quizid}/questions/${id}/edit`);
   };
   const { setotalQuestions } = useContext(quizContext);
 

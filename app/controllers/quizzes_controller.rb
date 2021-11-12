@@ -43,7 +43,7 @@ class QuizzesController < ApplicationController
     end
 
     def load_quiz
-      @quiz = Quiz.find_by(slug: params[:slug])
+      @quiz = Quiz.find_by(id: params[:id])
       unless @quiz
         render status: :not_found, json: { error: t("not_found", entity: "Quiz") }
       end

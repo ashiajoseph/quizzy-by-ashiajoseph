@@ -5,12 +5,12 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: %i[show update destroy]
 
   def index
-    quiz = Quiz.find_by(slug: params[:slug])
+    quiz = Quiz.find_by(id: params[:quizid])
     @questions = quiz.questions
   end
 
   def create
-    @question = @quiz.questions.new(quiz_question_params.except(:slug))
+    @question = @quiz.questions.new(quiz_question_params.except(:id))
     unless @question.save
       render status: :unprocessable_entity, json: { error: @question.errors.full_messages.to_sentence }
     end
@@ -39,7 +39,7 @@ class QuestionsController < ApplicationController
   private
 
     def quiz_question_params
-      params.require(:mcq).permit(:question, :slug)
+      params.require(:mcq).permit(:question, :id)
     end
 
     def questions_params
@@ -47,7 +47,7 @@ class QuestionsController < ApplicationController
     end
 
     def load_quiz
-      @quiz = Quiz.find_by(slug: quiz_question_params[:slug])
+      @quiz = Quiz.find_by(id: quiz_question_params[:id])
       unless @quiz
         render status: :not_found, json: { error: t("not_found", entity: "Quiz") }
       end

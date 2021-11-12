@@ -22,10 +22,10 @@ const ShowQuiz = () => {
   const empty = useRef(false);
   const { setotalQuestions } = useContext(quizContext);
 
-  const { slug } = useParams();
+  const { quizid } = useParams();
   const fetchQuiz = async () => {
     try {
-      const response = await quizzesApi.show(slug);
+      const response = await quizzesApi.show(quizid);
       const data = await response.data;
       setQuiz(data.quiz.title);
     } catch (error) {
@@ -45,7 +45,7 @@ const ShowQuiz = () => {
 
   const fetchQuestions = async () => {
     try {
-      const response = await questionsApi.list(slug);
+      const response = await questionsApi.list(quizid);
       const data = await response.data;
       await setQuestionList(data.questions);
       const questionIdList = data.questions.map(question => question.id);
@@ -79,7 +79,7 @@ const ShowQuiz = () => {
       <PageHeader
         heading={`${quiz} Quiz`}
         link_name="Add questions"
-        link_path={`/${slug}/questions/new`}
+        link_path={`/${quizid}/questions/new`}
       />
       {empty.current && (
         <EmptyList content="There are no questions in this quiz" />

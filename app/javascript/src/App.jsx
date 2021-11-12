@@ -41,16 +41,16 @@ const App = () => {
             <Switch>
               <Route exact path="/" component={Dashboard} />
               <Route exact path="/quiz/new" component={CreateQuiz} />
-              <Route exact path="/quiz/:slug/edit" component={EditQuiz} />
-              <Route exact path="/quiz/:slug" component={ShowQuiz} />
+              <Route exact path="/quiz/:quizid/edit" component={EditQuiz} />
+              <Route exact path="/quiz/:quizid" component={ShowQuiz} />
               <Route
                 exact
-                path="/:slug/questions/new"
+                path="/:quizid/questions/new"
                 component={CreateQuestion}
               />
               <Route
                 exact
-                path="/:slug/questions/:id/edit"
+                path="/:quizid/questions/:id/edit"
                 component={EditQuestion}
               />
             </Switch>
