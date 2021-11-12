@@ -30,14 +30,6 @@ class QuizTest < ActiveSupport::TestCase
     assert @quiz.invalid?
   end
 
-  def test_each_quiz_has_unique_slug
-    @quiz.save!
-    quiz2 = @user.quizzes.create!(title: "Maths")
-    assert_equal "maths-2", quiz2.slug
-    quiz3 = @user.quizzes.create!(title: "Maths")
-    assert_equal "maths-3", quiz3.slug
-  end
-
   def test_error_raised_for_duplicate_slug
     another_quiz = Quiz.new(title: "Mathematics", user_id: @user.id)
     assert_raises ActiveRecord::RecordInvalid do

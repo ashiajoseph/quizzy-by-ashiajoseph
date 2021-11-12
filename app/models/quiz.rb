@@ -6,8 +6,6 @@ class Quiz < ApplicationRecord
   validates :title, presence: true, length: { maximum: 125 }
   validates :slug, uniqueness: true, allow_nil: true
 
-  # before_create :set_slug
-
   def self.set_slug (title)
     title_slug = title.parameterize
     regex_pattern = "slug #{Constants::DB_REGEX_OPERATOR} ?"

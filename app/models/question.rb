@@ -5,4 +5,18 @@ class Question < ApplicationRecord
   has_many :options, dependent: :destroy
   validates :question, presence: true
   accepts_nested_attributes_for :options
+  validate :check_options_count, :check_answer
+
+  def check_options_count
+    unless options.length >= 2 && options.length <= 4
+      errors.add(:options, "count should be between 2 and 4")
+    end
+  end
+
+  def check_answer
+    selected = options.select { |option| option.answer == true }
+    unless selected.length == 1
+      errors.add(:options, ": Only one option must be correct")
+    end
+  end
 end
