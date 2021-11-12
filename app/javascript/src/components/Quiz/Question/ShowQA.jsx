@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
 import { Delete, Edit, Checkmark, Copy } from "@bigbinary/neeto-icons";
-import { Tooltip } from "@bigbinary/neetoui/v2";
+import { Tooltip, Toastr } from "@bigbinary/neetoui/v2";
 import { useParams, useHistory, Link } from "react-router-dom";
 
 import questionsApi from "apis/questions";
@@ -16,13 +16,13 @@ const ShowQA = ({ questionList, setQuestionList, optionList, slug }) => {
   const editQuestion = id => {
     history.push(`/${quizid}/questions/${id}/edit`);
   };
-  const { setotalQuestions } = useContext(quizContext);
+  const { setTotalQuestions } = useContext(quizContext);
 
   const deleteQuestion = async Id => {
     try {
       await questionsApi.destroy(Id);
       setQuestionList(prevlist => prevlist.filter(({ id }) => id !== Id));
-      setotalQuestions(setotalQuestions.length - 1);
+      setTotalQuestions(questionList.length - 1);
     } catch (error) {
       logger.error(error);
     }
@@ -31,6 +31,7 @@ const ShowQA = ({ questionList, setQuestionList, optionList, slug }) => {
   const copyPublicLink = () => {
     const link = `${window.location.origin}/public/${slug}`;
     navigator.clipboard.writeText(link);
+    Toastr.success("Link copied to clipboard");
   };
   return (
     <>
@@ -46,7 +47,7 @@ const ShowQA = ({ questionList, setQuestionList, optionList, slug }) => {
               <Copy
                 className="neeto-ui-text-gray-500 cursor-pointer"
                 onClick={copyPublicLink}
-                size={20}
+                size={22}
               />
             </button>
           </Tooltip>

@@ -14,7 +14,7 @@ import Table from "./Quiz/Table";
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [quizList, setQuizList] = useState([]);
-  const { setotalQuestions } = useContext(quizContext);
+  const { setTotalQuestions } = useContext(quizContext);
   const empty = useRef(false);
   const fetchQuizList = async () => {
     try {
@@ -29,7 +29,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    setotalQuestions(0);
+    setTotalQuestions(0);
     fetchQuizList();
   }, []);
 
@@ -44,6 +44,7 @@ const Dashboard = () => {
   if (either(isNil, isEmpty)(quizList)) {
     empty.current = true;
   }
+
   const heading = empty.current ? " " : "List of Quizzes";
   return (
     <Container>

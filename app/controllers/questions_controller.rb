@@ -7,11 +7,17 @@ class QuestionsController < ApplicationController
   def index
     quiz = Quiz.find_by(id: params[:quizid])
     @questions = quiz.questions
+    @options = []
+    @questions.each do |question|
+      @options.push(question.options)
+    end
   end
 
   def create
-    @question = @quiz.questions.new(quiz_question_params.except(:id))
-    unless @question.save
+    @question = @quiz.questions.new(quiz_question_params)
+    if @question.save
+      render status: :ok, json: { notice: t("successfully_added", operation: "added") }
+    else
       render status: :unprocessable_entity, json: { error: @question.errors.full_messages.to_sentence }
     end
   end
@@ -39,7 +45,7 @@ class QuestionsController < ApplicationController
   private
 
     def quiz_question_params
-      params.require(:mcq).permit(:question, :id)
+      params.require(:mcq).permit(:question, :quiz_id, options_attributes: [:content, :answer])
     end
 
     def questions_params
@@ -47,7 +53,7 @@ class QuestionsController < ApplicationController
     end
 
     def load_quiz
-      @quiz = Quiz.find_by(id: quiz_question_params[:id])
+      @quiz = Quiz.find_by(id: quiz_question_params[:quiz_id])
       unless @quiz
         render status: :not_found, json: { error: t("not_found", entity: "Quiz") }
       end

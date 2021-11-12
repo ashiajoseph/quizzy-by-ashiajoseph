@@ -4,7 +4,9 @@ class QuizzesController < ApplicationController
   before_action :authenticate_user_using_x_auth_token, except: [:new, :edit]
   before_action :load_quiz, only: %i[show update destroy]
   def index
-    @quizzes = @current_user.quizzes.order("created_at DESC")
+    @quizzes = @current_user.quizzes.order("created_at DESC").map do |quiz|
+      { id: quiz[:id], title: quiz[:title] }
+    end
   end
 
   def create

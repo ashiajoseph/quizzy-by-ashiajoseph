@@ -4,7 +4,6 @@ import { PageLoader } from "@bigbinary/neetoui/v2";
 import { isNil, isEmpty, either } from "ramda";
 import { useParams } from "react-router-dom";
 
-import optionsApi from "apis/options";
 import questionsApi from "apis/questions";
 import quizzesApi from "apis/quizzes";
 import Container from "components/Common/Container";
@@ -20,7 +19,7 @@ const ShowQuiz = () => {
   const [questionList, setQuestionList] = useState([]);
   const [optionList, setOptionList] = useState([]);
   const empty = useRef(false);
-  const { setotalQuestions, setPublish, publish } = useContext(quizContext);
+  const { setTotalQuestions, setPublish, publish } = useContext(quizContext);
 
   const { quizid } = useParams();
   const fetchQuiz = async () => {
@@ -35,24 +34,13 @@ const ShowQuiz = () => {
     }
   };
 
-  const fetchOptions = async questionIdList => {
-    try {
-      const response = await optionsApi.list(questionIdList);
-      const data = await response.data;
-      setOptionList(data.options);
-    } catch (error) {
-      logger.error(error);
-    }
-  };
-
   const fetchQuestions = async () => {
     try {
       const response = await questionsApi.list(quizid);
       const data = await response.data;
-      await setQuestionList(data.questions);
-      const questionIdList = data.questions.map(question => question.id);
-      setotalQuestions(questionIdList.length);
-      if (questionIdList.length) await fetchOptions(questionIdList);
+      setQuestionList(data.questions);
+      setTotalQuestions(data.questions.length);
+      setOptionList(data.options);
       setLoading(false);
     } catch (error) {
       logger.error(error);
