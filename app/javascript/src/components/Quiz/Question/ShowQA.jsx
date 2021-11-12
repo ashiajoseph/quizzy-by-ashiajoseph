@@ -28,6 +28,10 @@ const ShowQA = ({ questionList, setQuestionList, optionList, slug }) => {
     }
   };
 
+  const copyPublicLink = () => {
+    const link = `${window.location.origin}/public/${slug}`;
+    navigator.clipboard.writeText(link);
+  };
   return (
     <>
       {slug && (
@@ -41,7 +45,7 @@ const ShowQA = ({ questionList, setQuestionList, optionList, slug }) => {
             <button className="focus:outline-none">
               <Copy
                 className="neeto-ui-text-gray-500 cursor-pointer"
-                onClick={() => {}}
+                onClick={copyPublicLink}
                 size={20}
               />
             </button>
