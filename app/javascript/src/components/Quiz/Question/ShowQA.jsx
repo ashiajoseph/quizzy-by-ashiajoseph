@@ -1,9 +1,8 @@
 import React, { useContext } from "react";
 
-import { Delete, Edit } from "@bigbinary/neeto-icons";
+import { Delete, Edit, Checkmark, Copy } from "@bigbinary/neeto-icons";
 import { Tooltip } from "@bigbinary/neetoui/v2";
-import { useParams } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 
 import questionsApi from "apis/questions";
 
@@ -11,7 +10,7 @@ import Answer from "./Answer";
 
 import { quizContext } from "../QuizContext";
 
-const ShowQA = ({ questionList, setQuestionList, optionList }) => {
+const ShowQA = ({ questionList, setQuestionList, optionList, slug }) => {
   const { quizid } = useParams();
   const history = useHistory();
   const editQuestion = id => {
@@ -30,42 +29,62 @@ const ShowQA = ({ questionList, setQuestionList, optionList }) => {
   };
 
   return (
-    <div className="flex flex-col w-3/4 mx-auto">
-      {questionList.map(({ id, question }, index) => (
-        <div
-          key={index}
-          className="mt-6 border-b-2 border-opacity-75	border-gray-300	pb-8"
-        >
-          <div className="flex justify-end mb-2">
-            <Tooltip position="bottom" content="Edit">
-              <button
-                className="focus:outline-none ml-5 "
-                onClick={() => editQuestion(id)}
-              >
-                <Edit size={32} />
-              </button>
-            </Tooltip>
-            <Tooltip position="bottom" content="Delete">
-              <button
-                className="focus:outline-none ml-5 "
-                onClick={() => deleteQuestion(id)}
-              >
-                <Delete size={28} className="neeto-ui-text-error" />
-              </button>
-            </Tooltip>
-          </div>
-          <div className="flex flex-row w-full">
-            <h3 className="font-light mx-4 text-lg w-10">
-              Question {index + 1}
-            </h3>
-            <h3 className="font-medium text-lg break-words w-4/5 mr-5">
-              {question}
-            </h3>
-          </div>
-          <Answer options={optionList[index]} />
+    <>
+      {slug && (
+        <div className="mt-3 text-lg text-gray-600 flex items-center">
+          <Checkmark className="neeto-ui-text-black mr-1" size={20} />
+          Published, your public link -
+          <Link to={`/public/${slug}`} className="text-blue-600 mr-2">
+            {`  ${window.location.origin}/public/${slug}`}
+          </Link>
+          <Tooltip position="right-end" content="Copy URL">
+            <button className="focus:outline-none">
+              <Copy
+                className="neeto-ui-text-gray-500 cursor-pointer"
+                onClick={() => {}}
+                size={20}
+              />
+            </button>
+          </Tooltip>
         </div>
-      ))}
-    </div>
+      )}
+      <div className="flex flex-col w-3/4 mx-auto">
+        {questionList.map(({ id, question }, index) => (
+          <div
+            key={index}
+            className="mt-6 border-b-2 border-opacity-75	border-gray-300	pb-8"
+          >
+            <div className="flex justify-end mb-2">
+              <Tooltip position="bottom" content="Edit">
+                <button
+                  className="focus:outline-none ml-5 "
+                  onClick={() => editQuestion(id)}
+                >
+                  <Edit size={32} />
+                </button>
+              </Tooltip>
+              <Tooltip position="bottom" content="Delete">
+                <button
+                  className="focus:outline-none ml-5 "
+                  onClick={() => deleteQuestion(id)}
+                >
+                  <Delete size={28} className="neeto-ui-text-error" />
+                </button>
+              </Tooltip>
+            </div>
+            <div className="flex flex-row w-full">
+              <h3 className="font-light mx-4 text-lg w-10">
+                Question {index + 1}
+              </h3>
+              <h3 className="font-medium text-lg break-words w-4/5 mr-5">
+                {question}
+              </h3>
+            </div>
+            <Answer options={optionList[index]} />
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 

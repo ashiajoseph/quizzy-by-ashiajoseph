@@ -2,5 +2,6 @@
 
 json.quiz do
   json.extract! @quiz,
-    :title
+    :title,
+    :slug
 end

@@ -16,18 +16,20 @@ import { quizContext } from "./QuizContext";
 
 const ShowQuiz = () => {
   const [loading, setLoading] = useState(true);
-  const [quiz, setQuiz] = useState("");
+  const [quiz, setQuiz] = useState({});
   const [questionList, setQuestionList] = useState([]);
   const [optionList, setOptionList] = useState([]);
   const empty = useRef(false);
-  const { setotalQuestions } = useContext(quizContext);
+  const { setotalQuestions, setPublish, publish } = useContext(quizContext);
 
   const { quizid } = useParams();
   const fetchQuiz = async () => {
     try {
       const response = await quizzesApi.show(quizid);
       const data = await response.data;
-      setQuiz(data.quiz.title);
+      setQuiz(data.quiz);
+      const published = data.quiz.slug ? true : false;
+      setPublish(published);
     } catch (error) {
       logger.error(error);
     }
@@ -56,9 +58,11 @@ const ShowQuiz = () => {
       logger.error(error);
     }
   };
-
   useEffect(async () => {
     await fetchQuiz();
+  }, [publish]);
+
+  useEffect(async () => {
     await fetchQuestions();
   }, []);
 
@@ -77,7 +81,7 @@ const ShowQuiz = () => {
   return (
     <Container>
       <PageHeader
-        heading={`${quiz} Quiz`}
+        heading={`${quiz.title} Quiz`}
         link_name="Add questions"
         link_path={`/${quizid}/questions/new`}
       />
@@ -89,6 +93,7 @@ const ShowQuiz = () => {
           questionList={questionList}
           setQuestionList={setQuestionList}
           optionList={optionList}
+          slug={quiz.slug}
         />
       )}
     </Container>

@@ -1,6 +1,9 @@
 import React, { useContext } from "react";
 
-import { Paragraph, Checkmark } from "@bigbinary/neeto-icons";
+import { Paragraph } from "@bigbinary/neeto-icons";
+import { useParams } from "react-router-dom";
+
+import quizzesApi from "apis/quizzes";
 
 import AddLink from "./AddLink";
 
@@ -8,11 +11,19 @@ import { quizContext } from "../Quiz/QuizContext";
 
 const PageHeader = ({ heading, link_name, link_path }) => {
   const { totalQuestions, publish, setPublish } = useContext(quizContext);
+  const { quizid } = useParams();
 
-  const publishQuiz = () => {
-    setPublish(true);
+  const publishQuiz = async () => {
+    try {
+      await quizzesApi.update({
+        quizid,
+        payload: { quiz: { title: heading.slice(0, -5), setslug: true } },
+      });
+      setPublish(true);
+    } catch (error) {
+      logger.error(error);
+    }
   };
-
   return (
     <div className="pt-8 pb-4 mt-4  flex flex-col">
       <div className="flex justify-between items-center ">
@@ -23,7 +34,7 @@ const PageHeader = ({ heading, link_name, link_path }) => {
         </div>
         <div>
           <AddLink name={link_name} path={link_path} heading={heading} />
-          {(totalQuestions != 0 || publish) && (
+          {totalQuestions != 0 && !publish && (
             <button
               onClick={publishQuiz}
               className={` font-semibold text-lg text-black rounded-md py-2 px-4 bg-lime focus:outline-none `}
@@ -33,12 +44,6 @@ const PageHeader = ({ heading, link_name, link_path }) => {
           )}
         </div>
       </div>
-      {publish && (
-        <div className="mt-3 text-lg text-gray-600 flex items-center">
-          <Checkmark className="neeto-ui-text-black mr-1" size={20} />{" "}
-          Published, your public link is
-        </div>
-      )}
     </div>
   );
 };

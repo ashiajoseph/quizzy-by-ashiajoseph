@@ -21,8 +21,12 @@ class QuizzesController < ApplicationController
   end
 
   def update
-    if @quiz.update(quiz_params)
+    puts params
+    if !quiz_params[:setslug] && @quiz.update(title: quiz_params[:title])
       render status: :ok, json: { notice: t("successfully_updated", entity: "Quiz") }
+    elsif quiz_params[:setslug]
+      slug_candidate = Quiz.set_slug(quiz_params[:title])
+      @quiz.update(slug: slug_candidate)
     else
       render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
     end
@@ -39,7 +43,7 @@ class QuizzesController < ApplicationController
   private
 
     def quiz_params
-      params.require(:quiz).permit(:title)
+      params.require(:quiz).permit(:title, :setslug)
     end
 
     def load_quiz

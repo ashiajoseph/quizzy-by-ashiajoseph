@@ -37,6 +37,7 @@ const App = () => {
         <ToastContainer />
         <Switch>
           <Route exact path="/login" component={Login} />
+          <Route exact path="/public/:slug" render={() => <div>Hello</div>} />
           <PrivateRoute redirectRoute="/login" condition={isLoggedIn}>
             <Switch>
               <Route exact path="/" component={Dashboard} />
