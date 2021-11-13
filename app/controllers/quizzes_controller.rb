@@ -23,14 +23,20 @@ class QuizzesController < ApplicationController
   end
 
   def update
-    puts params
-    if !quiz_params[:setslug] && @quiz.update(title: quiz_params[:title])
-      render status: :ok, json: { notice: t("successfully_updated", entity: "Quiz") }
-    elsif quiz_params[:setslug]
-      slug_candidate = Quiz.set_slug(quiz_params[:title])
-      @quiz.update(slug: slug_candidate)
-    else
-      render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
+    if !quiz_params[:setslug]
+      if @quiz.update(title: quiz_params[:title])
+        render status: :ok, json: { notice: t("successfully_updated", entity: "Quiz") }
+      else
+        render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
+      end
+    else quiz_params[:setslug]
+         slug_candidate = Quiz.set_slug(quiz_params[:title])
+         if @quiz.update(slug: slug_candidate)
+           render status: :ok, json: { notice: t("publish") }
+         else
+           render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
+         end
+
     end
   end
 
