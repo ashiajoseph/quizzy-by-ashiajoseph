@@ -81,5 +81,5 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     get quiz_path(invalid_id), headers: @user_header
     assert_response :not_found
     assert_equal response.parsed_body["error"], t("not_found", entity: "Quiz")
-    end
+  end
 end

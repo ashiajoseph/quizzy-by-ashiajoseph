@@ -23,13 +23,14 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    @options = @question.options
   end
 
   def update
     if @question.update(questions_params)
       @question.options.delete_all
     else
-      render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
+      render status: :unprocessable_entity, json: { error: @question.errors.full_messages.to_sentence }
     end
   end
 
@@ -61,7 +62,6 @@ class QuestionsController < ApplicationController
 
     def load_question
       @question = Question.find_by(id: params[:id])
-      @options = @question.options
       unless @question
         render status: :not_found, json: { error: t("not_found", entity: "Question") }
       end

@@ -4,7 +4,13 @@ class OptionsController < ApplicationController
   before_action :load_question, only: %i[create]
 
   def create
-    option = @question.options.create(option_params[:list])
+    option_params[:list].each do |option|
+      opt = @question.options.new(option)
+      unless opt.save
+        render status: :unprocessable_entity, json: { error: opt.errors.full_messages.to_sentence }
+        return
+      end
+    end
     render status: :ok, json: { notice: t("successfully_added", operation: "updated") }
   end
 
