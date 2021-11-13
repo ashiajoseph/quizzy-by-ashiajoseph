@@ -4,7 +4,6 @@ import { PageLoader } from "@bigbinary/neetoui/v2";
 import { isNil, isEmpty, either } from "ramda";
 import { useParams } from "react-router-dom";
 
-import optionsApi from "apis/options";
 import questionsApi from "apis/questions";
 import quizzesApi from "apis/quizzes";
 import Container from "components/Common/Container";
@@ -16,28 +15,20 @@ import { quizContext } from "./QuizContext";
 
 const ShowQuiz = () => {
   const [loading, setLoading] = useState(true);
-  const [quiz, setQuiz] = useState("");
+  const [quiz, setQuiz] = useState({});
   const [questionList, setQuestionList] = useState([]);
   const [optionList, setOptionList] = useState([]);
   const empty = useRef(false);
-  const { setotalQuestions } = useContext(quizContext);
+  const { setTotalQuestions, setPublish, publish } = useContext(quizContext);
 
-  const { slug } = useParams();
+  const { quizid } = useParams();
   const fetchQuiz = async () => {
     try {
-      const response = await quizzesApi.show(slug);
+      const response = await quizzesApi.show(quizid);
       const data = await response.data;
-      setQuiz(data.quiz.title);
-    } catch (error) {
-      logger.error(error);
-    }
-  };
-
-  const fetchOptions = async questionIdList => {
-    try {
-      const response = await optionsApi.list(questionIdList);
-      const data = await response.data;
-      setOptionList(data.options);
+      setQuiz(data.quiz);
+      const published = data.quiz.slug ? true : false;
+      setPublish(published);
     } catch (error) {
       logger.error(error);
     }
@@ -45,20 +36,21 @@ const ShowQuiz = () => {
 
   const fetchQuestions = async () => {
     try {
-      const response = await questionsApi.list(slug);
+      const response = await questionsApi.list(quizid);
       const data = await response.data;
-      await setQuestionList(data.questions);
-      const questionIdList = data.questions.map(question => question.id);
-      setotalQuestions(questionIdList.length);
-      if (questionIdList.length) await fetchOptions(questionIdList);
+      setQuestionList(data.questions);
+      setTotalQuestions(data.questions.length);
+      setOptionList(data.options);
       setLoading(false);
     } catch (error) {
       logger.error(error);
     }
   };
-
   useEffect(async () => {
     await fetchQuiz();
+  }, [publish]);
+
+  useEffect(async () => {
     await fetchQuestions();
   }, []);
 
@@ -77,9 +69,9 @@ const ShowQuiz = () => {
   return (
     <Container>
       <PageHeader
-        heading={`${quiz} Quiz`}
+        heading={`${quiz.title} Quiz`}
         link_name="Add questions"
-        link_path={`/${slug}/questions/new`}
+        link_path={`/${quizid}/questions/new`}
       />
       {empty.current && (
         <EmptyList content="There are no questions in this quiz" />
@@ -89,6 +81,7 @@ const ShowQuiz = () => {
           questionList={questionList}
           setQuestionList={setQuestionList}
           optionList={optionList}
+          slug={quiz.slug}
         />
       )}
     </Container>

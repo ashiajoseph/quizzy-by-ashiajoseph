@@ -4,7 +4,9 @@ class QuizzesController < ApplicationController
   before_action :authenticate_user_using_x_auth_token, except: [:new, :edit]
   before_action :load_quiz, only: %i[show update destroy]
   def index
-    @quizzes = @current_user.quizzes.order("created_at DESC")
+    @quizzes = @current_user.quizzes.order("created_at DESC").map do |quiz|
+      { id: quiz[:id], title: quiz[:title] }
+    end
   end
 
   def create
@@ -21,10 +23,20 @@ class QuizzesController < ApplicationController
   end
 
   def update
-    if @quiz.update(quiz_params)
-      render status: :ok, json: { notice: t("successfully_updated", entity: "Quiz") }
-    else
-      render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
+    if !quiz_params[:setslug]
+      if @quiz.update(title: quiz_params[:title])
+        render status: :ok, json: { notice: t("successfully_updated", entity: "Quiz") }
+      else
+        render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
+      end
+    else quiz_params[:setslug]
+         slug_candidate = Quiz.set_slug(quiz_params[:title])
+         if @quiz.update(slug: slug_candidate)
+           render status: :ok, json: { notice: t("publish") }
+         else
+           render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
+         end
+
     end
   end
 
@@ -39,11 +51,11 @@ class QuizzesController < ApplicationController
   private
 
     def quiz_params
-      params.require(:quiz).permit(:title)
+      params.require(:quiz).permit(:title, :setslug)
     end
 
     def load_quiz
-      @quiz = Quiz.find_by(slug: params[:slug])
+      @quiz = Quiz.find_by(id: params[:id])
       unless @quiz
         render status: :not_found, json: { error: t("not_found", entity: "Quiz") }
       end

@@ -15,7 +15,7 @@ const EditQuestion = ({ history }) => {
   const [qa, setQA] = useState({ question: "", answer: "" });
   const [optionList, setOptionList] = useState([]);
 
-  const { slug, id } = useParams();
+  const { quizid, id } = useParams();
 
   const passOptions = async list => {
     try {
@@ -46,7 +46,7 @@ const EditQuestion = ({ history }) => {
       Toastr.error(Error("Please select the Correct Answer"));
     } else {
       await passQuestions();
-      history.push(`/quiz/${slug}`);
+      history.push(`/quiz/${quizid}`);
     }
   };
 

@@ -7,7 +7,9 @@ import { ToastContainer } from "react-toastify";
 import { registerIntercepts, setAuthHeaders } from "apis/axios";
 import { initializeLogger } from "common/logger";
 import Login from "components/Authentication/Login";
+import PrivateRoute from "components/Common/PrivateRoute";
 import Dashboard from "components/Dashboard";
+import Participant from "components/Public/Participant";
 import CreateQuiz from "components/Quiz/CreateQuiz";
 import EditQuiz from "components/Quiz/EditQuiz";
 import CreateQuestion from "components/Quiz/Question/CreateQuestion";
@@ -15,8 +17,6 @@ import EditQuestion from "components/Quiz/Question/EditQuestion";
 import { QuizProvider } from "components/Quiz/QuizContext";
 import ShowQuiz from "components/Quiz/ShowQuiz";
 import { getFromLocalStorage } from "helpers/storage";
-
-import PrivateRoute from "./components/Common/PrivateRoute";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -37,20 +37,21 @@ const App = () => {
         <ToastContainer />
         <Switch>
           <Route exact path="/login" component={Login} />
+          <Route exact path="/public/:slug" render={Participant} />
           <PrivateRoute redirectRoute="/login" condition={isLoggedIn}>
             <Switch>
               <Route exact path="/" component={Dashboard} />
               <Route exact path="/quiz/new" component={CreateQuiz} />
-              <Route exact path="/quiz/:slug/edit" component={EditQuiz} />
-              <Route exact path="/quiz/:slug" component={ShowQuiz} />
+              <Route exact path="/quiz/:quizid/edit" component={EditQuiz} />
+              <Route exact path="/quiz/:quizid" component={ShowQuiz} />
               <Route
                 exact
-                path="/:slug/questions/new"
+                path="/:quizid/questions/new"
                 component={CreateQuestion}
               />
               <Route
                 exact
-                path="/:slug/questions/:id/edit"
+                path="/:quizid/questions/:id/edit"
                 component={EditQuestion}
               />
             </Switch>

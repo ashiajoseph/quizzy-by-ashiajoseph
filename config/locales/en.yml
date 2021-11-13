@@ -15,3 +15,4 @@ en:
   quiz:
     slug:
       immutable: "is immutable!"
+  publish: "Published Quiz"

@@ -3,26 +3,21 @@
 class OptionsController < ApplicationController
   before_action :load_question, only: %i[create]
 
-  def index
-    @options = []
-    params[:idList].each do |id|
-      question = Question.find_by_id(id)
-      @options.push(question.options)
-    end
-  end
-
   def create
-    option = @question.options.create(option_params[:list])
-
-    operation = option_params[:add] ? "added" : "updated"
-    render status: :ok, json: { notice: t("successfully_added", operation: operation) }
+    option_params[:list].each do |option|
+      opt = @question.options.new(option)
+      unless opt.save
+        render status: :unprocessable_entity, json: { error: opt.errors.full_messages.to_sentence }
+        return
+      end
+    end
+    render status: :ok, json: { notice: t("successfully_added", operation: "updated") }
   end
 
   private
 
     def option_params
-      puts params
-      params.require(:option).permit(:question_id, :add, list: [:content, :answer])
+      params.require(:option).permit(:question_id, list: [:content, :answer])
     end
 
     def load_question

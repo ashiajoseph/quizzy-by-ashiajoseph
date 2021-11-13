@@ -9,7 +9,7 @@ import QuizForm from "./Form/QuizForm";
 
 const EditQuiz = ({ history }) => {
   const [title, setTitle] = useState(" ");
-  const { slug } = useParams();
+  const { quizid } = useParams();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async e => {
@@ -17,8 +17,8 @@ const EditQuiz = ({ history }) => {
     setLoading(true);
     try {
       await quizzesApi.update({
-        slug,
-        payload: { quiz: { title: title } },
+        quizid,
+        payload: { quiz: { title: title, setslug: false } },
       });
       setLoading(false);
       history.push("/");
@@ -29,7 +29,7 @@ const EditQuiz = ({ history }) => {
   };
   const fetchQuizDetails = async () => {
     try {
-      const response = await quizzesApi.show(slug);
+      const response = await quizzesApi.show(quizid);
       const { quiz } = await response.data;
       setTitle(quiz.title);
     } catch (error) {

@@ -5,25 +5,32 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: %i[show update destroy]
 
   def index
-    quiz = Quiz.find_by(slug: params[:slug])
+    quiz = Quiz.find_by(id: params[:quizid])
     @questions = quiz.questions
+    @options = []
+    @questions.each do |question|
+      @options.push(question.options)
+    end
   end
 
   def create
-    @question = @quiz.questions.new(quiz_question_params.except(:slug))
-    unless @question.save
+    @question = @quiz.questions.new(quiz_question_params)
+    if @question.save
+      render status: :ok, json: { notice: t("successfully_added", operation: "added") }
+    else
       render status: :unprocessable_entity, json: { error: @question.errors.full_messages.to_sentence }
     end
   end
 
   def show
+    @options = @question.options
   end
 
   def update
     if @question.update(questions_params)
       @question.options.delete_all
     else
-      render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
+      render status: :unprocessable_entity, json: { error: @question.errors.full_messages.to_sentence }
     end
   end
 
@@ -39,7 +46,7 @@ class QuestionsController < ApplicationController
   private
 
     def quiz_question_params
-      params.require(:mcq).permit(:question, :slug)
+      params.require(:mcq).permit(:question, :quiz_id, options_attributes: [:content, :answer])
     end
 
     def questions_params
@@ -47,7 +54,7 @@ class QuestionsController < ApplicationController
     end
 
     def load_quiz
-      @quiz = Quiz.find_by(slug: quiz_question_params[:slug])
+      @quiz = Quiz.find_by(id: quiz_question_params[:quiz_id])
       unless @quiz
         render status: :not_found, json: { error: t("not_found", entity: "Quiz") }
       end
@@ -55,7 +62,6 @@ class QuestionsController < ApplicationController
 
     def load_question
       @question = Question.find_by(id: params[:id])
-      @options = @question.options
       unless @question
         render status: :not_found, json: { error: t("not_found", entity: "Question") }
       end
