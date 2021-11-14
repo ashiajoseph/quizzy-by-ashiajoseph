@@ -1,51 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-import { PageLoader } from "@bigbinary/neetoui/v2";
-import Error from "images/error.png";
-import { useParams, useHistory } from "react-router-dom";
+import Container from "components/Common/Container";
 
-import quizzesApi from "apis/quizzes";
+import PariticipantForm from "./Form/PariticipantForm";
 
 const Participant = () => {
-  const [loading, setLoading] = useState(true);
-  const [quizId, setQuizId] = useState(null);
-  const { slug } = useParams();
-  const history = useHistory();
-  const checkSlugPresence = async () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = async e => {
+    e.preventDefault();
+    setLoading(true);
     try {
-      const response = await quizzesApi.check_slug(slug);
-      const data = response.data;
-      setQuizId(data.id);
+      logger.info(firstName, lastName, email);
       setLoading(false);
-      if (data.id) history.push(`/public/${slug}/new/attempts`);
     } catch (error) {
       logger.error(error);
+      setLoading(false);
     }
   };
-  useEffect(() => {
-    checkSlugPresence();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="py-10 mt-4">
-        <PageLoader />
-      </div>
-    );
-  }
-
   return (
-    <div className="h-screen flex items-center justify-center">
-      {!quizId && (
-        <div>
-          <img src={Error} className="mx-auto" />
-          <h2 className="text-center font-mono text-4xl mt-3">
-            {" "}
-            Quiz Not Found
-          </h2>
-        </div>
-      )}
-    </div>
+    <Container>
+      <PariticipantForm
+        setFirstName={setFirstName}
+        setLastName={setLastName}
+        setEmail={setEmail}
+        handleSubmit={handleSubmit}
+        loading={loading}
+      />
+    </Container>
   );
 };
 

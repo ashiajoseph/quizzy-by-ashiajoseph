@@ -9,8 +9,8 @@ import { initializeLogger } from "common/logger";
 import Login from "components/Authentication/Login";
 import PrivateRoute from "components/Common/PrivateRoute";
 import Dashboard from "components/Dashboard";
-import PariticipantForm from "components/Public/PariticipantForm";
 import Participant from "components/Public/Participant";
+import PublicBase from "components/Public/PublicBase";
 import CreateQuiz from "components/Quiz/CreateQuiz";
 import EditQuiz from "components/Quiz/EditQuiz";
 import CreateQuestion from "components/Quiz/Question/CreateQuestion";
@@ -38,11 +38,11 @@ const App = () => {
         <ToastContainer />
         <Switch>
           <Route exact path="/login" component={Login} />
-          <Route exact path="/public/:slug" component={Participant} />
+          <Route exact path="/public/:slug" component={PublicBase} />
           <Route
             exact
             path="/public/:slug/new/attempts"
-            component={PariticipantForm}
+            component={Participant}
           />
 
           <PrivateRoute redirectRoute="/login" condition={isLoggedIn}>
