@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { useParams } from "react-router-dom";
+
 import Container from "components/Common/Container";
 
 import PariticipantForm from "./Form/PariticipantForm";
@@ -9,6 +11,8 @@ const Participant = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const { slug } = useParams();
+
   const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
@@ -20,9 +24,17 @@ const Participant = () => {
       setLoading(false);
     }
   };
+
+  const array = slug.split("-");
+  const heading =
+    array[array.length - 1] == "quiz"
+      ? array.join(" ")
+      : array.slice(0, -1).join(" ");
+
   return (
     <Container>
       <PariticipantForm
+        heading={heading}
         setFirstName={setFirstName}
         setLastName={setLastName}
         setEmail={setEmail}

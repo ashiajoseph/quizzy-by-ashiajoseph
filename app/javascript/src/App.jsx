@@ -41,7 +41,7 @@ const App = () => {
           <Route exact path="/public/:slug" component={PublicBase} />
           <Route
             exact
-            path="/public/:slug/new/attempts"
+            path="/public/:slug/attempt/new"
             component={Participant}
           />
 

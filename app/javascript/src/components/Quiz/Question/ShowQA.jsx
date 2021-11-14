@@ -53,11 +53,11 @@ const ShowQA = ({ questionList, setQuestionList, optionList, slug }) => {
           </Tooltip>
         </div>
       )}
-      <div className="flex flex-col w-3/4 mx-auto">
+      <div className="flex flex-col w-3/4 mx-auto bg-gray-200 mt-4 pl-6 pr-8">
         {questionList.map(({ id, question }, index) => (
           <div
             key={index}
-            className="mt-6 border-b-2 border-opacity-75	border-gray-300	pb-8"
+            className="mt-6 border-b-2 border-opacity-75	border-gray-600	pb-4"
           >
             <div className="flex justify-end mb-2">
               <Tooltip position="bottom" content="Edit">
@@ -78,10 +78,8 @@ const ShowQA = ({ questionList, setQuestionList, optionList, slug }) => {
               </Tooltip>
             </div>
             <div className="flex flex-row w-full">
-              <h3 className="font-light mx-4 text-lg w-10">
-                Question {index + 1}
-              </h3>
-              <h3 className="font-medium text-lg break-words w-4/5 mr-5">
+              <h3 className="font-light  text-lg w-14">Question {index + 1}</h3>
+              <h3 className="font-medium text-lg break-words w-5/6 ml-4">
                 {question}
               </h3>
             </div>

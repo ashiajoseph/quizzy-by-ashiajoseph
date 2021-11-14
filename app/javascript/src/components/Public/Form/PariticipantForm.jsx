@@ -4,6 +4,7 @@ import Button from "components/Common/Button";
 import Input from "components/Common/Input";
 
 const PariticipantForm = ({
+  heading,
   handleSubmit,
   loading,
   setEmail,
@@ -15,9 +16,9 @@ const PariticipantForm = ({
       <div className="w-full max-w-sm">
         <h2
           className="mt-6 text-3xl font-extrabold
-              text-center "
+              text-center capitalize "
         >
-          Welcome to Quiz
+          Welcome to {heading}
         </h2>
 
         <form onSubmit={handleSubmit}>
@@ -37,7 +38,7 @@ const PariticipantForm = ({
             placeholder="evesmith@example.com"
             onChange={e => setEmail(e.target.value)}
           />
-          <Button type="submit" buttonText="Submit" loading={loading} />
+          <Button type="submit" buttonText="Next" loading={loading} />
         </form>
       </div>
     </div>

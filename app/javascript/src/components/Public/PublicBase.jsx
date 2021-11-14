@@ -17,7 +17,7 @@ const PublicBase = () => {
       const data = response.data;
       setQuizId(data.id);
       setLoading(false);
-      if (data.id) history.push(`/public/${slug}/new/attempts`);
+      if (data.id) history.push(`/public/${slug}/attempt/new`);
     } catch (error) {
       logger.error(error);
     }
