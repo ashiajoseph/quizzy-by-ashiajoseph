@@ -9,6 +9,7 @@ import { initializeLogger } from "common/logger";
 import Login from "components/Authentication/Login";
 import PrivateRoute from "components/Common/PrivateRoute";
 import Dashboard from "components/Dashboard";
+import PariticipantForm from "components/Public/PariticipantForm";
 import Participant from "components/Public/Participant";
 import CreateQuiz from "components/Quiz/CreateQuiz";
 import EditQuiz from "components/Quiz/EditQuiz";
@@ -37,7 +38,13 @@ const App = () => {
         <ToastContainer />
         <Switch>
           <Route exact path="/login" component={Login} />
-          <Route exact path="/public/:slug" render={Participant} />
+          <Route exact path="/public/:slug" component={Participant} />
+          <Route
+            exact
+            path="/public/:slug/new/attempts"
+            component={PariticipantForm}
+          />
+
           <PrivateRoute redirectRoute="/login" condition={isLoggedIn}>
             <Switch>
               <Route exact path="/" component={Dashboard} />

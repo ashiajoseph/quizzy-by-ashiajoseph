@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   end
 
   root "home#index"
+  get "public/quiz/:slug", to: "quizzes#check_slug"
   get "*path", to: "home#index", via: :all
 
 end
