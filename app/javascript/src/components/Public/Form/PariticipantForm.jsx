@@ -18,7 +18,7 @@ const PariticipantForm = ({
           className="mt-6 text-3xl font-extrabold
               text-center capitalize "
         >
-          Welcome to {heading}
+          Welcome to {heading} Quiz
         </h2>
 
         <form onSubmit={handleSubmit}>

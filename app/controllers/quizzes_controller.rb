@@ -51,6 +51,7 @@ class QuizzesController < ApplicationController
   def check_slug
     quiz = Quiz.find_by(slug: params[:slug])
     @id = quiz ? quiz.id : nil
+    @title = quiz ? quiz.title : nil
   end
 
   private
