@@ -9,7 +9,16 @@ class QuestionsController < ApplicationController
     @questions = quiz.questions
     @options = []
     @questions.each do |question|
-      @options.push(question.options)
+      array = []
+      question.options.each do |option|
+        id, content, answer = option.values_at(:id, :content, :answer)
+        filtered_option = params[:with_answer] == "true" ? {
+          id: id, content: content,
+          answer: answer
+        } : { id: id, content: content }
+        array.push(filtered_option)
+      end
+      @options.push(array)
     end
   end
 

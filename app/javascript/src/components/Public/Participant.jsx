@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 
 import questionsApi from "apis/questions";
 import quizzesApi from "apis/quizzes";
+import usersApi from "apis/users";
 import Container from "components/Common/Container";
 
 import PariticipantForm from "./Form/PariticipantForm";
@@ -17,12 +18,12 @@ const Participant = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [heading, setHeading] = useState("");
+  const [quizData, setQuizData] = useState({});
   const [loading, setLoading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [questionList, setQuestionList] = useState([]);
   const [optionList, setOptionList] = useState([]);
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers] = useState([]);
   const [marks, setMarks] = useState({ correct: 0, incorrect: 0 });
   const { slug } = useParams();
 
@@ -30,9 +31,15 @@ const Participant = () => {
     e.preventDefault();
     setBtnLoading(true);
     try {
-      logger.info(firstName, lastName, email);
-      setLogin(false);
-      setQuiz(true);
+      const response = await usersApi.create({
+        user: { first_name: firstName, last_name: lastName, email: email },
+        quiz_id: quizData["id"],
+      });
+      const data = await response.data;
+      if (data.eligible) {
+        setLogin(false);
+        setQuiz(true);
+      }
       setBtnLoading(false);
     } catch (error) {
       logger.error(error);
@@ -51,6 +58,7 @@ const Participant = () => {
       incorrect: questionList.length - answerlist.length,
     });
     setResult(true);
+
     setBtnLoading(false);
 
     window.scrollTo(0, 0);
@@ -60,9 +68,9 @@ const Participant = () => {
     try {
       const response1 = await quizzesApi.check_slug(slug);
       const quizdata = response1.data;
-      const response2 = await questionsApi.list(quizdata.id);
+      const response2 = await questionsApi.list(quizdata.id, false);
       const data = await response2.data;
-      setHeading(quizdata.title);
+      setQuizData(quizdata);
       setQuestionList(data.questions);
       setOptionList(data.options);
       setLoading(false);
@@ -88,7 +96,7 @@ const Participant = () => {
     <Container>
       {login && (
         <PariticipantForm
-          heading={heading}
+          heading={quizData.title}
           setFirstName={setFirstName}
           setLastName={setLastName}
           setEmail={setEmail}
@@ -99,7 +107,7 @@ const Participant = () => {
       {quiz && (
         <QuizQA
           result={result}
-          heading={heading}
+          heading={quizData.title}
           questionList={questionList}
           optionList={optionList}
           handleSubmit={handleSubmit}

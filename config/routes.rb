@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :quizzes, except: %i[new edit]
     resources :questions, except: %i[new edit ]
     resources :options, only: %i[create ]
+    resources :users, only: %i[create]
   end
 
   root "home#index"
