@@ -4,12 +4,8 @@ class UsersController < ApplicationController
   def create
     existing_user = User.find_by(email: user_params[:email].downcase)
     @eligible = true
-    puts existing_user
-    if existing_user && existing_user[:submitted]
-      @eligible = false
-    elsif existing_user && !existing_user[:submitted]
-
-    else
+    @attempt_id = nil
+    if !existing_user
       user = User.new(user_params.merge(password: "welcome", password_confirmation: "welcome"))
       unless user.save
         render status: :unprocessable_entity, json: { error: user.errors.full_messages.to_sentence }
@@ -19,6 +15,13 @@ class UsersController < ApplicationController
       unless attempt.save
         render status: :unprocessable_entity, json: { error: user.errors.full_messages.to_sentence }
       end
+      @attempt_id = attempt.id
+    else
+      record = existing_user.attempts.find_by(quiz_id: params[:quiz_id])
+      if record[:submitted]
+        @eligible = false
+      end
+      @attempt_id = record[:id]
     end
   end
 

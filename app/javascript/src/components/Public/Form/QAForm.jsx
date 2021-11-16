@@ -14,10 +14,9 @@ const QuizQA = ({
   result,
   marks,
 }) => {
-  const handleChange = e => {
-    const { name, value } = e.target;
+  const handleChange = ({ name, value }, question_id) => {
     setAnswers(prev => {
-      return { ...prev, [name]: value };
+      return [...prev, { [name]: value, question_id }];
     });
   };
 
@@ -73,7 +72,7 @@ const QuizQA = ({
                           label={content}
                           value={`${ind}`}
                           className={`w-full break-all text-black px-2 py-3 border-2 ${style} ${crtstyle}`}
-                          onChange={handleChange}
+                          onChange={e => handleChange(e.target, id)}
                           disabled={disable}
                         />
                       );

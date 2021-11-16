@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { PageLoader } from "@bigbinary/neetoui/v2";
 import { useParams } from "react-router-dom";
 
-import questionsApi from "apis/questions";
+import attemptsApi from "apis/attempts";
 import quizzesApi from "apis/quizzes";
 import usersApi from "apis/users";
 import Container from "components/Common/Container";
@@ -12,9 +12,10 @@ import PariticipantForm from "./Form/PariticipantForm";
 import QuizQA from "./Form/QAForm";
 
 const Participant = () => {
-  const [login, setLogin] = useState(false);
-  const [quiz, setQuiz] = useState(true);
+  const [login, setLogin] = useState(true);
+  const [quiz, setQuiz] = useState(false);
   const [result, setResult] = useState(false);
+  const [attemptId, setAttemptId] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -36,6 +37,7 @@ const Participant = () => {
         quiz_id: quizData["id"],
       });
       const data = await response.data;
+      setAttemptId(data.attempt_id);
       if (data.eligible) {
         setLogin(false);
         setQuiz(true);
@@ -47,9 +49,20 @@ const Participant = () => {
     }
   };
 
-  const handleSubmit = e => {
+  const submitAnswers = async () => {
+    try {
+      //console.log(attemptId)
+      await attemptsApi.update(attemptId);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  const handleSubmit = async e => {
     e.preventDefault();
     setBtnLoading(true);
+    await submitAnswers();
+
     const answerlist = Object.keys(answers).filter(
       question_no => optionList[question_no][answers[question_no]]["answer"]
     );
@@ -58,19 +71,21 @@ const Participant = () => {
       incorrect: questionList.length - answerlist.length,
     });
     setResult(true);
-
+    logger.info(answers);
     setBtnLoading(false);
 
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
   };
-
+  logger.info(attemptId);
   const fetchQA = async () => {
     try {
       const response1 = await quizzesApi.check_slug(slug);
       const quizdata = response1.data;
-      const response2 = await questionsApi.list(quizdata.id, false);
+      const response2 = await attemptsApi.list(quizdata.id);
       const data = await response2.data;
+      logger.info(data);
       setQuizData(quizdata);
+      logger.info(quizdata);
       setQuestionList(data.questions);
       setOptionList(data.options);
       setLoading(false);

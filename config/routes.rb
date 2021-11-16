@@ -7,10 +7,10 @@ Rails.application.routes.draw do
     resources :questions, except: %i[new edit ]
     resources :options, only: %i[create ]
     resources :users, only: %i[create]
+    resources :attempts, only: %i[index update]
   end
 
   root "home#index"
   get "public/quiz/:slug", to: "quizzes#check_slug"
   get "*path", to: "home#index", via: :all
-
 end

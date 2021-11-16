@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class QuestionsController < ApplicationController
+  before_action :authenticate_user_using_x_auth_token, except: [:new, :edit]
   before_action :load_quiz, only: :create
   before_action :load_question, only: %i[show update destroy]
 
@@ -12,10 +13,10 @@ class QuestionsController < ApplicationController
       array = []
       question.options.each do |option|
         id, content, answer = option.values_at(:id, :content, :answer)
-        filtered_option = params[:with_answer] == "true" ? {
+        filtered_option = {
           id: id, content: content,
           answer: answer
-        } : { id: id, content: content }
+        }
         array.push(filtered_option)
       end
       @options.push(array)
