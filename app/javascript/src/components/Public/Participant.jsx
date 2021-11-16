@@ -39,13 +39,10 @@ const Participant = () => {
       });
       const data = await response.data;
       setAttemptId(data.attempt_id);
-
-      if (data.eligible) {
-        setLogin(false);
-      } else {
-        setLogin(false);
+      if (!data.eligible) {
         setResult(true);
       }
+      setLogin(false);
       setQuiz(true);
       setBtnLoading(false);
     } catch (error) {
@@ -56,8 +53,6 @@ const Participant = () => {
 
   const submitAnswers = async formatted_answer => {
     try {
-      setQuiz(false);
-      setLoading(true);
       await attemptsApi.update(attemptId);
       await attemptsApi.create({
         attempts: { attempt_answers_attributes: formatted_answer },
@@ -81,6 +76,8 @@ const Participant = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     setBtnLoading(true);
+    setLoading(true);
+    setQuiz(false);
     const formatted_answer = format_answers();
     await submitAnswers(formatted_answer);
     setBtnLoading(false);
@@ -114,6 +111,7 @@ const Participant = () => {
     }
     setLoading(false);
   };
+
   useEffect(() => {
     if (result) {
       fetchParticipantAnswers();

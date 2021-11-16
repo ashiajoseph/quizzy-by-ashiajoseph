@@ -65,11 +65,15 @@ const QuizQA = ({
                     <Radio name={`${id}`} stacked>
                       {optionList[index].map(({ id, content }, ind) => {
                         let optted =
-                          result && resultData[question_id]["answer"] == id
+                          result &&
+                          resultData[question_id] &&
+                          resultData[question_id]["answer"] == id
                             ? true
                             : false;
                         let crtstyle =
-                          result && resultData[question_id]["option_id"] == id
+                          result &&
+                          resultData[question_id] &&
+                          resultData[question_id]["option_id"] == id
                             ? "border-green-300 bg-opacity-75 bg-green-300"
                             : "";
                         return (
