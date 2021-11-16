@@ -38,13 +38,6 @@ class AttemptsController < ApplicationController
     end
   end
 
-  #   def retrieve_attempt_answers
-  #     @correct = @attempt.attempt_answers.select { |qa|  qa.answer.to_i == qa.option_id }.size
-  #     @incorrect = @attempt.attempt_answers.size - @correct
-  #     res = @attempt.attempt_answers.map { |res| {"#{res.question_id}": {answer: res.answer.to_i, option_id: res.option_id}} }
-  #     @result = res.inject(:merge!)
-  #   end
-
   private
 
     def quiz_question_params
