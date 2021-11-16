@@ -12,16 +12,19 @@ import PariticipantForm from "./Form/PariticipantForm";
 import QuizQA from "./Form/QAForm";
 
 const Participant = () => {
+  const [loading, setLoading] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
   const [login, setLogin] = useState(true);
   const [quiz, setQuiz] = useState(false);
   const [result, setResult] = useState(false);
   const [attemptId, setAttemptId] = useState(0);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
+  const [userDetails, setUserDetails] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+  });
   const [quizData, setQuizData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [btnLoading, setBtnLoading] = useState(false);
+
   const [questionList, setQuestionList] = useState([]);
   const [optionList, setOptionList] = useState([]);
   const [answers, setAnswers] = useState({});
@@ -34,7 +37,7 @@ const Participant = () => {
     setBtnLoading(true);
     try {
       const response = await usersApi.create({
-        user: { first_name: firstName, last_name: lastName, email: email },
+        user: userDetails,
         quiz_id: quizData["id"],
       });
       const data = await response.data;
@@ -130,15 +133,13 @@ const Participant = () => {
       </div>
     );
   }
-
+  logger.info(userDetails);
   return (
     <Container>
       {login && (
         <PariticipantForm
           heading={quizData.title}
-          setFirstName={setFirstName}
-          setLastName={setLastName}
-          setEmail={setEmail}
+          setUserDetails={setUserDetails}
           handleSubmit={handleNext}
           loading={btnLoading}
         />

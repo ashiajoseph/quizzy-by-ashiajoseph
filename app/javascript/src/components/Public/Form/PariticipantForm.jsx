@@ -7,10 +7,15 @@ const PariticipantForm = ({
   heading,
   handleSubmit,
   loading,
-  setEmail,
-  setFirstName,
-  setLastName,
+  setUserDetails,
 }) => {
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setUserDetails(prev => {
+      return { ...prev, [name]: value };
+    });
+  };
+
   return (
     <div className="flex items-center justify-center px-4 py-24">
       <div className="w-full max-w-sm">
@@ -25,18 +30,21 @@ const PariticipantForm = ({
           <Input
             label="First Name"
             placeholder="Eve"
-            onChange={e => setFirstName(e.target.value)}
+            name="first_name"
+            onChange={handleChange}
           />
           <Input
             label="Last Name"
             placeholder="Smith"
-            onChange={e => setLastName(e.target.value)}
+            name="last_name"
+            onChange={handleChange}
           />
           <Input
             label="Email"
             type="email"
+            name="email"
             placeholder="evesmith@example.com"
-            onChange={e => setEmail(e.target.value)}
+            onChange={handleChange}
           />
           <Button type="submit" buttonText="Next" loading={loading} />
         </form>
