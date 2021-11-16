@@ -8,6 +8,12 @@ Rails.application.routes.draw do
     resources :options, only: %i[create ]
     resources :users, only: %i[create]
     resources :attempts, only: %i[index update]
+    resources :attempts do
+      collection do
+        post "create_attempt_answers"
+        get "retrieve_attempt_answers"
+      end
+    end
   end
 
   root "home#index"

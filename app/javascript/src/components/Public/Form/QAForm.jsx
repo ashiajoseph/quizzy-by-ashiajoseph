@@ -13,10 +13,11 @@ const QuizQA = ({
   setAnswers,
   result,
   marks,
+  resultData,
 }) => {
-  const handleChange = ({ name, value }, question_id) => {
+  const handleChange = ({ name, value }) => {
     setAnswers(prev => {
-      return [...prev, { [name]: value, question_id }];
+      return { ...prev, [name]: value };
     });
   };
 
@@ -44,44 +45,52 @@ const QuizQA = ({
           </div>
         )}
         <form onSubmit={handleSubmit}>
-          {questionList.map(({ id, question }, index) => (
-            <div
-              key={index}
-              className="bg-gray-200 bg-opacity-50 px-10 pt-8 py-4 mt-6 w-full"
-            >
-              <div className="flex flex-row w-full">
-                <h3 className="font-light  text-lg w-14">
-                  Question {index + 1}
-                </h3>
-                <h3 className="font-medium text-lg break-words w-5/6 ml-4">
-                  {question}
-                </h3>
+          {questionList.map(({ id, question }, index) => {
+            const question_id = id;
+            return (
+              <div
+                key={index}
+                className="bg-gray-200 bg-opacity-50 px-10 pt-8 py-4 mt-6 w-full"
+              >
+                <div className="flex flex-row w-full">
+                  <h3 className="font-light  text-lg w-14">
+                    Question {index + 1}
+                  </h3>
+                  <h3 className="font-medium text-lg break-words w-5/6 ml-4">
+                    {question}
+                  </h3>
+                </div>
+                <div className="pl-6 pr-2 border-3 w-full mt-4 ">
+                  {
+                    <Radio name={`${id}`} stacked>
+                      {optionList[index].map(({ id, content }, ind) => {
+                        let optted =
+                          result && resultData[question_id]["answer"] == id
+                            ? true
+                            : false;
+                        let crtstyle =
+                          result && resultData[question_id]["option_id"] == id
+                            ? "border-green-300 bg-opacity-75 bg-green-300"
+                            : "";
+                        return (
+                          <Radio.Item
+                            key={ind}
+                            name={question_id}
+                            label={content}
+                            value={id}
+                            className={`w-full break-all text-black px-2 py-3 border-2 ${style} ${crtstyle}`}
+                            onChange={e => handleChange(e.target, id)}
+                            disabled={disable}
+                            checked={result ? optted : null}
+                          />
+                        );
+                      })}
+                    </Radio>
+                  }
+                </div>
               </div>
-              <div className="pl-6 pr-2 border-3 w-full mt-4 ">
-                {
-                  <Radio name={`${id}`} stacked>
-                    {optionList[index].map(({ content, answer }, ind) => {
-                      const crtstyle =
-                        result && answer
-                          ? "border-green-300 bg-opacity-75 bg-green-300"
-                          : "";
-                      return (
-                        <Radio.Item
-                          key={ind}
-                          name={index}
-                          label={content}
-                          value={`${ind}`}
-                          className={`w-full break-all text-black px-2 py-3 border-2 ${style} ${crtstyle}`}
-                          onChange={e => handleChange(e.target, id)}
-                          disabled={disable}
-                        />
-                      );
-                    })}
-                  </Radio>
-                }
-              </div>
-            </div>
-          ))}
+            );
+          })}
           {!result && (
             <div className="w-5/12 mx-auto">
               <Button type="submit" buttonText="Submit" loading={loading} />

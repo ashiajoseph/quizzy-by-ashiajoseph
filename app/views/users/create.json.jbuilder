@@ -1,2 +1,2 @@
 json.eligible @eligible
-json.attempt_id @attempt_id
+json.attempt_id @attempt.id

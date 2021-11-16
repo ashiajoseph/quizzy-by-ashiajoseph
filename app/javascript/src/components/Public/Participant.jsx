@@ -15,7 +15,7 @@ const Participant = () => {
   const [login, setLogin] = useState(true);
   const [quiz, setQuiz] = useState(false);
   const [result, setResult] = useState(false);
-  const [attemptId, setAttemptId] = useState(null);
+  const [attemptId, setAttemptId] = useState(0);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -24,8 +24,9 @@ const Participant = () => {
   const [btnLoading, setBtnLoading] = useState(false);
   const [questionList, setQuestionList] = useState([]);
   const [optionList, setOptionList] = useState([]);
-  const [answers, setAnswers] = useState([]);
+  const [answers, setAnswers] = useState({});
   const [marks, setMarks] = useState({ correct: 0, incorrect: 0 });
+  const [resultData, setResultData] = useState({});
   const { slug } = useParams();
 
   const handleNext = async e => {
@@ -38,10 +39,14 @@ const Participant = () => {
       });
       const data = await response.data;
       setAttemptId(data.attempt_id);
+
       if (data.eligible) {
         setLogin(false);
-        setQuiz(true);
+      } else {
+        setLogin(false);
+        setResult(true);
       }
+      setQuiz(true);
       setBtnLoading(false);
     } catch (error) {
       logger.error(error);
@@ -49,43 +54,45 @@ const Participant = () => {
     }
   };
 
-  const submitAnswers = async () => {
+  const submitAnswers = async formatted_answer => {
     try {
-      //console.log(attemptId)
+      setQuiz(false);
+      setLoading(true);
       await attemptsApi.update(attemptId);
+      await attemptsApi.create({
+        attempts: { attempt_answers_attributes: formatted_answer },
+        id: attemptId,
+      });
+      setResult(true);
     } catch (error) {
       logger.error(error);
     }
+  };
+
+  const format_answers = () => {
+    return questionList
+      .map(({ id }) => id)
+      .reduce((array, id) => {
+        let val = answers[id] ? answers[id] : "";
+        return [...array, { answer: val, question_id: id }];
+      }, []);
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
     setBtnLoading(true);
-    await submitAnswers();
-
-    const answerlist = Object.keys(answers).filter(
-      question_no => optionList[question_no][answers[question_no]]["answer"]
-    );
-    setMarks({
-      correct: answerlist.length,
-      incorrect: questionList.length - answerlist.length,
-    });
-    setResult(true);
-    logger.info(answers);
+    const formatted_answer = format_answers();
+    await submitAnswers(formatted_answer);
     setBtnLoading(false);
-
-    // window.scrollTo(0, 0);
   };
-  logger.info(attemptId);
+
   const fetchQA = async () => {
     try {
       const response1 = await quizzesApi.check_slug(slug);
       const quizdata = response1.data;
       const response2 = await attemptsApi.list(quizdata.id);
       const data = await response2.data;
-      logger.info(data);
       setQuizData(quizdata);
-      logger.info(quizdata);
       setQuestionList(data.questions);
       setOptionList(data.options);
       setLoading(false);
@@ -94,6 +101,26 @@ const Participant = () => {
       setLoading(false);
     }
   };
+  const fetchParticipantAnswers = async () => {
+    try {
+      const response = await attemptsApi.retrieve_attempt_answers(attemptId);
+      const data = await response.data;
+      setMarks({ correct: data.correct, incorrect: data.incorrect });
+      setResultData(data.result);
+      setQuiz(true);
+      setLoading(false);
+    } catch (error) {
+      logger.error(error);
+    }
+    setLoading(false);
+  };
+  //  useEffect(() => {
+  //   if (result)
+  //   {
+  fetchParticipantAnswers();
+  //   }
+  // },[result])
+
   useEffect(() => {
     setLoading(true);
     fetchQA();
@@ -128,6 +155,7 @@ const Participant = () => {
           handleSubmit={handleSubmit}
           setAnswers={setAnswers}
           marks={marks}
+          resultData={resultData}
           loading={btnLoading}
         />
       )}
