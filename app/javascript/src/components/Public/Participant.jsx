@@ -114,12 +114,11 @@ const Participant = () => {
     }
     setLoading(false);
   };
-  //  useEffect(() => {
-  //   if (result)
-  //   {
-  fetchParticipantAnswers();
-  //   }
-  // },[result])
+  useEffect(() => {
+    if (result) {
+      fetchParticipantAnswers();
+    }
+  }, [result]);
 
   useEffect(() => {
     setLoading(true);
