@@ -38,7 +38,6 @@ const ShowQuiz = () => {
     try {
       const response = await questionsApi.list(quizid);
       const data = await response.data;
-
       setQuestionList(data.questions);
       setTotalQuestions(data.questions.length);
       setOptionList(data.options);

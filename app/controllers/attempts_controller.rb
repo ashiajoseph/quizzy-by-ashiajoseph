@@ -7,15 +7,7 @@ class AttemptsController < ApplicationController
     @questions = quiz.questions
     @options = []
     @questions.each do |question|
-      array = []
-      question.options.each do |option|
-        id, content = option.values_at(:id, :content)
-        filtered_option = {
-          id: id, content: content
-        }
-        array.push(filtered_option)
-      end
-      @options.push(array)
+      @options.push(question.options.as_json(only: %i[id content]))
     end
   end
 

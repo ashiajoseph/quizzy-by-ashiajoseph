@@ -8,18 +8,10 @@ class QuestionsController < ApplicationController
   def index
     quiz = Quiz.find_by(id: params[:quizid])
     @questions = quiz.questions
+    puts @questions
     @options = []
     @questions.each do |question|
-      array = []
-      question.options.each do |option|
-        id, content, answer = option.values_at(:id, :content, :answer)
-        filtered_option = {
-          id: id, content: content,
-          answer: answer
-        }
-        array.push(filtered_option)
-      end
-      @options.push(array)
+      @options.push(question.options.as_json(only: %i[id content answer]))
     end
   end
 
