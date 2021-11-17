@@ -15,7 +15,7 @@
 ActiveRecord::Schema.define(version: 2021_11_16_083634) do
 
   create_table "attempt_answers", force: :cascade do |t|
-    t.string "answer"
+    t.integer "user_selected_option"
     t.integer "attempt_id", null: false
     t.integer "question_id", null: false
     t.integer "option_id", null: false

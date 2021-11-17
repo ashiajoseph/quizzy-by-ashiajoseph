@@ -56,7 +56,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal response.parsed_body["eligible"], true
   end
 
-  def test_existing_participant_ineligible_to_attend_same_quiz_if_submitted
+  def test_participant_ineligible_to_attend_same_quiz_more_than_once
     attempt = @participant.attempts.find_by(quiz_id: @quiz.id)
     attempt.update(submitted: true)
     post users_path,
@@ -73,7 +73,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal response.parsed_body["eligible"], false
   end
 
-  def test_participant_eligible_to_attend_another_quiz
+  def test_participant_eligible_to_attend_each_quiz_once
     attempt = @participant.attempts.find_by(quiz_id: @quiz.id)
     attempt.update(submitted: true)
     quiz2 = @user.quizzes.create!(title: "English")
@@ -89,5 +89,23 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       }
     assert_response :success
     assert_equal response.parsed_body["eligible"], true
+  end
+
+  def test_attempt_record_created_when_participant_attends_each_quiz
+    attempt = @participant.attempts.find_by(quiz_id: @quiz.id)
+    quiz2 = @user.quizzes.create!(title: "English")
+    post users_path,
+      params: {
+        user:
+                {
+                  first_name: "Eve",
+                  last_name: "Smith",
+                  email: "eve@example.com"
+                },
+        quiz_id: quiz2.id
+      }
+    assert_response :success
+    response_body = response.parsed_body
+    assert_not_equal response_body["attempt_id"], attempt.id
   end
 end

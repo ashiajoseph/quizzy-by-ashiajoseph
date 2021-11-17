@@ -73,7 +73,7 @@ const Participant = () => {
       .map(({ id }) => id)
       .reduce((array, id) => {
         let val = answers[id] ? answers[id] : "";
-        return [...array, { answer: val, question_id: id }];
+        return [...array, { user_selected_option: val, question_id: id }];
       }, []);
   };
   //Participant submit answers - answer stored in db
