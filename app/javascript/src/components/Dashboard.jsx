@@ -9,7 +9,7 @@ import Container from "components/Common/Container";
 import PageHeader from "./Common/PageHeader";
 import EmptyList from "./Quiz/EmptyList";
 import { quizContext } from "./Quiz/QuizContext";
-import Table from "./Quiz/Table";
+import Table from "./Quiz/Table/QuizTable";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);

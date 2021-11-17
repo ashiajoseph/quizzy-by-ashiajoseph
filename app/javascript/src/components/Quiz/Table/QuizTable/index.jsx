@@ -10,7 +10,7 @@ import quizzesApi from "apis/quizzes";
 
 import { COLS } from "./tableHeader";
 
-import DeleteAlert from "../DeleteAlert";
+import DeleteAlert from "../../DeleteAlert";
 
 const Table = ({ quizList, setQuizList, empty }) => {
   let history = useHistory();
