@@ -2,6 +2,7 @@
 
 class AttemptsController < ApplicationController
   before_action :load_attempt, except: :index
+  after_action :store_correct_and_incorrect_answers_count, only: :create_attempt_answers
   def index
     quiz = Quiz.find_by(id: params[:quizid])
     @questions = quiz.questions
@@ -38,8 +39,8 @@ class AttemptsController < ApplicationController
   end
 
   def retrieve_attempt_answers
-    @correct = @attempt.attempt_answers.select { |qa| qa.user_selected_option == qa.option_id }.size
-    @incorrect = @attempt.attempt_answers.size - @correct
+    @correct = @attempt.correct_answers_count
+    @incorrect = @attempt.incorrect_answers_count
     result_array = @attempt.attempt_answers.map { |user_answer|
 { "#{user_answer.question_id}": { answer: user_answer.user_selected_option, option_id: user_answer.option_id } } }
     @result = result_array.inject(:merge!)
@@ -55,6 +56,14 @@ class AttemptsController < ApplicationController
       @attempt = Attempt.find_by(id: params[:id])
       unless @attempt
         render status: :not_found, json: { error: t("not_found", entity: "Attempt") }
+      end
+    end
+
+    def store_correct_and_incorrect_answers_count
+      correct = @attempt.attempt_answers.select { |qa| qa.user_selected_option == qa.option_id }.size
+      incorrect = @attempt.attempt_answers.size - correct
+      unless @attempt.update(correct_answers_count: correct, incorrect_answers_count: incorrect)
+        render status: :unprocessable_entity, json: { error: @attempt.errors.full_messages.to_sentence }
       end
     end
 end
