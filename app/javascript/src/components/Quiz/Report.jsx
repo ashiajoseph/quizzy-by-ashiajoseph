@@ -6,14 +6,17 @@ import quizzesApi from "apis/quizzes";
 import Container from "components/Common/Container";
 import PageHeader from "components/Common/PageHeader";
 
+import ReportTable from "./Table/ReportTable";
+
 const Report = () => {
   const [loading, setLoading] = useState(false);
-
+  const [reportData, setReportData] = useState([]);
   const fetchReportDetails = async () => {
     setLoading(true);
     try {
       const response = await quizzesApi.generate_report();
-      logger.info(response.data);
+      const data = await response.data;
+      setReportData(data.report_data);
     } catch (error) {
       logger.error(error);
     }
@@ -35,6 +38,7 @@ const Report = () => {
   return (
     <Container>
       <PageHeader heading="Reports" link_name="Download" link_path="/" />
+      <ReportTable reportData={reportData} />
     </Container>
   );
 };

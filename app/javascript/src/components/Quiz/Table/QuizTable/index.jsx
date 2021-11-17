@@ -12,7 +12,7 @@ import { COLS } from "./tableHeader";
 
 import DeleteAlert from "../../DeleteAlert";
 
-const Table = ({ quizList, setQuizList, empty }) => {
+const QuizTable = ({ quizList, setQuizList, empty }) => {
   let history = useHistory();
   const [showAlert, setShowAlert] = useState(false);
   const cols = useMemo(() => COLS, []);
@@ -147,4 +147,4 @@ const Table = ({ quizList, setQuizList, empty }) => {
   );
 };
 
-export default Table;
+export default QuizTable;

@@ -9,7 +9,7 @@ import Container from "components/Common/Container";
 import PageHeader from "./Common/PageHeader";
 import EmptyList from "./Quiz/EmptyList";
 import { quizContext } from "./Quiz/QuizContext";
-import Table from "./Quiz/Table/QuizTable";
+import QuizTable from "./Quiz/Table/QuizTable";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
@@ -55,7 +55,11 @@ const Dashboard = () => {
       />
       {empty.current && <EmptyList content="You have not created any quiz" />}
       {!empty.current && (
-        <Table quizList={quizList} setQuizList={setQuizList} empty={empty} />
+        <QuizTable
+          quizList={quizList}
+          setQuizList={setQuizList}
+          empty={empty}
+        />
       )}
     </Container>
   );
