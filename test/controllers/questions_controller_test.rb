@@ -11,6 +11,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     @question = @quiz.questions.create!(
       question: "question",
       options_attributes: [{ content: "opt1", answer: true }, { content: "opt2", answer: false } ])
+    @user_header = headers(user)
   end
 
   def test_should_list_all_questions
