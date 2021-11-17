@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 class QuizzesController < ApplicationController
-  before_action :authenticate_user_using_x_auth_token, except: [:new, :edit]
+  before_action :authenticate_user_using_x_auth_token, except: [:new, :edit, :check_slug]
   before_action :load_quiz, only: %i[show update destroy]
   def index
-    @quizzes = @current_user.quizzes.order("created_at DESC").map do |quiz|
-      { id: quiz[:id], title: quiz[:title] }
-    end
+    @quizzes = @current_user.quizzes.order("created_at DESC").as_json(only: %i[id title ])
   end
 
   def create
@@ -29,13 +27,13 @@ class QuizzesController < ApplicationController
       else
         render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
       end
-    else quiz_params[:setslug]
-         slug_candidate = Quiz.set_slug(quiz_params[:title])
-         if @quiz.update(slug: slug_candidate)
-           render status: :ok, json: { notice: t("publish") }
-         else
-           render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
-         end
+    else
+      slug_candidate = Quiz.set_slug(quiz_params[:title])
+      if @quiz.update(slug: slug_candidate)
+        render status: :ok, json: { notice: t("publish") }
+      else
+        render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
+      end
 
     end
   end
@@ -46,6 +44,12 @@ class QuizzesController < ApplicationController
     else
       render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
     end
+  end
+
+  def check_slug
+    quiz = Quiz.find_by(slug: params[:slug])
+    @id = quiz ? quiz.id : nil
+    @title = quiz ? quiz.title : nil
   end
 
   private

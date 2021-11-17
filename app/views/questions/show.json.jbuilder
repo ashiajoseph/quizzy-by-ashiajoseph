@@ -4,5 +4,7 @@ json.qa do
   json.extract! @question,
     :id,
     :question
-  json.options @options
+  json.options @options do |opt|
+    json.extract! opt, :id, :content, :answer
+  end
 end

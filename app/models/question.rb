@@ -3,6 +3,7 @@
 class Question < ApplicationRecord
   belongs_to :quiz
   has_many :options, dependent: :destroy
+  has_many :attempt_answers
   validates :question, presence: true
   accepts_nested_attributes_for :options
   validate :check_options_count, :check_answer

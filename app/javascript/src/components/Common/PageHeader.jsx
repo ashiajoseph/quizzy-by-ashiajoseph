@@ -17,7 +17,7 @@ const PageHeader = ({ heading, link_name, link_path }) => {
     try {
       await quizzesApi.update({
         quizid,
-        payload: { quiz: { title: heading.slice(0, -5), setslug: true } },
+        payload: { quiz: { title: heading, setslug: true } },
       });
       setPublish(true);
     } catch (error) {

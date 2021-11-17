@@ -46,7 +46,7 @@ const EditQuestion = ({ history }) => {
       Toastr.error(Error("Please select the Correct Answer"));
     } else {
       await passQuestions();
-      history.push(`/quiz/${quizid}`);
+      await history.push(`/quiz/${quizid}`);
     }
   };
 

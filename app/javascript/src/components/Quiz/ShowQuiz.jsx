@@ -46,13 +46,11 @@ const ShowQuiz = () => {
       logger.error(error);
     }
   };
-  useEffect(async () => {
-    await fetchQuiz();
-  }, [publish]);
 
   useEffect(async () => {
+    await fetchQuiz();
     await fetchQuestions();
-  }, []);
+  }, [publish]);
 
   if (loading) {
     return (

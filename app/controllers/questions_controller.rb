@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class QuestionsController < ApplicationController
+  before_action :authenticate_user_using_x_auth_token, except: [:new, :edit]
   before_action :load_quiz, only: :create
   before_action :load_question, only: %i[show update destroy]
 
@@ -9,7 +10,7 @@ class QuestionsController < ApplicationController
     @questions = quiz.questions
     @options = []
     @questions.each do |question|
-      @options.push(question.options)
+      @options.push(question.options.as_json(only: %i[id content answer]))
     end
   end
 
