@@ -18,7 +18,7 @@ class AttemptAnswerTest < ActiveSupport::TestCase
       password_confirmation: "welcome")
     @attempt = participant.attempts.create!(quiz_id: quiz.id)
     @participant_answer = @attempt.attempt_answers.new(
-      answer: "#{option1.id}", question_id: question.id,
+      user_selected_option: option1.id, question_id: question.id,
       option_id: option2.id)
   end
 

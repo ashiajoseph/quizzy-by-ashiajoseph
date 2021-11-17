@@ -23,7 +23,6 @@ class AttemptsController < ApplicationController
     participantAnswerList = []
     quiz_question_params[:attempt_answers_attributes].each do |answer|
       question = Question.find_by(id: answer[:question_id])
-
       if question
         option = question.options.find_by(answer: true)
         merged_answer = answer.merge(option_id: option[:id])
@@ -41,9 +40,9 @@ class AttemptsController < ApplicationController
   def retrieve_attempt_answers
     @correct = @attempt.attempt_answers.select { |qa| qa.user_selected_option == qa.option_id }.size
     @incorrect = @attempt.attempt_answers.size - @correct
-    res = @attempt.attempt_answers.map { |res|
-{ "#{res.question_id}": { answer: res.user_selected_option, option_id: res.option_id } } }
-    @result = res.inject(:merge!)
+    result_array = @attempt.attempt_answers.map { |user_answer|
+{ "#{user_answer.question_id}": { answer: user_answer.user_selected_option, option_id: user_answer.option_id } } }
+    @result = result_array.inject(:merge!)
   end
 
   private
