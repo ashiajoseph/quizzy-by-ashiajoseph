@@ -32,6 +32,7 @@ const Participant = () => {
   const [resultData, setResultData] = useState({});
   const { slug } = useParams();
 
+  //Login
   const handleNext = async e => {
     e.preventDefault();
     setBtnLoading(true);
@@ -75,7 +76,7 @@ const Participant = () => {
         return [...array, { answer: val, question_id: id }];
       }, []);
   };
-
+  //Participant submit answers - answer stored in db
   const handleSubmit = async e => {
     e.preventDefault();
     setBtnLoading(true);
@@ -86,6 +87,7 @@ const Participant = () => {
     setBtnLoading(false);
   };
 
+  //initial fetch - without answers
   const fetchQA = async () => {
     try {
       const response1 = await quizzesApi.check_slug(slug);
@@ -101,6 +103,13 @@ const Participant = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    setLoading(true);
+    fetchQA();
+  }, []);
+
+  // fetch - with correct option
   const fetchParticipantAnswers = async () => {
     try {
       const response = await attemptsApi.retrieve_attempt_answers(attemptId);
@@ -121,11 +130,6 @@ const Participant = () => {
     }
   }, [result]);
 
-  useEffect(() => {
-    setLoading(true);
-    fetchQA();
-  }, []);
-
   if (loading) {
     return (
       <div className="py-10 mt-4">
@@ -133,7 +137,7 @@ const Participant = () => {
       </div>
     );
   }
-  logger.info(userDetails);
+
   return (
     <Container>
       {login && (

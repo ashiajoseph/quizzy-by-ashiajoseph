@@ -4,11 +4,11 @@ class UsersController < ApplicationController
   def create
     @user = User.find_by(email: user_params[:email].downcase)
     @eligible = true
-    puts params
     if !@user
       @user = User.new(user_params.merge(password: "welcome", password_confirmation: "welcome"))
       unless @user.save
         render status: :unprocessable_entity, json: { error: @user.errors.full_messages.to_sentence }
+        return
       end
       create_attempt
 
