@@ -1,7 +1,5 @@
 import React from "react";
 
-import { useParams } from "react-router-dom";
-
 import authApi from "apis/auth";
 import { resetAuthTokens } from "apis/axios";
 import { getFromLocalStorage } from "helpers/storage";
@@ -10,7 +8,6 @@ import NavItem from "./NavItem";
 
 const NavBar = () => {
   const userName = getFromLocalStorage("authUserName");
-  const { quizid } = useParams();
 
   const handleLogout = async () => {
     try {
@@ -33,11 +30,7 @@ const NavBar = () => {
           <div className="flex items-center">
             {userName && (
               <div className="flex flex-row justify-center ">
-                <NavItem
-                  name="Reports"
-                  path={`quiz/${quizid}/report`}
-                  style="text-xl"
-                />
+                <NavItem name="Reports" path={`/report`} style="text-xl" />
                 <NavItem name={userName} path="/" style="text-xl" />
 
                 <button

@@ -62,7 +62,7 @@ const App = () => {
                 path="/:quizid/questions/:id/edit"
                 component={EditQuestion}
               />
-              <Route exact path="quiz/:quizid/report" component={Report} />
+              <Route exact path="/report" component={Report} />
             </Switch>
           </PrivateRoute>
         </Switch>

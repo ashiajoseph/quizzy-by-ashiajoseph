@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 
 import { Paragraph } from "@bigbinary/neeto-icons";
+import { Loading } from "@bigbinary/neeto-icons";
 import { useParams } from "react-router-dom";
 
 import quizzesApi from "apis/quizzes";
@@ -9,19 +10,23 @@ import AddLink from "./AddLink";
 
 import { quizContext } from "../Quiz/QuizContext";
 
-const PageHeader = ({ heading, link_name, link_path }) => {
+const PageHeader = ({ heading, link_name = "", link_path = "" }) => {
+  const [loading, setLoading] = useState(false);
   const { totalQuestions, publish, setPublish } = useContext(quizContext);
   const { quizid } = useParams();
 
   const publishQuiz = async () => {
+    setLoading(true);
     try {
       await quizzesApi.update({
         quizid,
         payload: { quiz: { title: heading, setslug: true } },
       });
+      setLoading(false);
       setPublish(true);
     } catch (error) {
       logger.error(error);
+      setLoading(true);
     }
   };
   return (
@@ -39,7 +44,14 @@ const PageHeader = ({ heading, link_name, link_path }) => {
               onClick={publishQuiz}
               className={` font-semibold text-lg text-black rounded-md py-2 px-4 bg-lime focus:outline-none `}
             >
-              <Paragraph className="inline" size={20} /> Publish
+              {loading ? (
+                <Loading />
+              ) : (
+                <>
+                  {" "}
+                  <Paragraph className="inline" size={20} /> Publish{" "}
+                </>
+              )}
             </button>
           )}
         </div>
