@@ -7,7 +7,7 @@ class QuestionsController < ApplicationController
 
   def index
     quiz = Quiz.find_by(id: params[:quizid])
-    @questions = quiz.questions
+    @questions = quiz.questions.includes(:options)
     @options = []
     @questions.each do |question|
       @options.push(question.options.as_json(only: %i[id content answer]))

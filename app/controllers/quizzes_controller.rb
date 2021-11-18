@@ -58,11 +58,15 @@ class QuizzesController < ApplicationController
     @report = [ ]
     quizlist.each do |quiz|
       quiz.attempts.each do |attempt|
-        full_name = attempt.user.first_name + " " + attempt.user.last_name
-        @report << {
-          title: quiz.title, user_name: full_name, email: attempt.user.email,
-          correct_count: attempt.correct_answers_count, incorrect_count: attempt.incorrect_answers_count
-        }
+
+        if attempt.submitted
+          full_name = attempt.user.first_name + " " + attempt.user.last_name
+          @report << {
+            title: quiz.title, user_name: full_name, email: attempt.user.email,
+            correct_count: attempt.correct_answers_count, incorrect_count: attempt.incorrect_answers_count
+          }
+        end
+
       end
     end
   end

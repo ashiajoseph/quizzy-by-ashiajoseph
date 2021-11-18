@@ -5,7 +5,7 @@ class AttemptsController < ApplicationController
   after_action :store_correct_and_incorrect_answers_count, only: :create_attempt_answers
   def index
     quiz = Quiz.find_by(id: params[:quizid])
-    @questions = quiz.questions
+    @questions = quiz.questions.includes(:options)
     @options = []
     @questions.each do |question|
       @options.push(question.options.as_json(only: %i[id content]))
@@ -21,19 +21,20 @@ class AttemptsController < ApplicationController
   end
 
   def create_attempt_answers
-    participantAnswerList = []
-    quiz_question_params[:attempt_answers_attributes].each do |answer|
-      question = Question.find_by(id: answer[:question_id])
-      if question
-        option = question.options.find_by(answer: true)
-        merged_answer = answer.merge(option_id: option[:id])
-        participantAnswerList << merged_answer
-      else
-        render status: :not_found, json: { error: t("not_found", entity: "Question") }
-      end
+    questionList = Quiz.find(@attempt.quiz_id).questions.includes(:options)
+    recordList = questionList.map do |question|
+      record = Hash.new
+      user_selected_option = params[:attempt_answers_attributes][question.id.to_s]
+      correct_option = question.options.select { |option|
+      option.answer}
+      record = {
+        user_selected_option: user_selected_option,
+        question_id: question.id,
+        option_id: correct_option[0].id
+      }
+      record
     end
-
-    unless @attempt.update({ attempt_answers_attributes: participantAnswerList })
+    unless @attempt.update({ attempt_answers_attributes: recordList })
       render status: :unprocessable_entity, json: { error: @attempt.errors.full_messages.to_sentence }
     end
   end
@@ -47,10 +48,6 @@ class AttemptsController < ApplicationController
   end
 
   private
-
-    def quiz_question_params
-      params.require(:attempts).permit(attempt_answers_attributes: [:question_id, :user_selected_option])
-    end
 
     def load_attempt
       @attempt = Attempt.find_by(id: params[:id])
