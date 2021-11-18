@@ -48,8 +48,7 @@ const PageHeader = ({ heading, link_name = "", link_path = "" }) => {
                 <Loading />
               ) : (
                 <>
-                  {" "}
-                  <Paragraph className="inline" size={20} /> Publish{" "}
+                  <Paragraph className="inline" size={20} /> Publish
                 </>
               )}
             </button>

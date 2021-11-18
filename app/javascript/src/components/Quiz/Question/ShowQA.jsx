@@ -53,7 +53,7 @@ const ShowQA = ({ questionList, setQuestionList, optionList, slug }) => {
           </Tooltip>
         </div>
       )}
-      <div className="flex flex-col w-3/4 mx-auto bg-gray-200 mt-4 pl-6 pr-8">
+      <div className="flex flex-col w-3/4 mx-auto bg-gray-200 my-4 pl-6 pr-8">
         {questionList.map(({ id, question }, index) => (
           <div
             key={index}

@@ -82,4 +82,14 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
     assert_equal response.parsed_body["error"], t("not_found", entity: "Quiz")
   end
+
+  def test_check_slug_works_on_given_valid_slug
+    quiz_params = { quiz: { title: "#{@quiz.title} Quiz", setslug: true } }
+    put quiz_path(@quiz.id), params: quiz_params, headers: @user_header
+    assert_response :success
+    @quiz.reload
+    get "/public/quiz/#{@quiz.slug}"
+    assert_response :success
+    assert_equal response.parsed_body, { "id" => 1, "title" => "Maths" }
+  end
 end

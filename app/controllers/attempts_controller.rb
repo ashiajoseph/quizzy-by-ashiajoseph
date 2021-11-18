@@ -24,9 +24,8 @@ class AttemptsController < ApplicationController
     questionList = Quiz.find(@attempt.quiz_id).questions.includes(:options)
     recordList = questionList.map do |question|
       record = Hash.new
-      user_selected_option = params[:attempt_answers_attributes][question.id.to_s]
-      correct_option = question.options.select { |option|
-      option.answer}
+      user_selected_option = params[:attempt_answers_attributes][question[:id].to_s]
+      correct_option = question.options.select { |option| option.answer }
       record = {
         user_selected_option: user_selected_option,
         question_id: question.id,

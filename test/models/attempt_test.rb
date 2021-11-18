@@ -31,4 +31,12 @@ class AttemptTest < ActiveSupport::TestCase
     @attempt.user = nil
     assert_not @attempt.valid?
   end
+
+  def test_correct_answers_count_has_default_value_0_initially
+    assert_equal @attempt.correct_answers_count, 0
+  end
+
+  def test_incorrect_answers_count_has_default_value_0_initially
+    assert_equal @attempt.incorrect_answers_count, 0
+  end
 end

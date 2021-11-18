@@ -54,20 +54,27 @@ class QuizzesController < ApplicationController
 
   def generate_report
     quizzes = @current_user.quizzes.order("created_at DESC")
-    quizlist = quizzes.includes(:attempts, attempts: [:user])
-    @report = [ ]
-    quizlist.each do |quiz|
-      quiz.attempts.each do |attempt|
-
-        if attempt.submitted
-          full_name = attempt.user.first_name + " " + attempt.user.last_name
-          @report << {
-            title: quiz.title, user_name: full_name, email: attempt.user.email,
-            correct_count: attempt.correct_answers_count, incorrect_count: attempt.incorrect_answers_count
-          }
+    if quizzes.size != 0
+      published_quiz_present = quizzes.all? { |quiz| quiz.slug != nil }
+      if published_quiz_present
+        quizlist = quizzes.includes(:attempts, attempts: [:user])
+        @report = [ ]
+        quizlist.each do |quiz|
+          quiz.attempts.each do |attempt|
+            if attempt.submitted
+              full_name = attempt.user.first_name + " " + attempt.user.last_name
+              @report << {
+                title: quiz.title, user_name: full_name, email: attempt.user.email,
+                correct_count: attempt.correct_answers_count, incorrect_count: attempt.incorrect_answers_count
+              }
+            end
+          end
         end
-
+      else
+        render status: :not_found, json: { error: t("no_quiz", entity: "published") }
       end
+    else
+      render status: :not_found, json: { error: t("no_quiz", entity: "created") }
     end
   end
 

@@ -14,10 +14,10 @@ Rails.application.routes.draw do
         get "retrieve_attempt_answers"
       end
     end
+    get "public/quiz/:slug", to: "quizzes#check_slug"
+    get "generate_report", to: "quizzes#generate_report"
   end
 
   root "home#index"
-  get "public/quiz/:slug", to: "quizzes#check_slug"
-  get "generate_report", to: "quizzes#generate_report"
   get "*path", to: "home#index", via: :all
 end

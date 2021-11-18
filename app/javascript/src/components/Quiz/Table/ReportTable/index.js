@@ -14,7 +14,7 @@ const ReportTable = ({ reportData }) => {
   return (
     <table
       {...getTableProps()}
-      className="w-89 py-12 mx-auto my-12 rounded-xl bg-black bg-opacity-70 tracking-wider  "
+      className="w-89 py-12 mx-auto my-12 rounded-md bg-black bg-opacity-70 tracking-wider  "
     >
       <thead className="text-xl text-gray-100 ">
         {headerGroups.map((headerGroup, ind) => (
