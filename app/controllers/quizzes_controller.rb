@@ -54,11 +54,13 @@ class QuizzesController < ApplicationController
 
   def generate_report
     quizzes = @current_user.quizzes.order("created_at DESC")
+    @content = false
     if quizzes.size != 0
       published_quiz_present = quizzes.all? { |quiz| quiz.slug != nil }
       if published_quiz_present
         quizlist = quizzes.includes(:attempts, attempts: [:user])
         @report = [ ]
+        @content = true
         quizlist.each do |quiz|
           quiz.attempts.each do |attempt|
             if attempt.submitted
