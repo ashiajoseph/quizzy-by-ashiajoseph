@@ -24,12 +24,8 @@ class AttemptsControllerTest < ActionDispatch::IntegrationTest
   def create_attempt_answers_records
     post "/attempts/create_attempt_answers",
       params: {
-        attempts: {
-          attempt_answers_attributes: [ {
-            user_selected_option: @option2.id,
-            question_id: @question.id
-          }]
-        }, id: @attempt.id
+        attempt_answers_attributes: { "#{@question.id}" => "#{@option2.id}" },
+        id: @attempt.id
       }
   end
 
@@ -61,17 +57,6 @@ class AttemptsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  def test_attempt_answers_shouldnt_be_created_without_valid_question_id
-    invalid_id = 100
-    post "/attempts/create_attempt_answers",
-      params: {
-        attempts: { attempt_answers_attributes: [ { user_selected_option: @option2.id, question_id: invalid_id }] },
-        id: @attempt.id
-      }
-    assert_response :not_found
-    assert_equal response.parsed_body["error"], t("not_found", entity: "Question")
-  end
-
   def test_attempt_answer_retrieval
     create_attempt_answers_records()
     get "/attempts/retrieve_attempt_answers", params: { id: @attempt.id }
@@ -84,5 +69,12 @@ class AttemptsControllerTest < ActionDispatch::IntegrationTest
     get "/attempts/retrieve_attempt_answers", params: { id: 100 }
     assert_response :not_found
     assert_equal response.parsed_body["error"], t("not_found", entity: "Attempt")
+  end
+
+  def test_scores_updated_after_creating_attempts_record
+    create_attempt_answers_records()
+    assert_response :success
+    @attempt.reload
+    assert_not_equal @attempt.correct_answers_count + @attempt.incorrect_answers_count, 0
   end
 end

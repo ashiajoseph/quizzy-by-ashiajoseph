@@ -55,11 +55,11 @@ const Participant = () => {
     }
   };
 
-  const submitAnswers = async formatted_answer => {
+  const submitAnswers = async () => {
     try {
       await attemptsApi.update(attemptId);
       await attemptsApi.create({
-        attempts: { attempt_answers_attributes: formatted_answer },
+        attempt_answers_attributes: answers,
         id: attemptId,
       });
       setResult(true);
@@ -68,22 +68,12 @@ const Participant = () => {
     }
   };
 
-  const format_answers = () => {
-    return questionList
-      .map(({ id }) => id)
-      .reduce((array, id) => {
-        let val = answers[id] ? answers[id] : "";
-        return [...array, { user_selected_option: val, question_id: id }];
-      }, []);
-  };
-  //Participant submit answers - answer stored in db
   const handleSubmit = async e => {
     e.preventDefault();
     setBtnLoading(true);
     setLoading(true);
     setQuiz(false);
-    const formatted_answer = format_answers();
-    await submitAnswers(formatted_answer);
+    await submitAnswers();
     setBtnLoading(false);
   };
 

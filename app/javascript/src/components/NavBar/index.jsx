@@ -8,6 +8,7 @@ import NavItem from "./NavItem";
 
 const NavBar = () => {
   const userName = getFromLocalStorage("authUserName");
+
   const handleLogout = async () => {
     try {
       await authApi.logout();
@@ -29,6 +30,7 @@ const NavBar = () => {
           <div className="flex items-center">
             {userName && (
               <div className="flex flex-row justify-center ">
+                <NavItem name="Reports" path={`/report`} style="text-xl" />
                 <NavItem name={userName} path="/" style="text-xl" />
 
                 <button
