@@ -92,4 +92,27 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal response.parsed_body, { "id" => 1, "title" => "Maths" }
   end
+
+  def test_check_slug_return_nil_on_given_invalid_slug
+    quiz_params = { quiz: { title: "#{@quiz.title} Quiz", setslug: true } }
+    put quiz_path(@quiz.id), params: quiz_params, headers: @user_header
+    assert_response :success
+    @quiz.reload
+    get "/public/quiz/invalid"
+    assert_response :success
+    assert_equal response.parsed_body, { "id" => nil, "title" => nil }
+  end
+
+  def test_report_not_generated_if_no_quiz_created
+    Quiz.delete_all
+    get "/generate_report", headers: @user_header
+    assert_response :not_found
+    assert_equal response.parsed_body["error"], t("no_quiz", entity: "created")
+  end
+
+  def test_report_not_generated_if_no_quiz_published
+    get "/generate_report", headers: @user_header
+    assert_response :not_found
+    assert_equal response.parsed_body["error"], t("no_quiz", entity: "published")
+  end
 end
