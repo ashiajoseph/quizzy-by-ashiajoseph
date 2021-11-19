@@ -40,9 +40,13 @@ const QuestionForm = ({
   const removeOption = index => {
     const optList = [...optionList];
     optList.splice(index, 1);
+    if (index <= qa.answer) {
+      setQA(prev => {
+        return { ...prev, answer: "" };
+      });
+    }
     setOptionList(optList);
   };
-
   let hide = optionList.length == 4 ? "hidden" : null;
   return (
     <>

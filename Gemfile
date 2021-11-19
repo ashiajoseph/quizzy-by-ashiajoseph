@@ -54,3 +54,4 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # To use React as frontend
 gem "react-rails"
+gem "sidekiq"
