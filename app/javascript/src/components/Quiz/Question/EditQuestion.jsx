@@ -4,7 +4,6 @@ import { PageLoader } from "@bigbinary/neetoui/v2";
 import { Toastr } from "@bigbinary/neetoui/v2";
 import { useParams } from "react-router-dom";
 
-import optionsApi from "apis/options";
 import questionsApi from "apis/questions";
 import Container from "components/Common/Container";
 
@@ -14,27 +13,43 @@ const EditQuestion = ({ history }) => {
   const [loading, setLoading] = useState(false);
   const [qa, setQA] = useState({ question: "", answer: "" });
   const [optionList, setOptionList] = useState([]);
-
+  const [fetchedOptionList, setFetchedOptionList] = useState({});
   const { quizid, id } = useParams();
 
-  const passOptions = async list => {
-    try {
-      await optionsApi.create({ id, option: { list: list, question_id: id } });
-    } catch (error) {
-      logger.error(error);
+  const formatReturnedOptions = () => {
+    const list = fetchedOptionList.map(({ id }, index) => {
+      const newcontent = optionList[index];
+      const answer = qa.answer == index;
+      if (newcontent !== undefined) {
+        return { id: id, content: newcontent, answer: answer };
+      }
+
+      return { id: id, content: "", answer: false, _destroy: "1" };
+    });
+    let newOptions = [];
+    if (fetchedOptionList.length < optionList.length) {
+      let start = fetchedOptionList.length;
+      newOptions = optionList.splice(start).map((value, index) => {
+        const answer = qa.answer == index + start;
+        return { content: value, answer: answer };
+      });
     }
+
+    return [...list, ...newOptions];
   };
-  const passQuestions = async () => {
+
+  const passQuestions = async formattedOptions => {
     try {
       await questionsApi.update({
         id,
-        payload: { mcq: { question: qa.question } },
+        payload: {
+          mcq: {
+            question: qa.question,
+            quiz_id: quizid,
+            options_attributes: formattedOptions,
+          },
+        },
       });
-      const optList = optionList.map((value, index) => {
-        const answer = qa.answer == index;
-        return { content: value, answer: answer };
-      });
-      passOptions(optList);
     } catch (error) {
       logger.error(error);
     }
@@ -45,12 +60,13 @@ const EditQuestion = ({ history }) => {
     if (qa.answer == "" || qa.answer == undefined) {
       Toastr.error(Error("Please select the Correct Answer"));
     } else {
-      await passQuestions();
-      await history.push(`/quiz/${quizid}`);
+      const formattedOptions = formatReturnedOptions();
+      await passQuestions(formattedOptions);
+      history.push(`/quiz/${quizid}`);
     }
   };
 
-  const formatOptions = list => {
+  const formatFetchedOptions = list => {
     const formatted_list = list.map(({ content, answer }, index) => {
       if (answer) {
         setQA(prev => {
@@ -70,7 +86,8 @@ const EditQuestion = ({ history }) => {
       setQA(prev => {
         return { ...prev, ["question"]: data.qa.question };
       });
-      formatOptions(data.qa.options);
+      setFetchedOptionList(data.qa.options);
+      formatFetchedOptions(data.qa.options);
       setLoading(false);
     } catch (error) {
       logger.error(error);
