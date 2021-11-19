@@ -16,7 +16,8 @@ import EditQuiz from "components/Quiz/EditQuiz";
 import CreateQuestion from "components/Quiz/Question/CreateQuestion";
 import EditQuestion from "components/Quiz/Question/EditQuestion";
 import { QuizProvider } from "components/Quiz/QuizContext";
-import Report from "components/Quiz/Report";
+import PrepareReport from "components/Quiz/ReportDetails/PrepareReport";
+import Report from "components/Quiz/ReportDetails/Report";
 import ShowQuiz from "components/Quiz/ShowQuiz";
 import { getFromLocalStorage } from "helpers/storage";
 
@@ -63,6 +64,7 @@ const App = () => {
                 component={EditQuestion}
               />
               <Route exact path="/report" component={Report} />
+              <Route exact path="/report/prepare" component={PrepareReport} />
             </Switch>
           </PrivateRoute>
         </Switch>

@@ -61,6 +61,10 @@ GEM
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
     ast (2.4.2)
+    axlsx (2.0.1)
+      htmlentities (~> 4.3.1)
+      nokogiri (>= 1.4.1)
+      rubyzip (~> 1.0.0)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
@@ -79,6 +83,7 @@ GEM
     ffi (1.15.4)
     globalid (0.5.2)
       activesupport (>= 5.0)
+    htmlentities (4.3.4)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     jbuilder (2.11.2)
@@ -167,6 +172,7 @@ GEM
       rack (>= 1.1)
       rubocop (>= 1.7.0, < 2.0)
     ruby-progressbar (1.11.0)
+    rubyzip (1.0.0)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
@@ -210,11 +216,14 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     zeitwerk (2.5.1)
+    zip-zip (0.3)
+      rubyzip (>= 1.0.0)
 
 PLATFORMS
   x86_64-darwin-20
 
 DEPENDENCIES
+  axlsx
   bcrypt (~> 3.1.13)
   bootsnap (>= 1.4.4)
   byebug
@@ -233,6 +242,7 @@ DEPENDENCIES
   tzinfo-data
   web-console (>= 4.1.0)
   webpacker (~> 5.0)
+  zip-zip
 
 RUBY VERSION
    ruby 3.0.2p107

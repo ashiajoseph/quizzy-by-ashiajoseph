@@ -6,7 +6,7 @@ import quizzesApi from "apis/quizzes";
 import Container from "components/Common/Container";
 import PageHeader from "components/Common/PageHeader";
 
-import ReportTable from "./Table/ReportTable";
+import ReportTable from "../Table/ReportTable";
 
 const Report = () => {
   const [loading, setLoading] = useState(false);
@@ -39,7 +39,11 @@ const Report = () => {
 
   return (
     <Container>
-      <PageHeader heading="Reports" link_name="Download" link_path="/" />
+      <PageHeader
+        heading="Reports"
+        link_name="Download"
+        link_path="/report/prepare"
+      />
       <ReportTable reportData={reportData} show={show} />
     </Container>
   );
