@@ -40,13 +40,13 @@ const App = () => {
         <ToastContainer />
         <Switch>
           <Route exact path="/login" component={Login} />
-          <Route exact path="/public/:slug" component={PublicBase} />
+
           <Route
             exact
             path="/public/:slug/attempt/new"
             component={Participant}
           />
-
+          <Route path="/public/:slug" component={PublicBase} />
           <PrivateRoute redirectRoute="/login" condition={isLoggedIn}>
             <Switch>
               <Route exact path="/" component={Dashboard} />
