@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       end
     end
     get "public/quiz/:slug", to: "quizzes#check_slug"
-    get "generate_report", to: "users#generate_report"
+    get "generate_report", to: "reports#generate_report"
     get "/export" => "reports#export"
     get "/export_status/:id" => "reports#export_status"
   end

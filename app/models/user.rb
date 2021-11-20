@@ -18,6 +18,18 @@ class User < ApplicationRecord
 
   before_validation :to_lowercase
 
+  def self.report_data (quizlist)
+    report = []
+    quizlist.each do |quiz|
+      quiz.attempts.each do |attempt|
+        if attempt.submitted
+          report << attempt
+        end
+      end
+    end
+    report
+  end
+
   private
 
     def to_lowercase

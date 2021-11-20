@@ -7,14 +7,7 @@ class ExportReportWorker
   def perform (current_user_id)
     user = User.find_by_id(current_user_id)
     quizlist = user.quizzes.order("title ASC")
-    @report = []
-    quizlist.each do |quiz|
-      quiz.attempts.each do |attempt|
-        if attempt.submitted
-          @report << attempt
-        end
-      end
-    end
+    @report = User.report_data(quizlist)
     total @report.size
     xlsx_package = Axlsx::Package.new
     xlsx_workbook = xlsx_package.workbook

@@ -102,17 +102,4 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal response.parsed_body, { "id" => nil, "title" => nil }
   end
-
-  def test_report_not_generated_if_no_quiz_created
-    Quiz.delete_all
-    get "/generate_report", headers: @user_header
-    assert_response :not_found
-    assert_equal response.parsed_body["error"], t("no_quiz", entity: "created")
-  end
-
-  def test_report_not_generated_if_no_quiz_published
-    get "/generate_report", headers: @user_header
-    assert_response :not_found
-    assert_equal response.parsed_body["error"], t("no_quiz", entity: "published")
-  end
 end

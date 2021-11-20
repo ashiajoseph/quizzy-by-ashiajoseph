@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { PageLoader } from "@bigbinary/neetoui/v2";
 
@@ -9,6 +9,7 @@ import PageHeader from "components/Common/PageHeader";
 const PrepareReport = () => {
   const [loading, setLoading] = useState(true);
   const [jobId, setJobId] = useState("");
+  const interval = useRef(0);
 
   const downloadReport = () => {
     window.location.href = `/export_download/${jobId}`;
@@ -17,11 +18,11 @@ const PrepareReport = () => {
     try {
       const response1 = await reportsApi.export_report();
       const jid = await response1.data.jid;
-      const interval = setInterval(async () => {
+      interval.current = setInterval(async () => {
         const response2 = await reportsApi.export_status(jid);
         const data = response2.data;
         if (data.status === "complete") {
-          clearInterval(interval);
+          clearInterval(interval.current);
           setJobId(jid);
           setLoading(false);
         }
@@ -33,6 +34,9 @@ const PrepareReport = () => {
 
   useEffect(() => {
     fetchReportDetails();
+    return () => {
+      clearInterval(interval.current);
+    };
   }, []);
 
   return (
