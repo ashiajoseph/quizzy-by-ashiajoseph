@@ -19,9 +19,12 @@ class ReportsController < ApplicationController
       percentage: job_status[:pct_complete]
     }
   end
-<<<<<<< ours
-=======
 
-  
->>>>>>> theirs
+  def export_download
+    job_id = params[:id]
+    exported_file_name = "report_#{job_id}.xlsx"
+    filename = "Report_#{DateTime.now.strftime("%Y%m%d_%H%M%S")}.xlsx"
+
+    send_file Rails.root.join("tmp", exported_file_name), type: "application/xlsx", filename: filename
+  end
 end
