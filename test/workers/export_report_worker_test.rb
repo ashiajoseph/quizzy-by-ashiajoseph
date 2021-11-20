@@ -2,7 +2,6 @@
 
 require "test_helper"
 class ExportReportWorkerTest < Minitest::Test
-  def test_example
-    skip "add some examples to (or delete) #{__FILE__}"
+  def setup
   end
 end

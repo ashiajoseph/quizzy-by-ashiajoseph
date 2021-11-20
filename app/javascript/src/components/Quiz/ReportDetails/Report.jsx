@@ -43,6 +43,7 @@ const Report = () => {
         heading="Reports"
         link_name="Download"
         link_path="/report/prepare"
+        hide={reportData.length ? false : true}
       />
       <ReportTable reportData={reportData} show={show} />
     </Container>

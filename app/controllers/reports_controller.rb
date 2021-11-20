@@ -7,8 +7,8 @@ class ReportsController < ApplicationController
     quizzes = @current_user.quizzes.order("created_at DESC")
     @content = false
     if quizzes.size != 0
-      published_quiz_present = quizzes.all? { |quiz| quiz.slug != nil }
-      if published_quiz_present
+      published_quiz_present = quizzes.all? { |quiz| quiz.slug == nil }
+      if !published_quiz_present
         quizlist = quizzes.includes(:attempts, attempts: [:user])
         @content = true
         @report = User.report_data(quizlist)
