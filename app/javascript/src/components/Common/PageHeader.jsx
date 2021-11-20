@@ -10,7 +10,12 @@ import AddLink from "./AddLink";
 
 import { quizContext } from "../Quiz/QuizContext";
 
-const PageHeader = ({ heading, link_name = "", link_path = "" }) => {
+const PageHeader = ({
+  heading,
+  link_name = "",
+  link_path = "",
+  hide = false,
+}) => {
   const [loading, setLoading] = useState(false);
   const { totalQuestions, publish, setPublish } = useContext(quizContext);
   const { quizid } = useParams();
@@ -38,7 +43,9 @@ const PageHeader = ({ heading, link_name = "", link_path = "" }) => {
           </h1>
         </div>
         <div>
-          <AddLink name={link_name} path={link_path} heading={heading} />
+          {!hide && (
+            <AddLink name={link_name} path={link_path} heading={heading} />
+          )}
           {totalQuestions != 0 && !publish && (
             <button
               onClick={publishQuiz}

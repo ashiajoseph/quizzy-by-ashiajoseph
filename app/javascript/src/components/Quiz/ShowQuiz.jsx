@@ -68,7 +68,7 @@ const ShowQuiz = () => {
     <Container>
       <PageHeader
         heading={`${quiz.title} Quiz`}
-        link_name="Add questions"
+        link_name="Add question"
         link_path={`/${quizid}/questions/new`}
       />
       {empty.current && (

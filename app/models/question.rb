@@ -5,7 +5,7 @@ class Question < ApplicationRecord
   has_many :options, dependent: :destroy
   has_many :attempt_answers
   validates :question, presence: true
-  accepts_nested_attributes_for :options
+  accepts_nested_attributes_for :options, allow_destroy: true
   validate :check_options_count, :check_answer
 
   def check_options_count
@@ -16,7 +16,7 @@ class Question < ApplicationRecord
 
   def check_answer
     selected = options.select { |option| option.answer == true }
-    unless selected.length == 1
+    unless selected.size == 1
       errors.add(:options, ": Only one option must be correct")
     end
   end

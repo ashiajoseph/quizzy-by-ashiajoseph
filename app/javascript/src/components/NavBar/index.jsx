@@ -1,5 +1,7 @@
 import React from "react";
 
+import { useLocation } from "react-router-dom";
+
 import authApi from "apis/auth";
 import { resetAuthTokens } from "apis/axios";
 import { getFromLocalStorage } from "helpers/storage";
@@ -8,7 +10,9 @@ import NavItem from "./NavItem";
 
 const NavBar = () => {
   const userName = getFromLocalStorage("authUserName");
-
+  const location = useLocation();
+  const publicLink = location.pathname.includes("public");
+  const displayNavRightDiv = userName && !publicLink;
   const handleLogout = async () => {
     try {
       await authApi.logout();
@@ -28,7 +32,7 @@ const NavBar = () => {
             <NavItem name="Quizzy" path="/" style="text-3xl tracking-wider" />
           </div>
           <div className="flex items-center">
-            {userName && (
+            {displayNavRightDiv && (
               <div className="flex flex-row justify-center ">
                 <NavItem name="Reports" path={`/report`} style="text-xl" />
                 <NavItem name={userName} path="/" style="text-xl" />

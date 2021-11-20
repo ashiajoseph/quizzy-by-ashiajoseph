@@ -28,8 +28,8 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.update(questions_params)
-      @question.options.delete_all
+    if @question.update(quiz_question_params)
+      render status: :ok, json: { notice: t("successfully_added", operation: "updated") }
     else
       render status: :unprocessable_entity, json: { error: @question.errors.full_messages.to_sentence }
     end
@@ -47,11 +47,7 @@ class QuestionsController < ApplicationController
   private
 
     def quiz_question_params
-      params.require(:mcq).permit(:question, :quiz_id, options_attributes: [:content, :answer])
-    end
-
-    def questions_params
-      params.require(:mcq).permit(:question)
+      params.require(:mcq).permit(:question, :quiz_id, options_attributes: [:id, :content, :answer, :_destroy])
     end
 
     def load_quiz

@@ -3,6 +3,7 @@
 class AttemptsController < ApplicationController
   before_action :load_attempt, except: :index
   after_action :store_correct_and_incorrect_answers_count, only: :create_attempt_answers
+
   def index
     quiz = Quiz.find_by(id: params[:quizid])
     @questions = quiz.questions.includes(:options)

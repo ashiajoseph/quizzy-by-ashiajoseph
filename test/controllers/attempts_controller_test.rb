@@ -11,7 +11,7 @@ class AttemptsControllerTest < ActionDispatch::IntegrationTest
     @question = @quiz.questions.create!(
       question: "question",
       options_attributes: [{ content: "opt1", answer: true }, { content: "opt2", answer: false } ])
-    @option1 = @question.options.first
+
     @option2 = @question.options.last
     @participant = User.create!(
       {

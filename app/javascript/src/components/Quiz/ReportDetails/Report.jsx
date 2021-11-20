@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 
 import { PageLoader } from "@bigbinary/neetoui/v2";
 
-import quizzesApi from "apis/quizzes";
+import reportsApi from "apis/reports";
 import Container from "components/Common/Container";
 import PageHeader from "components/Common/PageHeader";
 
-import ReportTable from "./Table/ReportTable";
+import ReportTable from "../Table/ReportTable";
 
 const Report = () => {
   const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ const Report = () => {
   const fetchReportDetails = async () => {
     setLoading(true);
     try {
-      const response = await quizzesApi.generate_report();
+      const response = await reportsApi.generate_report();
       const data = await response.data;
       setReportData(data.report_data);
       setShow(data.display);
@@ -39,7 +39,12 @@ const Report = () => {
 
   return (
     <Container>
-      <PageHeader heading="Reports" link_name="Download" link_path="/" />
+      <PageHeader
+        heading="Reports"
+        link_name="Download"
+        link_path="/report/prepare"
+        hide={reportData.length ? false : true}
+      />
       <ReportTable reportData={reportData} show={show} />
     </Container>
   );

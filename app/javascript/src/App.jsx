@@ -16,7 +16,8 @@ import EditQuiz from "components/Quiz/EditQuiz";
 import CreateQuestion from "components/Quiz/Question/CreateQuestion";
 import EditQuestion from "components/Quiz/Question/EditQuestion";
 import { QuizProvider } from "components/Quiz/QuizContext";
-import Report from "components/Quiz/Report";
+import PrepareReport from "components/Quiz/ReportDetails/PrepareReport";
+import Report from "components/Quiz/ReportDetails/Report";
 import ShowQuiz from "components/Quiz/ShowQuiz";
 import { getFromLocalStorage } from "helpers/storage";
 
@@ -39,13 +40,13 @@ const App = () => {
         <ToastContainer />
         <Switch>
           <Route exact path="/login" component={Login} />
-          <Route exact path="/public/:slug" component={PublicBase} />
+
           <Route
             exact
             path="/public/:slug/attempt/new"
             component={Participant}
           />
-
+          <Route path="/public/:slug" component={PublicBase} />
           <PrivateRoute redirectRoute="/login" condition={isLoggedIn}>
             <Switch>
               <Route exact path="/" component={Dashboard} />
@@ -63,6 +64,7 @@ const App = () => {
                 component={EditQuestion}
               />
               <Route exact path="/report" component={Report} />
+              <Route exact path="/report/prepare" component={PrepareReport} />
             </Switch>
           </PrivateRoute>
         </Switch>

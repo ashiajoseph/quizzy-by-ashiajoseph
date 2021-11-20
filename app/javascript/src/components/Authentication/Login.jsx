@@ -18,7 +18,7 @@ const Login = () => {
       const response = await authApi.login({ login: { email, password } });
       setToLocalStorage({
         authToken: response.data.authentication_token,
-        email,
+        email: email.toLowerCase(),
         userId: response.data.id,
         userName: response.data.first_name + " " + response.data.last_name,
       });
