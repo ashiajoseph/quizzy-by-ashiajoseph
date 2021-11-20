@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { PageLoader } from "@bigbinary/neetoui/v2";
 
-import quizzesApi from "apis/quizzes";
+import usersApi from "apis/users";
 import Container from "components/Common/Container";
 import PageHeader from "components/Common/PageHeader";
 
@@ -15,7 +15,7 @@ const Report = () => {
   const fetchReportDetails = async () => {
     setLoading(true);
     try {
-      const response = await quizzesApi.generate_report();
+      const response = await usersApi.generate_report();
       const data = await response.data;
       setReportData(data.report_data);
       setShow(data.display);
