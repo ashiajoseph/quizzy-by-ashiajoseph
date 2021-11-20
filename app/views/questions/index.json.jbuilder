@@ -1,4 +1,7 @@
 # frozen_string_literal: true
 
-json.questions @questions.as_json(only: %i[id question])
+json.questions @questions do |record|
+    json.id record.id
+    json.question record.question
+end
 json.options @options

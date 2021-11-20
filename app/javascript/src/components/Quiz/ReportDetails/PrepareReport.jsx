@@ -59,10 +59,9 @@ const PrepareReport = () => {
             </h1>
             <button
               type="button"
-              className={`flex justify-center  px-4 py-2 bg-lime
-              font-medium leading-5 transition duration-150
-              ease-in-out border border-transparent
-              group focus:outline-none w-1/3 hover:bg-black hover:text-lime text-md rounded-lg mx-auto`}
+              className={
+                "font-semibold text-lg text-black rounded-md py-2 px-4 bg-lime focus:outline-none  w-1/3 hover:bg-black hover:text-lime  mx-auto"
+              }
               onClick={downloadReport}
             >
               Download
