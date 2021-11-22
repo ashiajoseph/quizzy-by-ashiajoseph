@@ -11,6 +11,7 @@ import QuestionForm from "../Form/QuestionForm";
 
 const EditQuestion = ({ history }) => {
   const [loading, setLoading] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
   const [qa, setQA] = useState({ question: "", answer: "" });
   const [optionList, setOptionList] = useState([]);
   const [fetchedOptionList, setFetchedOptionList] = useState({});
@@ -21,7 +22,7 @@ const EditQuestion = ({ history }) => {
       const newcontent = optionList[index];
       const answer = qa.answer == index;
       if (newcontent !== undefined) {
-        return { id: id, content: newcontent, answer: answer };
+        return { id: id, content: newcontent.trim(), answer: answer };
       }
 
       return { id: id, content: "", answer: false, _destroy: "1" };
@@ -31,7 +32,7 @@ const EditQuestion = ({ history }) => {
       let start = fetchedOptionList.length;
       newOptions = optionList.splice(start).map((value, index) => {
         const answer = qa.answer == index + start;
-        return { content: value, answer: answer };
+        return { content: value.trim(), answer: answer };
       });
     }
 
@@ -44,22 +45,33 @@ const EditQuestion = ({ history }) => {
         id,
         payload: {
           mcq: {
-            question: qa.question,
+            question: qa.question.trim(),
             quiz_id: quizid,
             options_attributes: formattedOptions,
           },
         },
       });
+      setBtnLoading(false);
     } catch (error) {
       logger.error(error);
+      setBtnLoading(false);
     }
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
+    const isBlankQuestion = qa.question.trim().length === 0;
+    const isBlankOptions = optionList.some(
+      option => option.trim().length === 0
+    );
     if (qa.answer == "" || qa.answer == undefined) {
       Toastr.error(Error("Please select the Correct Answer"));
+    } else if (isBlankQuestion) {
+      Toastr.error(Error("Question can't be blank"));
+    } else if (isBlankOptions) {
+      Toastr.error(Error("Option can't be blank"));
     } else {
+      setBtnLoading(true);
       const formattedOptions = formatReturnedOptions();
       await passQuestions(formattedOptions);
       history.push(`/quiz/${quizid}`);
@@ -118,6 +130,7 @@ const EditQuestion = ({ history }) => {
         qa={qa}
         setQA={setQA}
         handleSubmit={handleSubmit}
+        loading={btnLoading}
       />
     </Container>
   );

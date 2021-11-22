@@ -20,11 +20,13 @@ const CreateQuestion = ({ history }) => {
     try {
       const optList = optionList.map((value, index) => {
         const answer = qa.answer == index;
-        return { content: value, answer: answer };
+        const optionContent = value.trim();
+        return { content: optionContent, answer: answer };
       });
+      const question = qa.question.trim();
       await questionsApi.create({
         mcq: {
-          question: qa.question,
+          question: question,
           quiz_id: quizid,
           options_attributes: optList,
         },
@@ -38,8 +40,16 @@ const CreateQuestion = ({ history }) => {
   };
   const handleSubmit = async e => {
     e.preventDefault();
+    const isBlankQuestion = qa.question.trim().length === 0;
+    const isBlankOptions = optionList.some(
+      option => option.trim().length === 0
+    );
     if (qa.answer == "" || qa.answer == undefined) {
       Toastr.error(Error("Please select the Correct Answer"));
+    } else if (isBlankQuestion) {
+      Toastr.error(Error("Question can't be blank"));
+    } else if (isBlankOptions) {
+      Toastr.error(Error("Option can't be blank"));
     } else {
       setLoading(true);
       await passQuestions();
