@@ -63,6 +63,6 @@ class ReportsControllerTest < ActionDispatch::IntegrationTest
     publish_quiz_and_create_attempt_record()
     get "/export", headers: @user_header
     assert_response :success
-    assert_not_equal response.parsed_body, nil
+    assert_not_equal response.parsed_body["jid"], nil
   end
 end

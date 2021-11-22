@@ -9,6 +9,7 @@ import { initializeLogger } from "common/logger";
 import Login from "components/Authentication/Login";
 import PrivateRoute from "components/Common/PrivateRoute";
 import Dashboard from "components/Dashboard";
+import ErrorBoundary from "components/ErrorBoundary";
 import Participant from "components/Public/Participant";
 import PublicBase from "components/Public/PublicBase";
 import CreateQuiz from "components/Quiz/CreateQuiz";
@@ -65,6 +66,7 @@ const App = () => {
               />
               <Route exact path="/report" component={Report} />
               <Route exact path="/report/prepare" component={PrepareReport} />
+              <Route path="*" component={ErrorBoundary} />
             </Switch>
           </PrivateRoute>
         </Switch>
