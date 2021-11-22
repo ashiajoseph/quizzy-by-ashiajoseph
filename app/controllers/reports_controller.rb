@@ -32,8 +32,7 @@ class ReportsController < ApplicationController
     job_status = Sidekiq::Status.get_all(job_id).symbolize_keys
 
     render json: {
-      status: job_status[:status],
-      percentage: job_status[:pct_complete]
+      status: job_status[:status]
     }
   end
 
