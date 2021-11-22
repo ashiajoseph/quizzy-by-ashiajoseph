@@ -59,10 +59,10 @@ const ShowQA = ({ questionList, setQuestionList, optionList, slug }) => {
             key={index}
             className="mt-6 border-b-2 border-opacity-75	border-gray-600	pb-4"
           >
-            <div className="flex justify-end mb-2">
+            <div className="flex justify-end mb-2 mr-3">
               <Tooltip position="bottom" content="Edit">
                 <button
-                  className="focus:outline-none ml-5 "
+                  className="focus:outline-none ml-5 mr-4"
                   onClick={() => editQuestion(id)}
                 >
                   <Edit size={32} />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import { Toastr } from "@bigbinary/neetoui/v2";
 import { useParams } from "react-router-dom";
 
 import quizzesApi from "apis/quizzes";
@@ -12,8 +13,7 @@ const EditQuiz = ({ history }) => {
   const { quizid } = useParams();
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async e => {
-    e.preventDefault();
+  const passQuizDetails = async title => {
     setLoading(true);
     try {
       await quizzesApi.update({
@@ -26,6 +26,12 @@ const EditQuiz = ({ history }) => {
       logger.error(error);
       setLoading(false);
     }
+  };
+  const handleSubmit = e => {
+    e.preventDefault();
+    const trimmedTitle = title.trim();
+    if (trimmedTitle.length === 0) Toastr.error(Error("Title can't be blank"));
+    else passQuizDetails(trimmedTitle);
   };
   const fetchQuizDetails = async () => {
     try {

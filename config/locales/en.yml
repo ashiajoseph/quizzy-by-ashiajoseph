@@ -7,6 +7,7 @@ en:
   session:
     incorrect_credentials: "Incorrect credentials, Try again."
     could_not_auth: "Could not authenticate with the provided credentials."
+    access_denied: "Access denied for Standard users"
   successfully_created: "Successfully created Quiz"
   successfully_added: "Successfully %{operation} Question"
   successfully_updated: "Successfully updated %{entity}"
