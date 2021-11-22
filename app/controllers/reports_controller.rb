@@ -30,7 +30,6 @@ class ReportsController < ApplicationController
   def export_status
     job_id = params[:id]
     job_status = Sidekiq::Status.get_all(job_id).symbolize_keys
-
     render json: {
       status: job_status[:status]
     }

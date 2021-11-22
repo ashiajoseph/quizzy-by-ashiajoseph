@@ -58,11 +58,4 @@ class ReportsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
     assert_equal response.parsed_body["error"], t("session.could_not_auth")
   end
-
-  def test_export_return_job_id_for_valid_user
-    publish_quiz_and_create_attempt_record()
-    get "/export", headers: @user_header
-    assert_response :success
-    assert_not_equal response.parsed_body["jid"], nil
-  end
 end
