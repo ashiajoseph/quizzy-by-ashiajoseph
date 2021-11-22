@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 
+import { Loading } from "@bigbinary/neeto-icons";
 import { useLocation } from "react-router-dom";
 
 import authApi from "apis/auth";
@@ -9,18 +10,22 @@ import { getFromLocalStorage } from "helpers/storage";
 import NavItem from "./NavItem";
 
 const NavBar = () => {
+  const [loading, setLoading] = useState(false);
   const userName = getFromLocalStorage("authUserName");
   const location = useLocation();
   const publicLink = location.pathname.includes("public");
   const displayNavRightDiv = userName && !publicLink;
   const handleLogout = async () => {
+    setLoading(true);
     try {
       await authApi.logout();
       localStorage.clear();
       resetAuthTokens();
+      setLoading(false);
       window.location.href = "/";
     } catch (error) {
       logger.error(error);
+      setLoading(false);
     }
   };
 
@@ -41,7 +46,7 @@ const NavBar = () => {
                   className="font-semibold inline-flex text-xl text-white pl-5 hover:text-lime focus:outline-none"
                   onClick={handleLogout}
                 >
-                  Logout
+                  {loading ? <Loading /> : "Logout"}
                 </button>
               </div>
             )}
