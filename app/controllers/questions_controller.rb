@@ -40,7 +40,7 @@ class QuestionsController < ApplicationController
       render status: :ok, json: { notice: t("deleted_successfully") }
     else
       render status: :unprocessable_entity,
-        json: { error: @task.errors.full_messages.to_sentence }
+        json: { error: @question.errors.full_messages.to_sentence }
     end
   end
 
