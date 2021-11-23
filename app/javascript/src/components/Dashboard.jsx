@@ -19,7 +19,7 @@ const Dashboard = () => {
   const fetchQuizList = async () => {
     try {
       const response = await quizzesApi.list();
-      const data = await response.data;
+      const data = response.data;
       setQuizList(data.quizzes);
     } catch (error) {
       logger.error(error);

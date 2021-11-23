@@ -4,7 +4,7 @@ import { UpArrow, DownArrow } from "@bigbinary/neeto-icons";
 import { Toastr } from "@bigbinary/neetoui/v2";
 import { useTable, useSortBy } from "react-table";
 
-import { COLS } from "./tableheader";
+import { COLS } from "./tableheader.js";
 
 const ReportTable = ({ reportData, show }) => {
   const cols = useMemo(() => COLS, []);

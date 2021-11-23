@@ -8,7 +8,7 @@ import { useTable, useSortBy } from "react-table";
 
 import quizzesApi from "apis/quizzes";
 
-import { COLS } from "./tableheader";
+import { COLS } from "./tableheader.js";
 
 import DeleteAlert from "../../DeleteAlert";
 
