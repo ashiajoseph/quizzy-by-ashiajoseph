@@ -29,6 +29,7 @@ const ShowQuiz = () => {
       setQuiz(data.quiz);
       const published = data.quiz.slug ? true : false;
       setPublish(published);
+      empty.current = false;
     } catch (error) {
       logger.error(error);
     }

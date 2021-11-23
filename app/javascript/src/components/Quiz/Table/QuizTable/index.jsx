@@ -46,6 +46,7 @@ const QuizTable = ({ quizList, setQuizList, empty }) => {
       empty.current = true;
     };
   }, []);
+
   return (
     <>
       <table

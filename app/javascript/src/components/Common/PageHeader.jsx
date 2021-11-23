@@ -31,7 +31,7 @@ const PageHeader = ({
       setPublish(true);
     } catch (error) {
       logger.error(error);
-      setLoading(true);
+      setLoading(false);
     }
   };
   return (

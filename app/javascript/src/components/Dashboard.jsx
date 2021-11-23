@@ -21,6 +21,7 @@ const Dashboard = () => {
       const response = await quizzesApi.list();
       const data = response.data;
       setQuizList(data.quizzes);
+      empty.current = false;
     } catch (error) {
       logger.error(error);
     } finally {
