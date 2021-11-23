@@ -9,7 +9,7 @@ import Container from "components/Common/Container";
 import QuizForm from "./Form/QuizForm";
 
 const EditQuiz = ({ history }) => {
-  const [title, setTitle] = useState(" ");
+  const [title, setTitle] = useState("");
   const { quizid } = useParams();
   const [loading, setLoading] = useState(false);
 

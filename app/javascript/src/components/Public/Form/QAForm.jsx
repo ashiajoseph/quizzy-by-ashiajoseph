@@ -35,7 +35,7 @@ const QuizQA = ({
         {result && (
           <div>
             <h2 className="mt-5 text-2xl font-semibold font-mono text-center text-gray-700">
-              Thankyou for taking the quiz.{" "}
+              Thankyou for taking the quiz.
             </h2>
             <h2 className="mt-2 text-xl font-semibold font-mono text-center text-gray-600">
               Your Result <br />
