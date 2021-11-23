@@ -9,7 +9,10 @@ import Container from "components/Common/Container";
 import QuestionForm from "../Form/QuestionForm";
 
 const CreateQuestion = ({ history }) => {
-  const [qa, setQA] = useState({ question: "", answer: "" });
+  const [questionAnswer, setQuestionAnswer] = useState({
+    question: "",
+    answer: "",
+  });
   const [optionList, setOptionList] = useState(["", ""]);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
@@ -19,11 +22,11 @@ const CreateQuestion = ({ history }) => {
   const passQuestions = async () => {
     try {
       const optList = optionList.map((value, index) => {
-        const answer = qa.answer == index;
+        const answer = questionAnswer.answer == index;
         const optionContent = value.trim();
         return { content: optionContent, answer: answer };
       });
-      const question = qa.question.trim();
+      const question = questionAnswer.question.trim();
       await questionsApi.create({
         mcq: {
           question: question,
@@ -40,11 +43,11 @@ const CreateQuestion = ({ history }) => {
   };
   const handleSubmit = async e => {
     e.preventDefault();
-    const isBlankQuestion = qa.question.trim().length === 0;
+    const isBlankQuestion = questionAnswer.question.trim().length === 0;
     const isBlankOptions = optionList.some(
       option => option.trim().length === 0
     );
-    if (qa.answer == "" || qa.answer == undefined) {
+    if (questionAnswer.answer == "" || questionAnswer.answer == undefined) {
       Toastr.error(Error("Please select the Correct Answer"));
     } else if (isBlankQuestion) {
       Toastr.error(Error("Question can't be blank"));
@@ -63,8 +66,8 @@ const CreateQuestion = ({ history }) => {
         handleSubmit={handleSubmit}
         optionList={optionList}
         setOptionList={setOptionList}
-        setQA={setQA}
-        qa={qa}
+        setQuestionAnswer={setQuestionAnswer}
+        questionAnswer={questionAnswer}
         loading={loading}
       />
     </Container>

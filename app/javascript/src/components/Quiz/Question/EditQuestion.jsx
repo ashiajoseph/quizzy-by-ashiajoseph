@@ -12,7 +12,10 @@ import QuestionForm from "../Form/QuestionForm";
 const EditQuestion = ({ history }) => {
   const [loading, setLoading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
-  const [qa, setQA] = useState({ question: "", answer: "" });
+  const [questionAnswer, setQuestionAnswer] = useState({
+    question: "",
+    answer: "",
+  });
   const [optionList, setOptionList] = useState([]);
   const [fetchedOptionList, setFetchedOptionList] = useState({});
   const { quizid, id } = useParams();
@@ -20,7 +23,7 @@ const EditQuestion = ({ history }) => {
   const formatReturnedOptions = () => {
     const list = fetchedOptionList.map(({ id }, index) => {
       const newcontent = optionList[index];
-      const answer = qa.answer == index;
+      const answer = questionAnswer.answer == index;
       if (newcontent !== undefined) {
         return { id: id, content: newcontent.trim(), answer: answer };
       }
@@ -31,7 +34,7 @@ const EditQuestion = ({ history }) => {
     if (fetchedOptionList.length < optionList.length) {
       let start = fetchedOptionList.length;
       newOptions = optionList.splice(start).map((value, index) => {
-        const answer = qa.answer == index + start;
+        const answer = questionAnswer.answer == index + start;
         return { content: value.trim(), answer: answer };
       });
     }
@@ -45,7 +48,7 @@ const EditQuestion = ({ history }) => {
         id,
         payload: {
           mcq: {
-            question: qa.question.trim(),
+            question: questionAnswer.question.trim(),
             quiz_id: quizid,
             options_attributes: formattedOptions,
           },
@@ -60,11 +63,11 @@ const EditQuestion = ({ history }) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const isBlankQuestion = qa.question.trim().length === 0;
+    const isBlankQuestion = questionAnswer.question.trim().length === 0;
     const isBlankOptions = optionList.some(
       option => option.trim().length === 0
     );
-    if (qa.answer == "" || qa.answer == undefined) {
+    if (questionAnswer.answer == "" || questionAnswer.answer == undefined) {
       Toastr.error(Error("Please select the Correct Answer"));
     } else if (isBlankQuestion) {
       Toastr.error(Error("Question can't be blank"));
@@ -81,7 +84,7 @@ const EditQuestion = ({ history }) => {
   const formatFetchedOptions = list => {
     const formatted_list = list.map(({ content, answer }, index) => {
       if (answer) {
-        setQA(prev => {
+        setQuestionAnswer(prev => {
           return { ...prev, ["answer"]: String(index) };
         });
       }
@@ -95,7 +98,7 @@ const EditQuestion = ({ history }) => {
     try {
       const response = await questionsApi.show(id);
       const data = response.data;
-      setQA(prev => {
+      setQuestionAnswer(prev => {
         return { ...prev, ["question"]: data.qa.question };
       });
       setFetchedOptionList(data.qa.options);
@@ -127,8 +130,8 @@ const EditQuestion = ({ history }) => {
         action="update"
         optionList={optionList}
         setOptionList={setOptionList}
-        qa={qa}
-        setQA={setQA}
+        questionAnswer={questionAnswer}
+        setQuestionAnswer={setQuestionAnswer}
         handleSubmit={handleSubmit}
         loading={btnLoading}
       />

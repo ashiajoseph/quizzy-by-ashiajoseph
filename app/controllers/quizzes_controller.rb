@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class QuizzesController < ApplicationController
-  before_action :authenticate_user_using_x_auth_token, except: %i[new edit check_slug]
+  before_action :authenticate_user_using_x_auth_token, except: %i[check_slug]
   before_action :load_quiz, only: %i[show update destroy]
   def index
     @quizzes = @current_user.quizzes.order("created_at DESC").as_json(only: %i[id title ])

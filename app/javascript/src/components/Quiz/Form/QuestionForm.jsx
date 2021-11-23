@@ -10,8 +10,8 @@ const QuestionForm = ({
   action = "create",
   handleSubmit,
   heading,
-  qa,
-  setQA,
+  questionAnswer,
+  setQuestionAnswer,
   optionList,
   setOptionList,
   loading,
@@ -24,7 +24,7 @@ const QuestionForm = ({
       optList[index] = value;
       setOptionList(optList);
     } else {
-      setQA(prev => {
+      setQuestionAnswer(prev => {
         return { ...prev, [name]: value };
       });
     }
@@ -40,8 +40,8 @@ const QuestionForm = ({
   const removeOption = index => {
     const optList = [...optionList];
     optList.splice(index, 1);
-    if (index <= qa.answer) {
-      setQA(prev => {
+    if (index <= questionAnswer.answer) {
+      setQuestionAnswer(prev => {
         return { ...prev, answer: "" };
       });
     }
@@ -68,7 +68,7 @@ const QuestionForm = ({
                 type="text"
                 placeholder=""
                 name="question"
-                value={qa.question}
+                value={questionAnswer.question}
                 onChange={handleChange}
               />
             </div>
@@ -132,7 +132,7 @@ const QuestionForm = ({
               </label>
               <select
                 name="answer"
-                value={qa.answer}
+                value={questionAnswer.answer}
                 className="block w-full  px-3 py-2 transition duration-150 ease-in-out border border-gray-300 rounded-md bg-gray-800 text-white focus:outline-none focus:shadow-outline-black"
                 onChange={handleChange}
               >
