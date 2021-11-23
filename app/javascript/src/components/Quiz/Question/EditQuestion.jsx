@@ -99,10 +99,10 @@ const EditQuestion = ({ history }) => {
       const response = await questionsApi.show(id);
       const data = response.data;
       setQuestionAnswer(prev => {
-        return { ...prev, ["question"]: data.qa.question };
+        return { ...prev, ["question"]: data.question_answer.question };
       });
-      setFetchedOptionList(data.qa.options);
-      formatFetchedOptions(data.qa.options);
+      setFetchedOptionList(data.question_answer.options);
+      formatFetchedOptions(data.question_answer.options);
       setLoading(false);
     } catch (error) {
       logger.error(error);
