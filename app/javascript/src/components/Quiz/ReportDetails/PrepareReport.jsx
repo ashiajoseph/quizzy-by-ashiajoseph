@@ -41,7 +41,7 @@ const PrepareReport = () => {
 
   return (
     <Container>
-      <PageHeader heading="Reports" link_name="" link_path="/" hide={true} />
+      <PageHeader heading="Reports" hide={true} />
       <div className="mt-40 text-center">
         {loading && (
           <div>

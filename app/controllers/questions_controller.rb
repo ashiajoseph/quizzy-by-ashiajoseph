@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class QuestionsController < ApplicationController
-  before_action :authenticate_user_using_x_auth_token, except: [:new, :edit]
+  before_action :authenticate_user_using_x_auth_token
   before_action :load_quiz, only: :create
   before_action :load_question, only: %i[show update destroy]
 
   def index
-    quiz = Quiz.find_by(id: params[:quizid])
+    quiz = @current_user.quizzes.find_by(id: params[:quizid])
     @questions = quiz.questions.includes(:options)
     @options = []
     @questions.each do |question|
@@ -51,7 +51,7 @@ class QuestionsController < ApplicationController
     end
 
     def load_quiz
-      @quiz = Quiz.find_by(id: quiz_question_params[:quiz_id])
+      @quiz = @current_user.quizzes.find_by(id: quiz_question_params[:quiz_id])
       unless @quiz
         render status: :not_found, json: { error: t("not_found", entity: "Quiz") }
       end
