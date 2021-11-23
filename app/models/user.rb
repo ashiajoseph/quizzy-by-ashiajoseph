@@ -10,10 +10,10 @@ class User < ApplicationRecord
   has_secure_token :authentication_token
 
   enum role: { standard: "standard", administrator: "administrator" }
-  validates :first_name, presence: true, length: { maximum: 50 }
-  validates :last_name, presence: true, length: { maximum: 50 }
+  validates :first_name, presence: true, length: { maximum: Constants::MAX_NAME_LENGTH }
+  validates :last_name, presence: true, length: { maximum: Constants::MAX_NAME_LENGTH }
   validates :email, presence: true, uniqueness: true, format: { with: VALID_EMAIL_REGEX }
-  validates :password, length: { minimum: 6 }, if: -> { password.present? }
+  validates :password, length: { minimum: Constants::MIN_PASSWORD_LENGTH }, if: -> { password.present? }
   validates :password_confirmation, presence: true, on: :create
 
   before_validation :to_lowercase

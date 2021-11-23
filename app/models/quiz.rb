@@ -4,7 +4,7 @@ class Quiz < ApplicationRecord
   belongs_to :user
   has_many :questions, dependent: :destroy
   has_many :attempts, dependent: :destroy
-  validates :title, presence: true, length: { maximum: 125 }
+  validates :title, presence: true, length: { maximum: Constants::MAX_TITLE_LENGTH }
   validates :slug, uniqueness: true, allow_nil: true
 
   def self.set_slug (title)
