@@ -17,7 +17,7 @@ const PrepareReport = () => {
   const fetchReportDetails = async () => {
     try {
       const response1 = await reportsApi.export_report();
-      const jid = await response1.data.jid;
+      const jid = response1.data.jid;
       interval.current = setInterval(async () => {
         const response2 = await reportsApi.export_status(jid);
         const data = response2.data;

@@ -20,12 +20,12 @@ const ShowQuiz = () => {
   const [optionList, setOptionList] = useState([]);
   const empty = useRef(false);
   const { setTotalQuestions, setPublish, publish } = useContext(quizContext);
-
   const { quizid } = useParams();
+
   const fetchQuiz = async () => {
     try {
       const response = await quizzesApi.show(quizid);
-      const data = await response.data;
+      const data = response.data;
       setQuiz(data.quiz);
       const published = data.quiz.slug ? true : false;
       setPublish(published);
@@ -37,7 +37,7 @@ const ShowQuiz = () => {
   const fetchQuestions = async () => {
     try {
       const response = await questionsApi.list(quizid);
-      const data = await response.data;
+      const data = response.data;
       setQuestionList(data.questions);
       setTotalQuestions(data.questions.length);
       setOptionList(data.options);

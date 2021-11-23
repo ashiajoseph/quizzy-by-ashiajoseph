@@ -94,7 +94,7 @@ const EditQuestion = ({ history }) => {
   const fetchQuestion = async () => {
     try {
       const response = await questionsApi.show(id);
-      const data = await response.data;
+      const data = response.data;
       setQA(prev => {
         return { ...prev, ["question"]: data.qa.question };
       });

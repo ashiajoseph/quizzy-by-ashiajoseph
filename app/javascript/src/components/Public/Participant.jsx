@@ -41,7 +41,7 @@ const Participant = () => {
         user: userDetails,
         quiz_id: quizData["id"],
       });
-      const data = await response.data;
+      const data = response.data;
       setAttemptId(data.attempt_id);
       if (!data.eligible) {
         setResult(true);
@@ -83,7 +83,7 @@ const Participant = () => {
       const response1 = await quizzesApi.check_slug(slug);
       const quizdata = response1.data;
       const response2 = await attemptsApi.list(quizdata.id);
-      const data = await response2.data;
+      const data = response2.data;
       setQuizData(quizdata);
       setQuestionList(data.questions);
       setOptionList(data.options);
@@ -103,7 +103,7 @@ const Participant = () => {
   const fetchParticipantAnswers = async () => {
     try {
       const response = await attemptsApi.retrieve_attempt_answers(attemptId);
-      const data = await response.data;
+      const data = response.data;
       setMarks({ correct: data.correct, incorrect: data.incorrect });
       setResultData(data.result);
       setQuiz(true);

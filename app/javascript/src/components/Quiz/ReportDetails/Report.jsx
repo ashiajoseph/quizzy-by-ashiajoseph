@@ -16,7 +16,7 @@ const Report = () => {
     setLoading(true);
     try {
       const response = await reportsApi.generate_report();
-      const data = await response.data;
+      const data = response.data;
       setReportData(data.report_data);
       setShow(data.display);
     } catch (error) {

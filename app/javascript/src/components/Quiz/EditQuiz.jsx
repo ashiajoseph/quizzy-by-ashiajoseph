@@ -40,7 +40,7 @@ const EditQuiz = ({ history }) => {
   const fetchQuizDetails = async () => {
     try {
       const response = await quizzesApi.show(quizid);
-      const { quiz } = await response.data;
+      const { quiz } = response.data;
       setTitle(quiz.title);
       setLoading(false);
     } catch (error) {
