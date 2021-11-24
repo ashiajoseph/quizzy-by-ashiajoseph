@@ -1,13 +1,14 @@
 import axios from "axios";
 
-const list = quizid => axios.get("questions", { params: { quizid } });
 const create = payload => axios.post("questions", payload);
-const show = id => axios.get(`questions/${id}`);
+const show = (id, quiz_id) =>
+  axios.get(`questions/${id}`, { params: { quiz_id } });
 const update = ({ id, payload }) => axios.put(`questions/${id}`, payload);
-const destroy = id => axios.delete(`questions/${id}`);
+const destroy = (id, quiz_id) =>
+  axios.delete(`questions/${id}`, { params: { quiz_id } });
+
 const questionsApi = {
   create,
-  list,
   show,
   update,
   destroy,

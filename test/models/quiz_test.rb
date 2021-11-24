@@ -23,11 +23,13 @@ class QuizTest < ActiveSupport::TestCase
   def test_quiz_title_should_not_exceed_maximum_length
     @quiz.title = "m" * 126
     assert_not @quiz.valid?
+    assert_includes @quiz.errors.full_messages, "Title is too long (maximum is 125 characters)"
   end
 
   def test_quiz_should_not_be_valid_without_user
     @quiz.user = nil
     assert @quiz.invalid?
+    assert_includes @quiz.errors.full_messages, "User must exist"
   end
 
   def test_error_raised_for_duplicate_slug

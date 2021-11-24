@@ -4,13 +4,12 @@ import { PageLoader } from "@bigbinary/neetoui/v2";
 import { isNil, isEmpty, either } from "ramda";
 import { useParams } from "react-router-dom";
 
-import questionsApi from "apis/questions";
 import quizzesApi from "apis/quizzes";
 import Container from "components/Common/Container";
 import PageHeader from "components/Common/PageHeader";
 
 import EmptyList from "./EmptyList";
-import ShowQA from "./Question/ShowQA";
+import ShowQuestionAnswers from "./Question/ShowQuestionAnswers";
 import { quizContext } from "./QuizContext";
 
 const ShowQuiz = () => {
@@ -20,36 +19,28 @@ const ShowQuiz = () => {
   const [optionList, setOptionList] = useState([]);
   const empty = useRef(false);
   const { setTotalQuestions, setPublish, publish } = useContext(quizContext);
-
   const { quizid } = useParams();
-  const fetchQuiz = async () => {
+
+  const fetchQuizDetails = async () => {
     try {
       const response = await quizzesApi.show(quizid);
-      const data = await response.data;
+      const data = response.data;
       setQuiz(data.quiz);
-      const published = data.quiz.slug ? true : false;
-      setPublish(published);
-    } catch (error) {
-      logger.error(error);
-    }
-  };
-
-  const fetchQuestions = async () => {
-    try {
-      const response = await questionsApi.list(quizid);
-      const data = await response.data;
       setQuestionList(data.questions);
       setTotalQuestions(data.questions.length);
       setOptionList(data.options);
-      setLoading(false);
+      const published = data.quiz.slug ? true : false;
+      setPublish(published);
+      empty.current = false;
     } catch (error) {
       logger.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(async () => {
-    await fetchQuiz();
-    await fetchQuestions();
+  useEffect(() => {
+    fetchQuizDetails();
   }, [publish]);
 
   if (loading) {
@@ -63,24 +54,28 @@ const ShowQuiz = () => {
   if (either(isNil, isEmpty)(questionList)) {
     empty.current = true;
   }
-
+  const valid_quiz = !isEmpty(quiz);
   return (
     <Container>
-      <PageHeader
-        heading={`${quiz.title} Quiz`}
-        link_name="Add question"
-        link_path={`/${quizid}/questions/new`}
-      />
-      {empty.current && (
-        <EmptyList content="There are no questions in this quiz" />
-      )}
-      {!empty.current && (
-        <ShowQA
-          questionList={questionList}
-          setQuestionList={setQuestionList}
-          optionList={optionList}
-          slug={quiz.slug}
-        />
+      {valid_quiz && (
+        <div>
+          <PageHeader
+            heading={`${quiz.title} Quiz`}
+            link_name="Add question"
+            link_path={`/quizzes/${quizid}/questions/new`}
+          />
+          {empty.current && (
+            <EmptyList content="There are no questions in this quiz" />
+          )}
+          {!empty.current && (
+            <ShowQuestionAnswers
+              questionList={questionList}
+              setQuestionList={setQuestionList}
+              optionList={optionList}
+              slug={quiz.slug}
+            />
+          )}
+        </div>
       )}
     </Container>
   );

@@ -13,9 +13,6 @@ class SessionsController < ApplicationController
     end
   end
 
-  def destroy
-  end
-
   private
 
     def login_params

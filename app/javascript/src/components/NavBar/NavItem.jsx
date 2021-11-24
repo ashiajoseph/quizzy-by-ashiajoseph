@@ -2,11 +2,11 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
-const NavItem = ({ name, path, style }) => {
+const NavItem = ({ name, path, style = "", heading = "" }) => {
   return (
     <Link
-      to={path}
-      className={`items-center font-semibold inline-flex text-white pl-5 hover:text-lime ${style} `}
+      to={{ pathname: path, state: heading }}
+      className={`items-center font-semibold ${style} `}
     >
       {name}
     </Link>

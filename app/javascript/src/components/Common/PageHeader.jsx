@@ -6,8 +6,7 @@ import { useParams } from "react-router-dom";
 
 import quizzesApi from "apis/quizzes";
 
-import AddLink from "./AddLink";
-
+import NavItem from "../NavBar/NavItem";
 import { quizContext } from "../Quiz/QuizContext";
 
 const PageHeader = ({
@@ -27,11 +26,11 @@ const PageHeader = ({
         quizid,
         payload: { quiz: { title: heading, setslug: true } },
       });
-      setLoading(false);
       setPublish(true);
     } catch (error) {
       logger.error(error);
-      setLoading(true);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -44,7 +43,12 @@ const PageHeader = ({
         </div>
         <div>
           {!hide && (
-            <AddLink name={link_name} path={link_path} heading={heading} />
+            <NavItem
+              name={link_name}
+              path={link_path}
+              heading={heading}
+              style="text-lg text-black rounded-md py-2 px-4 bg-lime mr-5"
+            />
           )}
           {totalQuestions != 0 && !publish && (
             <button

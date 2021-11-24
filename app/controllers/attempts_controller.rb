@@ -57,7 +57,7 @@ class AttemptsController < ApplicationController
     end
 
     def store_correct_and_incorrect_answers_count
-      correct = @attempt.attempt_answers.select { |qa| qa.user_selected_option == qa.option_id }.size
+      correct = @attempt.attempt_answers.select { |answer| answer.user_selected_option == answer.option_id }.size
       incorrect = @attempt.attempt_answers.size - correct
       unless @attempt.update(correct_answers_count: correct, incorrect_answers_count: incorrect)
         render status: :unprocessable_entity, json: { error: @attempt.errors.full_messages.to_sentence }

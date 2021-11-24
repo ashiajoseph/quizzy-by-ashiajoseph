@@ -10,17 +10,22 @@ import Answer from "./Answer";
 
 import { quizContext } from "../QuizContext";
 
-const ShowQA = ({ questionList, setQuestionList, optionList, slug }) => {
+const ShowQuestionAnswers = ({
+  questionList,
+  setQuestionList,
+  optionList,
+  slug,
+}) => {
   const { quizid } = useParams();
   const history = useHistory();
   const editQuestion = id => {
-    history.push(`/${quizid}/questions/${id}/edit`);
+    history.push(`/quizzes/${quizid}/questions/${id}/edit`);
   };
   const { setTotalQuestions } = useContext(quizContext);
 
   const deleteQuestion = async Id => {
     try {
-      await questionsApi.destroy(Id);
+      await questionsApi.destroy(Id, quizid);
       setQuestionList(prevlist => prevlist.filter(({ id }) => id !== Id));
       setTotalQuestions(questionList.length - 1);
     } catch (error) {
@@ -91,4 +96,4 @@ const ShowQA = ({ questionList, setQuestionList, optionList, slug }) => {
   );
 };
 
-export default ShowQA;
+export default ShowQuestionAnswers;

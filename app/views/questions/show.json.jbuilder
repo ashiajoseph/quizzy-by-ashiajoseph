@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.qa do
+json.question_answer do
   json.extract! @question,
     :id,
     :question

@@ -4,19 +4,19 @@ class Quiz < ApplicationRecord
   belongs_to :user
   has_many :questions, dependent: :destroy
   has_many :attempts, dependent: :destroy
-  validates :title, presence: true, length: { maximum: 125 }
+  validates :title, presence: true, length: { maximum: Constants::MAX_TITLE_LENGTH }
   validates :slug, uniqueness: true, allow_nil: true
 
   def self.set_slug (title)
     title_slug = title.parameterize
     regex_pattern = "slug #{Constants::DB_REGEX_OPERATOR} ?"
-    latest_task_slug = Quiz.where(
+    latest_quiz_slug = Quiz.where(
       regex_pattern,
       "#{title_slug}$|#{title_slug}-[0-9]+$"
     ).order(slug: :desc).first&.slug
     slug_count = 0
-    if latest_task_slug.present?
-      slug_count = latest_task_slug.split("-").last.to_i
+    if latest_quiz_slug.present?
+      slug_count = latest_quiz_slug.split("-").last.to_i
       only_one_slug_exists = slug_count == 0
       slug_count = 1 if only_one_slug_exists
     end

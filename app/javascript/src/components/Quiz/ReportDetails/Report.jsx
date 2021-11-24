@@ -9,20 +9,20 @@ import PageHeader from "components/Common/PageHeader";
 import ReportTable from "../Table/ReportTable";
 
 const Report = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [reportData, setReportData] = useState([]);
   const [show, setShow] = useState(false);
   const fetchReportDetails = async () => {
-    setLoading(true);
     try {
       const response = await reportsApi.generate_report();
-      const data = await response.data;
+      const data = response.data;
       setReportData(data.report_data);
       setShow(data.display);
     } catch (error) {
       logger.error(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include Authorizable
+
   def authenticate_user_using_x_auth_token
     user_email = request.headers["X-Auth-Email"]
     auth_token = request.headers["X-Auth-Token"].presence
@@ -11,5 +13,9 @@ class ApplicationController < ActionController::Base
     else
       render status: :unauthorized, json: { error: t("session.could_not_auth") }
     end
+  end
+
+  def current_user
+    @current_user
   end
 end

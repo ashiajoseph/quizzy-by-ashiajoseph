@@ -15,10 +15,10 @@ const CreateQuiz = ({ history }) => {
     setLoading(true);
     try {
       await quizzesApi.create({ quiz: { title } });
-      setLoading(false);
       history.push("/");
     } catch (error) {
       logger.error(error);
+    } finally {
       setLoading(false);
     }
   };
@@ -29,6 +29,7 @@ const CreateQuiz = ({ history }) => {
     if (trimmedTitle.length === 0) Toastr.error(Error("Title can't be blank"));
     else passQuizDetails(trimmedTitle);
   };
+
   return (
     <Container>
       <QuizForm

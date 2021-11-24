@@ -8,7 +8,6 @@ const Container = ({ children }) => {
   return (
     <>
       <NavBar />
-
       <div className="px-8 mx-auto">
         <div className="mx-20">{children}</div>
       </div>

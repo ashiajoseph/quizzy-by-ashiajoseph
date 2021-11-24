@@ -12,7 +12,7 @@ import PariticipantForm from "./Form/PariticipantForm";
 import QuizQA from "./Form/QAForm";
 
 const Participant = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [btnLoading, setBtnLoading] = useState(false);
   const [login, setLogin] = useState(true);
   const [quiz, setQuiz] = useState(false);
@@ -41,16 +41,16 @@ const Participant = () => {
         user: userDetails,
         quiz_id: quizData["id"],
       });
-      const data = await response.data;
+      const data = response.data;
       setAttemptId(data.attempt_id);
       if (!data.eligible) {
         setResult(true);
       }
       setLogin(false);
       setQuiz(true);
-      setBtnLoading(false);
     } catch (error) {
       logger.error(error);
+    } finally {
       setBtnLoading(false);
     }
   };
@@ -65,6 +65,8 @@ const Participant = () => {
       setResult(true);
     } catch (error) {
       logger.error(error);
+    } finally {
+      setBtnLoading(false);
     }
   };
 
@@ -74,7 +76,6 @@ const Participant = () => {
     setLoading(true);
     setQuiz(false);
     await submitAnswers();
-    setBtnLoading(false);
   };
 
   //initial fetch - without answers
@@ -83,19 +84,18 @@ const Participant = () => {
       const response1 = await quizzesApi.check_slug(slug);
       const quizdata = response1.data;
       const response2 = await attemptsApi.list(quizdata.id);
-      const data = await response2.data;
+      const data = response2.data;
       setQuizData(quizdata);
       setQuestionList(data.questions);
       setOptionList(data.options);
-      setLoading(false);
     } catch (error) {
       logger.error(error);
+    } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    setLoading(true);
     fetchQA();
   }, []);
 
@@ -103,15 +103,15 @@ const Participant = () => {
   const fetchParticipantAnswers = async () => {
     try {
       const response = await attemptsApi.retrieve_attempt_answers(attemptId);
-      const data = await response.data;
+      const data = response.data;
       setMarks({ correct: data.correct, incorrect: data.incorrect });
       setResultData(data.result);
       setQuiz(true);
-      setLoading(false);
     } catch (error) {
       logger.error(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {

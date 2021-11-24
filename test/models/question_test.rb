@@ -26,6 +26,7 @@ class QuestionTest < ActiveSupport::TestCase
   def test_question_should_not_be_valid_without_quiz
     @question.quiz = nil
     assert @question.invalid?
+    assert_includes @question.errors.full_messages, "Quiz must exist"
   end
 
   def test_question_should_have_valid_no_of_options

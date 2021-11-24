@@ -8,7 +8,7 @@ import { useTable, useSortBy } from "react-table";
 
 import quizzesApi from "apis/quizzes";
 
-import { COLS } from "./tableHeader";
+import { COLS } from "./tableheader.js";
 
 import DeleteAlert from "../../DeleteAlert";
 
@@ -46,6 +46,7 @@ const QuizTable = ({ quizList, setQuizList, empty }) => {
       empty.current = true;
     };
   }, []);
+
   return (
     <>
       <table

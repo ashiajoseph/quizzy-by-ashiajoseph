@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { PageLoader } from "@bigbinary/neetoui/v2";
 import { Toastr } from "@bigbinary/neetoui/v2";
+import { isEmpty } from "ramda";
 import { useParams } from "react-router-dom";
 
 import questionsApi from "apis/questions";
@@ -10,9 +11,12 @@ import Container from "components/Common/Container";
 import QuestionForm from "../Form/QuestionForm";
 
 const EditQuestion = ({ history }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [btnLoading, setBtnLoading] = useState(false);
-  const [qa, setQA] = useState({ question: "", answer: "" });
+  const [questionAnswer, setQuestionAnswer] = useState({
+    question: "",
+    answer: "",
+  });
   const [optionList, setOptionList] = useState([]);
   const [fetchedOptionList, setFetchedOptionList] = useState({});
   const { quizid, id } = useParams();
@@ -20,7 +24,7 @@ const EditQuestion = ({ history }) => {
   const formatReturnedOptions = () => {
     const list = fetchedOptionList.map(({ id }, index) => {
       const newcontent = optionList[index];
-      const answer = qa.answer == index;
+      const answer = questionAnswer.answer == index;
       if (newcontent !== undefined) {
         return { id: id, content: newcontent.trim(), answer: answer };
       }
@@ -31,7 +35,7 @@ const EditQuestion = ({ history }) => {
     if (fetchedOptionList.length < optionList.length) {
       let start = fetchedOptionList.length;
       newOptions = optionList.splice(start).map((value, index) => {
-        const answer = qa.answer == index + start;
+        const answer = questionAnswer.answer == index + start;
         return { content: value.trim(), answer: answer };
       });
     }
@@ -44,14 +48,15 @@ const EditQuestion = ({ history }) => {
       await questionsApi.update({
         id,
         payload: {
+          quiz_id: quizid,
           mcq: {
-            question: qa.question.trim(),
-            quiz_id: quizid,
+            question: questionAnswer.question.trim(),
             options_attributes: formattedOptions,
           },
         },
       });
       setBtnLoading(false);
+      history.push(`/quiz/${quizid}`);
     } catch (error) {
       logger.error(error);
       setBtnLoading(false);
@@ -60,11 +65,11 @@ const EditQuestion = ({ history }) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const isBlankQuestion = qa.question.trim().length === 0;
+    const isBlankQuestion = questionAnswer.question.trim().length === 0;
     const isBlankOptions = optionList.some(
       option => option.trim().length === 0
     );
-    if (qa.answer == "" || qa.answer == undefined) {
+    if (questionAnswer.answer == "" || questionAnswer.answer == undefined) {
       Toastr.error(Error("Please select the Correct Answer"));
     } else if (isBlankQuestion) {
       Toastr.error(Error("Question can't be blank"));
@@ -74,14 +79,13 @@ const EditQuestion = ({ history }) => {
       setBtnLoading(true);
       const formattedOptions = formatReturnedOptions();
       await passQuestions(formattedOptions);
-      history.push(`/quiz/${quizid}`);
     }
   };
 
   const formatFetchedOptions = list => {
     const formatted_list = list.map(({ content, answer }, index) => {
       if (answer) {
-        setQA(prev => {
+        setQuestionAnswer(prev => {
           return { ...prev, ["answer"]: String(index) };
         });
       }
@@ -93,21 +97,20 @@ const EditQuestion = ({ history }) => {
 
   const fetchQuestion = async () => {
     try {
-      const response = await questionsApi.show(id);
-      const data = await response.data;
-      setQA(prev => {
-        return { ...prev, ["question"]: data.qa.question };
+      const response = await questionsApi.show(id, quizid);
+      const data = response.data;
+      setQuestionAnswer(prev => {
+        return { ...prev, ["question"]: data.question_answer.question };
       });
-      setFetchedOptionList(data.qa.options);
-      formatFetchedOptions(data.qa.options);
-      setLoading(false);
+      setFetchedOptionList(data.question_answer.options);
+      formatFetchedOptions(data.question_answer.options);
     } catch (error) {
       logger.error(error);
+    } finally {
       setLoading(false);
     }
   };
   useEffect(() => {
-    setLoading(true);
     fetchQuestion();
   }, []);
 
@@ -120,18 +123,20 @@ const EditQuestion = ({ history }) => {
       </Container>
     );
   }
-
+  const valid_question = !isEmpty(questionAnswer.question);
   return (
     <Container>
-      <QuestionForm
-        action="update"
-        optionList={optionList}
-        setOptionList={setOptionList}
-        qa={qa}
-        setQA={setQA}
-        handleSubmit={handleSubmit}
-        loading={btnLoading}
-      />
+      {valid_question && (
+        <QuestionForm
+          action="update"
+          optionList={optionList}
+          setOptionList={setOptionList}
+          questionAnswer={questionAnswer}
+          setQuestionAnswer={setQuestionAnswer}
+          handleSubmit={handleSubmit}
+          loading={btnLoading}
+        />
+      )}
     </Container>
   );
 };

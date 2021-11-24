@@ -54,6 +54,7 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # To use React as frontend
 gem "caxlsx"
+gem "pundit"
 gem "react-rails"
 gem "sidekiq"
 gem "sidekiq-status"
