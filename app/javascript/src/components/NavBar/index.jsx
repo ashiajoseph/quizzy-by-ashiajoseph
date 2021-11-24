@@ -32,13 +32,25 @@ const NavBar = () => {
       <div className="px-2 mx-auto sm:px-4 lg:px-8">
         <div className="flex justify-between h-16 ">
           <div className="flex px-2 lg:px-0">
-            <NavItem name="Quizzy" path="/" style="text-3xl tracking-wider" />
+            <NavItem
+              name="Quizzy"
+              path="/"
+              style="text-3xl tracking-wider text-white pl-5 hover:text-lime inline-flex"
+            />
           </div>
           <div className="flex items-center">
             {displayNavRightDiv && (
               <div className="flex flex-row justify-center ">
-                <NavItem name="Reports" path={`/report`} style="text-xl" />
-                <NavItem name={userName} path="/" style="text-xl" />
+                <NavItem
+                  name="Reports"
+                  path="/report"
+                  style="text-xl text-white pl-5 hover:text-lime inline-flex"
+                />
+                <NavItem
+                  name={userName}
+                  path="/"
+                  style="text-xl text-white pl-5 hover:text-lime inline-flex"
+                />
 
                 <button
                   className="font-semibold inline-flex text-xl text-white pl-5 hover:text-lime focus:outline-none"
