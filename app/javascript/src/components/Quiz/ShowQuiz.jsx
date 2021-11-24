@@ -54,24 +54,28 @@ const ShowQuiz = () => {
   if (either(isNil, isEmpty)(questionList)) {
     empty.current = true;
   }
-
+  const valid_quiz = !isEmpty(quiz);
   return (
     <Container>
-      <PageHeader
-        heading={`${quiz.title} Quiz`}
-        link_name="Add question"
-        link_path={`/quizzes/${quizid}/questions/new`}
-      />
-      {empty.current && (
-        <EmptyList content="There are no questions in this quiz" />
-      )}
-      {!empty.current && (
-        <ShowQuestionAnswers
-          questionList={questionList}
-          setQuestionList={setQuestionList}
-          optionList={optionList}
-          slug={quiz.slug}
-        />
+      {valid_quiz && (
+        <div>
+          <PageHeader
+            heading={`${quiz.title} Quiz`}
+            link_name="Add question"
+            link_path={`/quizzes/${quizid}/questions/new`}
+          />
+          {empty.current && (
+            <EmptyList content="There are no questions in this quiz" />
+          )}
+          {!empty.current && (
+            <ShowQuestionAnswers
+              questionList={questionList}
+              setQuestionList={setQuestionList}
+              optionList={optionList}
+              slug={quiz.slug}
+            />
+          )}
+        </div>
       )}
     </Container>
   );

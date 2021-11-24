@@ -57,4 +57,5 @@ gem "caxlsx"
 gem "react-rails"
 gem "sidekiq"
 gem "sidekiq-status"
-gem "zip-zip"
+gem "pundit"gem "zip-zip"
+

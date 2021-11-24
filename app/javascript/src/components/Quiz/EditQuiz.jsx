@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Toastr } from "@bigbinary/neetoui/v2";
 import { PageLoader } from "@bigbinary/neetoui/v2";
+import { isEmpty } from "ramda";
 import { useParams } from "react-router-dom";
 
 import quizzesApi from "apis/quizzes";
@@ -22,10 +23,10 @@ const EditQuiz = ({ history }) => {
         quizid,
         payload: { quiz: { title: title, setslug: false } },
       });
+      setBtnLoading(false);
       history.push("/");
     } catch (error) {
       logger.error(error);
-    } finally {
       setBtnLoading(false);
     }
   };
@@ -60,16 +61,19 @@ const EditQuiz = ({ history }) => {
       </div>
     );
   }
+  const valid_quiz = !isEmpty(title);
 
   return (
     <Container>
-      <QuizForm
-        action="update"
-        title={title}
-        setTitle={setTitle}
-        handleSubmit={handleSubmit}
-        loading={btnLoading}
-      />
+      {valid_quiz && (
+        <QuizForm
+          action="update"
+          title={title}
+          setTitle={setTitle}
+          handleSubmit={handleSubmit}
+          loading={btnLoading}
+        />
+      )}
     </Container>
   );
 };

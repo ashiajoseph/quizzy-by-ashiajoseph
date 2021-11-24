@@ -2,7 +2,7 @@
 
 class QuestionsController < ApplicationController
   before_action :authenticate_user_using_x_auth_token
-  before_action :load_quiz, only: :create
+  before_action :load_quiz, only: %i[create update]
   before_action :load_question, only: %i[show update destroy]
 
   def create
@@ -15,10 +15,12 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    authorize @question
     @options = @question.options
   end
 
   def update
+    authorize @question
     if @question.update(quiz_question_params)
       render status: :ok, json: { notice: t("successfully_added", operation: "updated") }
     else
@@ -27,6 +29,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
+    authorize @question
     if @question.destroy
       render status: :ok, json: { notice: t("deleted_successfully") }
     else

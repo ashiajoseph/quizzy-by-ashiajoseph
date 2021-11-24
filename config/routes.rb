@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   defaults format: :json do
     resource :session, only: %i[create destroy]
     resources :quizzes, except: %i[new edit ]
+    resources :quizzes do
+      get "retrieve_title", on: :member
+    end
     resources :questions, except: %i[new edit ]
     resources :options, only: %i[create ]
     resources :users, only: %i[create]

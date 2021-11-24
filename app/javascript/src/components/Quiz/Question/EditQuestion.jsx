@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { PageLoader } from "@bigbinary/neetoui/v2";
 import { Toastr } from "@bigbinary/neetoui/v2";
+import { isEmpty } from "ramda";
 import { useParams } from "react-router-dom";
 
 import questionsApi from "apis/questions";
@@ -122,18 +123,20 @@ const EditQuestion = ({ history }) => {
       </Container>
     );
   }
-
+  const valid_question = !isEmpty(questionAnswer.question);
   return (
     <Container>
-      <QuestionForm
-        action="update"
-        optionList={optionList}
-        setOptionList={setOptionList}
-        questionAnswer={questionAnswer}
-        setQuestionAnswer={setQuestionAnswer}
-        handleSubmit={handleSubmit}
-        loading={btnLoading}
-      />
+      {valid_question && (
+        <QuestionForm
+          action="update"
+          optionList={optionList}
+          setOptionList={setOptionList}
+          questionAnswer={questionAnswer}
+          setQuestionAnswer={setQuestionAnswer}
+          handleSubmit={handleSubmit}
+          loading={btnLoading}
+        />
+      )}
     </Container>
   );
 };

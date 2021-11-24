@@ -16,11 +16,11 @@ const PrepareReport = () => {
   };
   const fetchReportDetails = async () => {
     try {
-      const response1 = await reportsApi.export_report();
-      const jid = response1.data.jid;
+      const response_export = await reportsApi.export_report();
+      const jid = response_export.data.jid;
       interval.current = setInterval(async () => {
-        const response2 = await reportsApi.export_status(jid);
-        const data = response2.data;
+        const response_status = await reportsApi.export_status(jid);
+        const data = response_status.data;
         if (data.status === "complete") {
           clearInterval(interval.current);
           setJobId(jid);
