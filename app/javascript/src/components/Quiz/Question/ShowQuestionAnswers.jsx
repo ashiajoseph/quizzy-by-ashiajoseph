@@ -10,7 +10,12 @@ import Answer from "./Answer";
 
 import { quizContext } from "../QuizContext";
 
-const ShowQA = ({ questionList, setQuestionList, optionList, slug }) => {
+const ShowQuestionAnswers = ({
+  questionList,
+  setQuestionList,
+  optionList,
+  slug,
+}) => {
   const { quizid } = useParams();
   const history = useHistory();
   const editQuestion = id => {
@@ -91,4 +96,4 @@ const ShowQA = ({ questionList, setQuestionList, optionList, slug }) => {
   );
 };
 
-export default ShowQA;
+export default ShowQuestionAnswers;

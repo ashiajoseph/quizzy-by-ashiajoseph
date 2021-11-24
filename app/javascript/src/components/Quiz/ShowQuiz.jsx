@@ -10,7 +10,7 @@ import Container from "components/Common/Container";
 import PageHeader from "components/Common/PageHeader";
 
 import EmptyList from "./EmptyList";
-import ShowQA from "./Question/ShowQA";
+import ShowQuestionAnswers from "./Question/ShowQuestionAnswers";
 import { quizContext } from "./QuizContext";
 
 const ShowQuiz = () => {
@@ -78,7 +78,7 @@ const ShowQuiz = () => {
         <EmptyList content="There are no questions in this quiz" />
       )}
       {!empty.current && (
-        <ShowQA
+        <ShowQuestionAnswers
           questionList={questionList}
           setQuestionList={setQuestionList}
           optionList={optionList}

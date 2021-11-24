@@ -34,11 +34,11 @@ const CreateQuestion = ({ history }) => {
           options_attributes: optList,
         },
       });
+      setLoading(false);
       history.push(`/quiz/${quizid}`);
     } catch (error) {
-      logger.error(error);
-    } finally {
       setLoading(false);
+      logger.error(error);
     }
   };
   const handleSubmit = async e => {
