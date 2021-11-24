@@ -5,15 +5,6 @@ class QuestionsController < ApplicationController
   before_action :load_quiz, only: :create
   before_action :load_question, only: %i[show update destroy]
 
-  def index
-    quiz = @current_user.quizzes.find_by(id: params[:quizid])
-    @questions = quiz.questions.includes(:options)
-    @options = []
-    @questions.each do |question|
-      @options.push(question.options.as_json(only: %i[id content answer]))
-    end
-  end
-
   def create
     @question = @quiz.questions.new(quiz_question_params)
     if @question.save

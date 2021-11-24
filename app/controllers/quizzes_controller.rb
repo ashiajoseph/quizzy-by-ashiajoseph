@@ -18,6 +18,7 @@ class QuizzesController < ApplicationController
   end
 
   def show
+    @questions = @quiz.questions.includes(:options)
   end
 
   def update

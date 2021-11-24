@@ -4,7 +4,6 @@ import { PageLoader } from "@bigbinary/neetoui/v2";
 import { isNil, isEmpty, either } from "ramda";
 import { useParams } from "react-router-dom";
 
-import questionsApi from "apis/questions";
 import quizzesApi from "apis/quizzes";
 import Container from "components/Common/Container";
 import PageHeader from "components/Common/PageHeader";
@@ -22,27 +21,17 @@ const ShowQuiz = () => {
   const { setTotalQuestions, setPublish, publish } = useContext(quizContext);
   const { quizid } = useParams();
 
-  const fetchQuiz = async () => {
+  const fetchQuizDetails = async () => {
     try {
       const response = await quizzesApi.show(quizid);
       const data = response.data;
       setQuiz(data.quiz);
-      const published = data.quiz.slug ? true : false;
-      setPublish(published);
-      empty.current = false;
-    } catch (error) {
-      logger.error(error);
-      setLoading(false);
-    }
-  };
-
-  const fetchQuestions = async () => {
-    try {
-      const response = await questionsApi.list(quizid);
-      const data = response.data;
       setQuestionList(data.questions);
       setTotalQuestions(data.questions.length);
       setOptionList(data.options);
+      const published = data.quiz.slug ? true : false;
+      setPublish(published);
+      empty.current = false;
     } catch (error) {
       logger.error(error);
     } finally {
@@ -50,9 +39,8 @@ const ShowQuiz = () => {
     }
   };
 
-  useEffect(async () => {
-    await fetchQuiz();
-    await fetchQuestions();
+  useEffect(() => {
+    fetchQuizDetails();
   }, [publish]);
 
   if (loading) {

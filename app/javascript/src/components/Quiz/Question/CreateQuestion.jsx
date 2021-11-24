@@ -37,8 +37,8 @@ const CreateQuestion = ({ history }) => {
       setLoading(false);
       history.push(`/quiz/${quizid}`);
     } catch (error) {
-      setLoading(false);
       logger.error(error);
+      setLoading(false);
     }
   };
   const handleSubmit = async e => {
