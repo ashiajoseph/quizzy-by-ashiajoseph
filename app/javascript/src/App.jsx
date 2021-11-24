@@ -16,7 +16,6 @@ import CreateQuiz from "components/Quiz/CreateQuiz";
 import EditQuiz from "components/Quiz/EditQuiz";
 import CreateQuestion from "components/Quiz/Question/CreateQuestion";
 import EditQuestion from "components/Quiz/Question/EditQuestion";
-import { QuizProvider } from "components/Quiz/QuizContext";
 import PrepareReport from "components/Quiz/ReportDetails/PrepareReport";
 import Report from "components/Quiz/ReportDetails/Report";
 import ShowQuiz from "components/Quiz/ShowQuiz";
@@ -36,42 +35,36 @@ const App = () => {
   if (loading) return <h2>Loading ...</h2>;
 
   return (
-    <QuizProvider>
-      <Router>
-        <ToastContainer />
-        <Switch>
-          <Route exact path="/login" component={Login} />
+    <Router>
+      <ToastContainer />
+      <Switch>
+        <Route exact path="/login" component={Login} />
 
-          <Route
-            exact
-            path="/public/:slug/attempt/new"
-            component={Participant}
-          />
-          <Route path="/public/:slug" component={PublicBase} />
-          <PrivateRoute redirectRoute="/login" condition={isLoggedIn}>
-            <Switch>
-              <Route exact path="/" component={Dashboard} />
-              <Route exact path="/quiz/new" component={CreateQuiz} />
-              <Route exact path="/quiz/:quizid/edit" component={EditQuiz} />
-              <Route exact path="/quiz/:quizid" component={ShowQuiz} />
-              <Route
-                exact
-                path="/quizzes/:quizid/questions/new"
-                component={CreateQuestion}
-              />
-              <Route
-                exact
-                path="/quizzes/:quizid/questions/:id/edit"
-                component={EditQuestion}
-              />
-              <Route exact path="/report" component={Report} />
-              <Route exact path="/report/prepare" component={PrepareReport} />
-              <Route path="*" component={ErrorBoundary} />
-            </Switch>
-          </PrivateRoute>
-        </Switch>
-      </Router>
-    </QuizProvider>
+        <Route exact path="/public/:slug/attempt/new" component={Participant} />
+        <Route path="/public/:slug" component={PublicBase} />
+        <PrivateRoute redirectRoute="/login" condition={isLoggedIn}>
+          <Switch>
+            <Route exact path="/" component={Dashboard} />
+            <Route exact path="/quiz/new" component={CreateQuiz} />
+            <Route exact path="/quiz/:quizid/edit" component={EditQuiz} />
+            <Route exact path="/quiz/:quizid" component={ShowQuiz} />
+            <Route
+              exact
+              path="/quizzes/:quizid/questions/new"
+              component={CreateQuestion}
+            />
+            <Route
+              exact
+              path="/quizzes/:quizid/questions/:id/edit"
+              component={EditQuestion}
+            />
+            <Route exact path="/report" component={Report} />
+            <Route exact path="/report/prepare" component={PrepareReport} />
+            <Route path="*" component={ErrorBoundary} />
+          </Switch>
+        </PrivateRoute>
+      </Switch>
+    </Router>
   );
 };
 

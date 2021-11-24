@@ -1,35 +1,58 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 
-import { Delete, Edit, Checkmark, Copy } from "@bigbinary/neeto-icons";
+import {
+  Delete,
+  Edit,
+  Checkmark,
+  Copy,
+  Paragraph,
+  Loading,
+} from "@bigbinary/neeto-icons";
 import { Tooltip, Toastr } from "@bigbinary/neetoui/v2";
 import { useParams, useHistory, Link } from "react-router-dom";
 
 import questionsApi from "apis/questions";
+import quizzesApi from "apis/quizzes";
 
 import Answer from "./Answer";
-
-import { quizContext } from "../QuizContext";
 
 const ShowQuestionAnswers = ({
   questionList,
   setQuestionList,
   optionList,
   slug,
+  heading,
+  setPublish,
+  publish,
 }) => {
+  const [loading, setLoading] = useState(false);
   const { quizid } = useParams();
   const history = useHistory();
   const editQuestion = id => {
     history.push(`/quizzes/${quizid}/questions/${id}/edit`);
   };
-  const { setTotalQuestions } = useContext(quizContext);
 
   const deleteQuestion = async Id => {
     try {
       await questionsApi.destroy(Id, quizid);
       setQuestionList(prevlist => prevlist.filter(({ id }) => id !== Id));
-      setTotalQuestions(questionList.length - 1);
     } catch (error) {
       logger.error(error);
+    }
+  };
+
+  const publishQuiz = async () => {
+    setLoading(true);
+    try {
+      await quizzesApi.update({
+        quizid,
+        payload: { quiz: { title: heading, setslug: true } },
+      });
+      setPublish(true);
+    } catch (error) {
+      logger.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -40,7 +63,23 @@ const ShowQuestionAnswers = ({
   };
   return (
     <>
-      {slug && (
+      {!publish && (
+        <div className="mb-6">
+          <button
+            onClick={publishQuiz}
+            className={` w-1/6 font-semibold text-lg text-black rounded-md py-2 px-4 bg-lime focus:outline-none `}
+          >
+            {loading ? (
+              <Loading />
+            ) : (
+              <>
+                <Paragraph className="inline" size={20} /> Publish
+              </>
+            )}
+          </button>
+        </div>
+      )}
+      {publish && (
         <div className="mt-3 text-lg text-gray-600 flex items-center">
           <Checkmark className="neeto-ui-text-black mr-1" size={20} />
           Published, your public link -
@@ -58,7 +97,7 @@ const ShowQuestionAnswers = ({
           </Tooltip>
         </div>
       )}
-      <div className="flex flex-col w-3/4 mx-auto bg-gray-200 my-4 pl-6 pr-8">
+      <div className="flex flex-col w-3/4 mx-auto bg-gray-200 my-6 pl-6 pr-8">
         {questionList.map(({ id, question }, index) => (
           <div
             key={index}
