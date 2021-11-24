@@ -45,7 +45,7 @@ const ShowQuestionAnswers = ({
           <Checkmark className="neeto-ui-text-black mr-1" size={20} />
           Published, your public link -
           <Link to={`/public/${slug}`} className="text-blue-600 mr-2">
-            {`  ${window.location.origin}/public/${slug}`}
+            {`${window.location.origin}/public/${slug}`}
           </Link>
           <Tooltip position="right-end" content="Copy URL">
             <button className="focus:outline-none">
