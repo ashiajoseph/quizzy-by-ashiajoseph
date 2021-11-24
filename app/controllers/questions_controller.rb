@@ -42,7 +42,6 @@ class QuestionsController < ApplicationController
     end
 
     def load_quiz
-      puts params
       @quiz = @current_user.quizzes.find_by(id: params[:quiz_id])
       unless @quiz
         render status: :not_found, json: { error: t("not_found", entity: "Quiz") }
