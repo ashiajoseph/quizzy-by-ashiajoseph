@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Loading } from "@bigbinary/neeto-icons";
 import { useLocation } from "react-router-dom";
 
-import authApi from "apis/auth";
 import { resetAuthTokens } from "apis/axios";
 import { getFromLocalStorage } from "helpers/storage";
 
@@ -18,7 +17,6 @@ const NavBar = () => {
   const handleLogout = async () => {
     setLoading(true);
     try {
-      await authApi.logout();
       localStorage.clear();
       resetAuthTokens();
       setLoading(false);
