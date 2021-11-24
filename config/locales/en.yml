@@ -19,3 +19,4 @@ en:
       immutable: "is immutable!"
   publish: "Published Quiz"
   no_quiz: "No quiz has been %{entity}"
+  unauthorized: "Unauthorized Access"

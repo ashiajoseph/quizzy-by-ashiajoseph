@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  before_action :authenticate_user_using_x_auth_token, except: %i[create]
-
   def create
     @user = User.find_by(email: user_params[:email].downcase)
     @eligible = true

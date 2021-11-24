@@ -41,5 +41,5 @@ class ReportsController < ApplicationController
     filename = "Report_#{DateTime.now.strftime("%Y%m%d_%H%M%S")}.xlsx"
 
     send_file Rails.root.join("tmp", exported_file_name), type: "application/xlsx", filename: filename
-  end
+ end
 end
