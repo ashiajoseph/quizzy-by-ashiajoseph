@@ -5,7 +5,10 @@ Rails.application.routes.draw do
     resource :session, only: %i[create destroy]
     resources :quizzes, except: %i[new edit ]
     resources :quizzes do
-      get "retrieve_title", on: :member
+      member do
+        get "retrieve_title"
+        put "publish"
+      end
     end
     resources :questions, except: %i[new edit ]
     resources :options, only: %i[create ]

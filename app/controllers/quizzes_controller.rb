@@ -25,20 +25,10 @@ class QuizzesController < ApplicationController
 
   def update
     authorize @quiz
-    if !quiz_params[:setslug]
-      if @quiz.update(title: quiz_params[:title])
-        render status: :ok, json: { notice: t("successfully_updated", entity: "Quiz") }
-      else
-        render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
-      end
+    if @quiz.update(title: quiz_params[:title])
+      render status: :ok, json: { notice: t("successfully_updated", entity: "Quiz") }
     else
-      slug_candidate = Quiz.set_slug(quiz_params[:title])
-      if @quiz.update(slug: slug_candidate)
-        render status: :ok, json: { notice: t("publish") }
-      else
-        render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
-      end
-
+      render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
     end
   end
 
@@ -55,6 +45,16 @@ class QuizzesController < ApplicationController
     authorize @quiz
   end
 
+  def publish
+    authorize @quiz
+    slug_candidate = Quiz.set_slug(quiz_params[:title])
+    if @quiz.update(slug: slug_candidate)
+      render status: :ok, json: { notice: t("publish") }
+    else
+      render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
+    end
+  end
+
   def check_slug
     quiz = Quiz.find_by(slug: params[:slug])
     @id = quiz ? quiz.id : nil
@@ -64,7 +64,7 @@ class QuizzesController < ApplicationController
   private
 
     def quiz_params
-      params.require(:quiz).permit(:title, :setslug)
+      params.require(:quiz).permit(:title)
     end
 
     def load_quiz

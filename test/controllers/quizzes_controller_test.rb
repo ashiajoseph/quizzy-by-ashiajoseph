@@ -52,18 +52,19 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_add_slug_on_publishing_quiz
     slug = Quiz.set_slug(@quiz.title)
-    quiz_params = { quiz: { title: @quiz.title, setslug: true } }
-    put quiz_path(@quiz.id), params: quiz_params, headers: @user_header
+    quiz_params = { quiz: { title: @quiz.title } }
+    put "/quizzes/#{@quiz.id}/publish", params: quiz_params, headers: @user_header
     assert_response :success
     @quiz.reload
     assert_equal @quiz.slug, slug
   end
 
   def test_will_not_add_duplicate_slug_to_quiz
-    put quiz_path(@quiz.id), params: { quiz: { title: @quiz.title, setslug: true } }, headers: @user_header
-
+    put "/quizzes/#{@quiz.id}/publish", params: { quiz: { title: @quiz.title } }, headers: @user_header
+    assert_response :success
     quiz2 = @user.quizzes.create!(title: "Maths")
-    put quiz_path(quiz2.id), params: { quiz: { title: quiz2.title, setslug: true } }, headers: @user_header
+    put "/quizzes/#{quiz2.id}/publish", params: { quiz: { title: quiz2.title } }, headers: @user_header
+    assert_response :success
     @quiz.reload
     quiz2.reload
     assert_not_equal @quiz.slug, quiz2.slug
@@ -85,7 +86,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
 
   def test_check_slug_works_on_given_valid_slug
     quiz_params = { quiz: { title: "#{@quiz.title} Quiz", setslug: true } }
-    put quiz_path(@quiz.id), params: quiz_params, headers: @user_header
+    put "/quizzes/#{@quiz.id}/publish", params: quiz_params, headers: @user_header
     assert_response :success
     @quiz.reload
     get "/public/quiz/#{@quiz.slug}"

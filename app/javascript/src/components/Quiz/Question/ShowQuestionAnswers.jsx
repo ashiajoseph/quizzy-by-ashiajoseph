@@ -44,9 +44,9 @@ const ShowQuestionAnswers = ({
   const publishQuiz = async () => {
     setLoading(true);
     try {
-      await quizzesApi.update({
+      await quizzesApi.publish({
         quizid,
-        payload: { quiz: { title: heading, setslug: true } },
+        payload: { quiz: { title: heading } },
       });
       setPublish(true);
     } catch (error) {

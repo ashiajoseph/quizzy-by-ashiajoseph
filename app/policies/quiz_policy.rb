@@ -24,6 +24,10 @@ class QuizPolicy
     show?
   end
 
+  def publish?
+    show?
+  end
+
   def create?
     true
   end
