@@ -56,12 +56,12 @@ const App = () => {
               <Route exact path="/quiz/:quizid" component={ShowQuiz} />
               <Route
                 exact
-                path="/:quizid/questions/new"
+                path="/quizzes/:quizid/questions/new"
                 component={CreateQuestion}
               />
               <Route
                 exact
-                path="/:quizid/questions/:id/edit"
+                path="/quizzes/:quizid/questions/:id/edit"
                 component={EditQuestion}
               />
               <Route exact path="/report" component={Report} />

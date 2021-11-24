@@ -19,7 +19,7 @@ const ShowQuestionAnswers = ({
   const { quizid } = useParams();
   const history = useHistory();
   const editQuestion = id => {
-    history.push(`/${quizid}/questions/${id}/edit`);
+    history.push(`/quizzes/${quizid}/questions/${id}/edit`);
   };
   const { setTotalQuestions } = useContext(quizContext);
 

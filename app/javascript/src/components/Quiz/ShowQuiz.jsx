@@ -72,7 +72,7 @@ const ShowQuiz = () => {
       <PageHeader
         heading={`${quiz.title} Quiz`}
         link_name="Add question"
-        link_path={`/${quizid}/questions/new`}
+        link_path={`/quizzes/${quizid}/questions/new`}
       />
       {empty.current && (
         <EmptyList content="There are no questions in this quiz" />
