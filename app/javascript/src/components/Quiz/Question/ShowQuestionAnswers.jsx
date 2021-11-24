@@ -25,7 +25,7 @@ const ShowQuestionAnswers = ({
 
   const deleteQuestion = async Id => {
     try {
-      await questionsApi.destroy(Id);
+      await questionsApi.destroy(Id, quizid);
       setQuestionList(prevlist => prevlist.filter(({ id }) => id !== Id));
       setTotalQuestions(questionList.length - 1);
     } catch (error) {

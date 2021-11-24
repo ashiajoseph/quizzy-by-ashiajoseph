@@ -14,13 +14,6 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     @user_header = headers(user)
   end
 
-  def test_should_list_all_questions
-    get questions_path, params: { quizid: @quiz.id }, headers: @user_header
-    assert_response :success
-    response_body = response.parsed_body
-    assert_equal response_body["questions"].length, @quiz.questions.length
-  end
-
   def test_should_create_valid_question__and_options
     post questions_path,
       params: {
@@ -101,7 +94,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_update_question_content
     question2 = "another question"
-    questions_params = { mcq: { question: question2 } }
+    questions_params = { mcq: { question: question2, quiz_id: @quiz.id } }
     put question_path(@quiz.id), params: questions_params, headers: @user_header
     assert_response :success
     @question.reload
@@ -109,7 +102,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_shouldnt_update_without_question_content
-    questions_params = { mcq: { question: "" } }
+    questions_params = { mcq: { question: "", quiz_id: @quiz.id } }
     put question_path(@quiz.id), params: questions_params, headers: @user_header
     assert_response :unprocessable_entity
     response_json = response.parsed_body

@@ -31,9 +31,9 @@ const CreateQuestion = ({ history }) => {
       });
       const question = questionAnswer.question.trim();
       await questionsApi.create({
+        quiz_id: quizid,
         mcq: {
           question: question,
-          quiz_id: quizid,
           options_attributes: optList,
         },
       });

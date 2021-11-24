@@ -48,9 +48,9 @@ const EditQuestion = ({ history }) => {
       await questionsApi.update({
         id,
         payload: {
+          quiz_id: quizid,
           mcq: {
             question: questionAnswer.question.trim(),
-            quiz_id: quizid,
             options_attributes: formattedOptions,
           },
         },
@@ -97,7 +97,7 @@ const EditQuestion = ({ history }) => {
 
   const fetchQuestion = async () => {
     try {
-      const response = await questionsApi.show(id);
+      const response = await questionsApi.show(id, quizid);
       const data = response.data;
       setQuestionAnswer(prev => {
         return { ...prev, ["question"]: data.question_answer.question };

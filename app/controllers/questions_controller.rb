@@ -2,8 +2,8 @@
 
 class QuestionsController < ApplicationController
   before_action :authenticate_user_using_x_auth_token
-  before_action :load_quiz, only: %i[create update]
-  before_action :load_question, only: %i[show update destroy]
+  before_action :load_quiz
+  before_action :load_question, except: :create
 
   def create
     @question = @quiz.questions.new(quiz_question_params)
@@ -15,12 +15,10 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    authorize @question
     @options = @question.options
   end
 
   def update
-    authorize @question
     if @question.update(quiz_question_params)
       render status: :ok, json: { notice: t("successfully_added", operation: "updated") }
     else
@@ -29,7 +27,6 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    authorize @question
     if @question.destroy
       render status: :ok, json: { notice: t("deleted_successfully") }
     else
@@ -41,18 +38,19 @@ class QuestionsController < ApplicationController
   private
 
     def quiz_question_params
-      params.require(:mcq).permit(:question, :quiz_id, options_attributes: [:id, :content, :answer, :_destroy])
+      params.require(:mcq).permit(:question, options_attributes: [:id, :content, :answer, :_destroy])
     end
 
     def load_quiz
-      @quiz = @current_user.quizzes.find_by(id: quiz_question_params[:quiz_id])
+      puts params
+      @quiz = @current_user.quizzes.find_by(id: params[:quiz_id])
       unless @quiz
         render status: :not_found, json: { error: t("not_found", entity: "Quiz") }
       end
     end
 
     def load_question
-      @question = Question.find_by(id: params[:id])
+      @question = @quiz.questions.find_by(id: params[:id])
       unless @question
         render status: :not_found, json: { error: t("not_found", entity: "Question") }
       end
