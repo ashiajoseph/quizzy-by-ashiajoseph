@@ -32,6 +32,7 @@ const ShowQuiz = () => {
       empty.current = false;
     } catch (error) {
       logger.error(error);
+      setLoading(false);
     }
   };
 
@@ -42,9 +43,10 @@ const ShowQuiz = () => {
       setQuestionList(data.questions);
       setTotalQuestions(data.questions.length);
       setOptionList(data.options);
-      setLoading(false);
     } catch (error) {
       logger.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 

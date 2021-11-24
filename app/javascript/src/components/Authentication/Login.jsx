@@ -23,10 +23,10 @@ const Login = () => {
         userName: response.data.first_name + " " + response.data.last_name,
       });
       setAuthHeaders();
-      setLoading(false);
       window.location.href = "/";
     } catch (error) {
       logger.error(error);
+    } finally {
       setLoading(false);
     }
   };

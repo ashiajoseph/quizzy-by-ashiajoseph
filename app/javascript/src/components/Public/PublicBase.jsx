@@ -20,6 +20,7 @@ const PublicBase = () => {
       if (data.id) history.push(`/public/${slug}/attempt/new`);
     } catch (error) {
       logger.error(error);
+      setLoading(false);
     }
   };
   useEffect(() => {

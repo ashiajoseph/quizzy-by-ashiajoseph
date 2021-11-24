@@ -27,10 +27,10 @@ const PageHeader = ({
         quizid,
         payload: { quiz: { title: heading, setslug: true } },
       });
-      setLoading(false);
       setPublish(true);
     } catch (error) {
       logger.error(error);
+    } finally {
       setLoading(false);
     }
   };

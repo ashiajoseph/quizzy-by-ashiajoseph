@@ -22,10 +22,10 @@ const EditQuiz = ({ history }) => {
         quizid,
         payload: { quiz: { title: title, setslug: false } },
       });
-      setBtnLoading(false);
       history.push("/");
     } catch (error) {
       logger.error(error);
+    } finally {
       setBtnLoading(false);
     }
   };
@@ -42,9 +42,10 @@ const EditQuiz = ({ history }) => {
       const response = await quizzesApi.show(quizid);
       const { quiz } = response.data;
       setTitle(quiz.title);
-      setLoading(false);
     } catch (error) {
       logger.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 

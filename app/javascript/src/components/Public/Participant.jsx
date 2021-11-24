@@ -12,7 +12,7 @@ import PariticipantForm from "./Form/PariticipantForm";
 import QuizQA from "./Form/QAForm";
 
 const Participant = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [btnLoading, setBtnLoading] = useState(false);
   const [login, setLogin] = useState(true);
   const [quiz, setQuiz] = useState(false);
@@ -48,9 +48,9 @@ const Participant = () => {
       }
       setLogin(false);
       setQuiz(true);
-      setBtnLoading(false);
     } catch (error) {
       logger.error(error);
+    } finally {
       setBtnLoading(false);
     }
   };
@@ -65,6 +65,8 @@ const Participant = () => {
       setResult(true);
     } catch (error) {
       logger.error(error);
+    } finally {
+      setBtnLoading(false);
     }
   };
 
@@ -74,7 +76,6 @@ const Participant = () => {
     setLoading(true);
     setQuiz(false);
     await submitAnswers();
-    setBtnLoading(false);
   };
 
   //initial fetch - without answers
@@ -87,15 +88,14 @@ const Participant = () => {
       setQuizData(quizdata);
       setQuestionList(data.questions);
       setOptionList(data.options);
-      setLoading(false);
     } catch (error) {
       logger.error(error);
+    } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    setLoading(true);
     fetchQA();
   }, []);
 
@@ -107,11 +107,11 @@ const Participant = () => {
       setMarks({ correct: data.correct, incorrect: data.incorrect });
       setResultData(data.result);
       setQuiz(true);
-      setLoading(false);
     } catch (error) {
       logger.error(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {

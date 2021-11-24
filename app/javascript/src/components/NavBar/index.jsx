@@ -19,10 +19,10 @@ const NavBar = () => {
     try {
       localStorage.clear();
       resetAuthTokens();
-      setLoading(false);
       window.location.href = "/";
     } catch (error) {
       logger.error(error);
+    } finally {
       setLoading(false);
     }
   };

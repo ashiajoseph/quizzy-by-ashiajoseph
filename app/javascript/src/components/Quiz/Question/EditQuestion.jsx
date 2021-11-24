@@ -10,7 +10,7 @@ import Container from "components/Common/Container";
 import QuestionForm from "../Form/QuestionForm";
 
 const EditQuestion = ({ history }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [btnLoading, setBtnLoading] = useState(false);
   const [questionAnswer, setQuestionAnswer] = useState({
     question: "",
@@ -54,9 +54,10 @@ const EditQuestion = ({ history }) => {
           },
         },
       });
-      setBtnLoading(false);
+      history.push(`/quiz/${quizid}`);
     } catch (error) {
       logger.error(error);
+    } finally {
       setBtnLoading(false);
     }
   };
@@ -77,7 +78,6 @@ const EditQuestion = ({ history }) => {
       setBtnLoading(true);
       const formattedOptions = formatReturnedOptions();
       await passQuestions(formattedOptions);
-      history.push(`/quiz/${quizid}`);
     }
   };
 
@@ -103,14 +103,13 @@ const EditQuestion = ({ history }) => {
       });
       setFetchedOptionList(data.question_answer.options);
       formatFetchedOptions(data.question_answer.options);
-      setLoading(false);
     } catch (error) {
       logger.error(error);
+    } finally {
       setLoading(false);
     }
   };
   useEffect(() => {
-    setLoading(true);
     fetchQuestion();
   }, []);
 
