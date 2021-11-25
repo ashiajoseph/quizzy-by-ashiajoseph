@@ -1,4 +1,6 @@
 # frozen_string_literal: true
 
-json.questions @questions.as_json(only: %i[id question])
+json.questions @questions do |question|
+    json.extract! question, :id, :question
+  end
 json.options @options

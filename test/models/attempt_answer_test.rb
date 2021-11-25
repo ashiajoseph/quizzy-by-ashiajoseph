@@ -29,15 +29,18 @@ class AttemptAnswerTest < ActiveSupport::TestCase
   def test_attempt_answer_should_not_be_valid_without_question
     @participant_answer.question = nil
     assert_not @attempt.valid?
+    assert_includes @participant_answer.errors.full_messages, "Question must exist"
   end
 
   def test_attempt_answer_should_not_be_valid_without_attempt
     @participant_answer.attempt = nil
     assert_not @attempt.valid?
+    assert_includes @participant_answer.errors.full_messages, "Attempt must exist"
   end
 
   def test_attempt_answer_should_not_be_valid_without_correct_option
     @participant_answer.option = nil
     assert_not @attempt.valid?
+    assert_includes @participant_answer.errors.full_messages, "Option must exist"
   end
 end
