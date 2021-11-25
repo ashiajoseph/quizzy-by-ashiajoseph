@@ -9,7 +9,7 @@ import usersApi from "apis/users";
 import Container from "components/Common/Container";
 
 import PariticipantForm from "./Form/PariticipantForm";
-import QuizQA from "./Form/QAForm";
+import QuizAttemptForm from "./Form/QuizAttemptForm";
 
 const Participant = () => {
   const [loading, setLoading] = useState(true);
@@ -139,7 +139,7 @@ const Participant = () => {
         />
       )}
       {quiz && (
-        <QuizQA
+        <QuizAttemptForm
           result={result}
           heading={quizData.title}
           questionList={questionList}
