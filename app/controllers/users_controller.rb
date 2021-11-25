@@ -31,7 +31,7 @@ class UsersController < ApplicationController
     def create_attempt
       @attempt = @user.attempts.new({ quiz_id: params[:quiz_id] })
       unless @attempt.save
-        render status: :unprocessable_entity, json: { error: @user.errors.full_messages.to_sentence }
+        render status: :unprocessable_entity, json: { error: @attempt.errors.full_messages.to_sentence }
       end
     end
 end

@@ -20,7 +20,12 @@ Rails.application.routes.draw do
         get "retrieve_attempt_answers"
       end
     end
-    get "generate_report", to: "reports#generate_report"
+    resources :reports do
+      collection do
+        get "generate_report"
+      end
+    end
+    # get "generate_report", to: "reports#generate_report"
     get "/export" => "reports#export"
     get "/export_status/:id" => "reports#export_status"
   end

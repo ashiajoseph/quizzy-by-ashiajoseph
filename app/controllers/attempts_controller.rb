@@ -1,29 +1,21 @@
 # frozen_string_literal: true
 
 class AttemptsController < ApplicationController
-  before_action :load_attempt, except: :index
+  before_action :load_attempt
   after_action :store_correct_and_incorrect_answers_count, only: :create_attempt_answers
 
-  def index
-    quiz = Quiz.find_by(id: params[:quizid])
-    @questions = quiz.questions.includes(:options)
-    @options = []
-    @questions.each do |question|
-      @options.push(question.options.as_json(only: %i[id content]))
-    end
-  end
-
-  def update
-    if @attempt.update({ submitted: true })
-      render status: :ok, json: { notice: t("successfully_submiited") }
-    else
-      render status: :unprocessable_entity, json: { error: @attempt.errors.full_messages.to_sentence }
-    end
-  end
+  # def update
+  #   if @attempt.update({ submitted: true })
+  #     render status: :ok, json: { notice: t("successfully_submiited") }
+  #   else
+  #     render status: :unprocessable_entity, json: { error: @attempt.errors.full_messages.to_sentence }
+  #   end
+  # end
 
   def create_attempt_answers
-    questionList = Quiz.find(@attempt.quiz_id).questions.includes(:options)
-    recordList = questionList.map do |question|
+    quiz = Quiz.includes(questions: :options).find_by_id(@attempt.quiz_id)
+
+    recordList = quiz.questions.map do |question|
       record = Hash.new
       user_selected_option = params[:attempt_answers_attributes][question[:id].to_s]
       correct_option = question.options.select { |option| option.answer }
@@ -59,7 +51,7 @@ class AttemptsController < ApplicationController
     def store_correct_and_incorrect_answers_count
       correct = @attempt.attempt_answers.select { |answer| answer.user_selected_option == answer.option_id }.size
       incorrect = @attempt.attempt_answers.size - correct
-      unless @attempt.update(correct_answers_count: correct, incorrect_answers_count: incorrect)
+      unless @attempt.update(submitted: true, correct_answers_count: correct, incorrect_answers_count: incorrect)
         render status: :unprocessable_entity, json: { error: @attempt.errors.full_messages.to_sentence }
       end
     end
