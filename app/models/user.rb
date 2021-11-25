@@ -4,7 +4,7 @@ class User < ApplicationRecord
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i.freeze
 
   has_many :quizzes
-  has_many :attempts
+  has_many :attempts, dependent: :destroy
 
   has_secure_password
   has_secure_token :authentication_token
