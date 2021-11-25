@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { PageLoader } from "@bigbinary/neetoui/v2";
+import { Toastr } from "@bigbinary/neetoui/v2";
 import { useParams } from "react-router-dom";
 
 import attemptsApi from "apis/attempts";
@@ -29,9 +30,7 @@ const Participant = () => {
 
   const { slug } = useParams();
 
-  //Login
-  const handleNext = async e => {
-    e.preventDefault();
+  const passParticipantDetails = async () => {
     setBtnLoading(true);
     try {
       const response = await usersApi.create({
@@ -50,6 +49,21 @@ const Participant = () => {
     } finally {
       setBtnLoading(false);
     }
+  };
+
+  //Login
+  const handleNext = async e => {
+    e.preventDefault();
+    const anyBlankFields = Object.values(userDetails).some(
+      value => value.length === 0
+    );
+    if (anyBlankFields) {
+      Toastr.error(
+        Error(
+          "Participant Details can't be blank. Please fill in all the details."
+        )
+      );
+    } else passParticipantDetails();
   };
 
   //fetch -Quiz data
