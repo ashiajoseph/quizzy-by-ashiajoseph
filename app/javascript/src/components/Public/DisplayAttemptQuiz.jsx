@@ -22,7 +22,6 @@ const DisplayAttemptQuiz = ({
 
   const submitAnswers = async () => {
     try {
-      //await attemptsApi.update(attemptId);
       await attemptsApi.create({
         attempt_answers_attributes: answers,
         id: attemptId,

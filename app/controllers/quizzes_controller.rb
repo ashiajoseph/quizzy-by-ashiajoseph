@@ -47,8 +47,8 @@ class QuizzesController < ApplicationController
 
   def publish
     authorize @quiz
-    slug_candidate = Quiz.set_slug(quiz_params[:title])
-    if @quiz.update(slug: slug_candidate)
+    slug_candidate = @quiz.set_slug()
+    if @quiz.save
       render status: :ok, json: { notice: t("publish"), slug: slug_candidate }
     else
       render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }

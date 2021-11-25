@@ -7,8 +7,8 @@ class Quiz < ApplicationRecord
   validates :title, presence: true, length: { maximum: Constants::MAX_TITLE_LENGTH }
   validates :slug, uniqueness: true, allow_nil: true
 
-  def self.set_slug (title)
-    title_slug = title.parameterize
+  def set_slug
+    title_slug = title.parameterize + "-quiz"
     regex_pattern = "slug #{Constants::DB_REGEX_OPERATOR} ?"
     latest_quiz_slug = Quiz.where(
       regex_pattern,
@@ -21,6 +21,6 @@ class Quiz < ApplicationRecord
       slug_count = 1 if only_one_slug_exists
     end
     slug_candidate = slug_count.positive? ? "#{title_slug}-#{slug_count + 1}" : title_slug
-    slug_candidate
+    self.slug = slug_candidate
   end
 end
