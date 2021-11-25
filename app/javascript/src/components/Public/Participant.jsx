@@ -4,6 +4,7 @@ import { PageLoader } from "@bigbinary/neetoui/v2";
 import { useParams } from "react-router-dom";
 
 import attemptsApi from "apis/attempts";
+import questionsApi from "apis/questions";
 import quizzesApi from "apis/quizzes";
 import usersApi from "apis/users";
 import Container from "components/Common/Container";
@@ -79,12 +80,12 @@ const Participant = () => {
   };
 
   //initial fetch - without answers
-  const fetchQA = async () => {
+  const fetchQuestionsWithoutCorrectOption = async () => {
     try {
-      const response1 = await quizzesApi.check_slug(slug);
-      const quizdata = response1.data;
-      const response2 = await attemptsApi.list(quizdata.id);
-      const data = response2.data;
+      const response_quiz = await quizzesApi.check_slug(slug);
+      const quizdata = response_quiz.data;
+      const response_question_options = await questionsApi.list(quizdata.id);
+      const data = response_question_options.data;
       setQuizData(quizdata);
       setQuestionList(data.questions);
       setOptionList(data.options);
@@ -96,7 +97,7 @@ const Participant = () => {
   };
 
   useEffect(() => {
-    fetchQA();
+    fetchQuestionsWithoutCorrectOption();
   }, []);
 
   // fetch - with correct option

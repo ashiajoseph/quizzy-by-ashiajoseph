@@ -11,7 +11,6 @@ Rails.application.routes.draw do
       end
     end
     resources :questions, except: %i[new edit ]
-    resources :options, only: %i[create ]
     resources :users, only: %i[create]
     resources :attempts, only: %i[index update]
     resources :attempts do
