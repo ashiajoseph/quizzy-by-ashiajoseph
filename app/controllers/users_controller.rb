@@ -3,7 +3,7 @@
 class UsersController < ApplicationController
   def create
     @user = User.find_by(email: user_params[:email].downcase)
-    @eligible = true
+    @eligible_to_take_quiz = true
     if !@user
       @user = User.new(user_params.merge(password: "welcome", password_confirmation: "welcome"))
       unless @user.save
@@ -17,7 +17,7 @@ class UsersController < ApplicationController
       if !@attempt
         create_attempt
       elsif @attempt[:submitted]
-        @eligible = false
+        @eligible_to_take_quiz = false
       end
     end
   end

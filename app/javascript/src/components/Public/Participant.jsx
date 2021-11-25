@@ -43,7 +43,7 @@ const Participant = () => {
       });
       const data = response.data;
       setAttemptId(data.attempt_id);
-      if (!data.eligible) {
+      if (!data.eligible_to_take_quiz) {
         setResult(true);
       }
       setLogin(false);
