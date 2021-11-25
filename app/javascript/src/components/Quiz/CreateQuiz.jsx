@@ -15,10 +15,10 @@ const CreateQuiz = ({ history }) => {
     setLoading(true);
     try {
       await quizzesApi.create({ quiz: { title } });
+      setLoading(false);
       history.push("/");
     } catch (error) {
       logger.error(error);
-    } finally {
       setLoading(false);
     }
   };

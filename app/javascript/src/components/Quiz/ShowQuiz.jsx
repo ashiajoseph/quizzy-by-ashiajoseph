@@ -39,7 +39,7 @@ const ShowQuiz = () => {
 
   useEffect(() => {
     fetchQuizDetails();
-  }, [publish]);
+  }, []);
 
   if (loading) {
     return (
@@ -70,10 +70,10 @@ const ShowQuiz = () => {
               questionList={questionList}
               setQuestionList={setQuestionList}
               optionList={optionList}
-              slug={quiz.slug}
-              heading={`${quiz.title} Quiz`}
               publish={publish}
               setPublish={setPublish}
+              quiz={quiz}
+              setQuiz={setQuiz}
             />
           )}
         </div>

@@ -20,10 +20,10 @@ const ShowQuestionAnswers = ({
   questionList,
   setQuestionList,
   optionList,
-  slug,
-  heading,
   setPublish,
   publish,
+  quiz,
+  setQuiz,
 }) => {
   const [loading, setLoading] = useState(false);
   const { quizid } = useParams();
@@ -44,9 +44,13 @@ const ShowQuestionAnswers = ({
   const publishQuiz = async () => {
     setLoading(true);
     try {
-      await quizzesApi.publish({
+      const response = await quizzesApi.publish({
         quizid,
-        payload: { quiz: { title: heading } },
+        payload: { quiz: { title: `${quiz.title} Quiz` } },
+      });
+      const { slug } = response.data;
+      setQuiz(prev => {
+        return { ...prev, slug: slug };
       });
       setPublish(true);
     } catch (error) {
@@ -57,7 +61,7 @@ const ShowQuestionAnswers = ({
   };
 
   const copyPublicLink = () => {
-    const link = `${window.location.origin}/public/${slug}`;
+    const link = `${window.location.origin}/public/${quiz.slug}`;
     navigator.clipboard.writeText(link);
     Toastr.success("Link copied to clipboard");
   };
@@ -83,8 +87,8 @@ const ShowQuestionAnswers = ({
         <div className="mt-3 text-lg text-gray-600 flex items-center">
           <Checkmark className="neeto-ui-text-black mr-1" size={20} />
           Published, your public link -
-          <Link to={`/public/${slug}`} className="text-blue-600 mr-2">
-            {`${window.location.origin}/public/${slug}`}
+          <Link to={`/public/${quiz.slug}`} className="text-blue-600 mr-2">
+            {`${window.location.origin}/public/${quiz.slug}`}
           </Link>
           <Tooltip position="right-end" content="Copy URL">
             <button className="focus:outline-none">
