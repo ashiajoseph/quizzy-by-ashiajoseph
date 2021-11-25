@@ -4,13 +4,12 @@ import { PageLoader } from "@bigbinary/neetoui/v2";
 import { useParams } from "react-router-dom";
 
 import attemptsApi from "apis/attempts";
-import questionsApi from "apis/questions";
 import quizzesApi from "apis/quizzes";
 import usersApi from "apis/users";
 import Container from "components/Common/Container";
 
+import DisplayAttemptQuiz from "./DisplayAttemptQuiz";
 import PariticipantForm from "./Form/PariticipantForm";
-import QuizAttemptForm from "./Form/QuizAttemptForm";
 
 const Participant = () => {
   const [loading, setLoading] = useState(true);
@@ -25,12 +24,9 @@ const Participant = () => {
     email: "",
   });
   const [quizData, setQuizData] = useState({});
-
-  const [questionList, setQuestionList] = useState([]);
-  const [optionList, setOptionList] = useState([]);
-  const [answers, setAnswers] = useState({});
   const [marks, setMarks] = useState({ correct: 0, incorrect: 0 });
   const [resultData, setResultData] = useState({});
+
   const { slug } = useParams();
 
   //Login
@@ -56,39 +52,12 @@ const Participant = () => {
     }
   };
 
-  const submitAnswers = async () => {
-    try {
-      await attemptsApi.update(attemptId);
-      await attemptsApi.create({
-        attempt_answers_attributes: answers,
-        id: attemptId,
-      });
-      setResult(true);
-    } catch (error) {
-      logger.error(error);
-    } finally {
-      setBtnLoading(false);
-    }
-  };
-
-  const handleSubmit = async e => {
-    e.preventDefault();
-    setBtnLoading(true);
-    setLoading(true);
-    setQuiz(false);
-    await submitAnswers();
-  };
-
-  //initial fetch - without answers
-  const fetchQuestionsWithoutCorrectOption = async () => {
+  //fetch -Quiz data
+  const fetchQuizData = async () => {
     try {
       const response_quiz = await quizzesApi.check_slug(slug);
       const quizdata = response_quiz.data;
-      const response_question_options = await questionsApi.list(quizdata.id);
-      const data = response_question_options.data;
       setQuizData(quizdata);
-      setQuestionList(data.questions);
-      setOptionList(data.options);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -97,17 +66,16 @@ const Participant = () => {
   };
 
   useEffect(() => {
-    fetchQuestionsWithoutCorrectOption();
+    fetchQuizData();
   }, []);
 
-  // fetch - with correct option
   const fetchParticipantAnswers = async () => {
     try {
       const response = await attemptsApi.retrieve_attempt_answers(attemptId);
       const data = response.data;
       setMarks({ correct: data.correct, incorrect: data.incorrect });
       setResultData(data.result);
-      setQuiz(true);
+      //setQuiz(true);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -117,6 +85,7 @@ const Participant = () => {
 
   useEffect(() => {
     if (result) {
+      setLoading(true);
       fetchParticipantAnswers();
     }
   }, [result]);
@@ -140,16 +109,14 @@ const Participant = () => {
         />
       )}
       {quiz && (
-        <QuizAttemptForm
+        <DisplayAttemptQuiz
           result={result}
-          heading={quizData.title}
-          questionList={questionList}
-          optionList={optionList}
-          handleSubmit={handleSubmit}
-          setAnswers={setAnswers}
+          attemptId={attemptId}
+          quizData={quizData}
+          setQuizData={setQuizData}
+          setResult={setResult}
           marks={marks}
           resultData={resultData}
-          loading={btnLoading}
         />
       )}
     </Container>
