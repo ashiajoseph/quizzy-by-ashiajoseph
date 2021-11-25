@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       member do
         get "retrieve_title"
         put "publish"
+        get "check_slug"
       end
     end
     resources :questions, except: %i[new edit ]
@@ -19,7 +20,6 @@ Rails.application.routes.draw do
         get "retrieve_attempt_answers"
       end
     end
-    get "public/quiz/:slug", to: "quizzes#check_slug"
     get "generate_report", to: "reports#generate_report"
     get "/export" => "reports#export"
     get "/export_status/:id" => "reports#export_status"

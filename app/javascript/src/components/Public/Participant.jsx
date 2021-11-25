@@ -75,7 +75,6 @@ const Participant = () => {
       const data = response.data;
       setMarks({ correct: data.correct, incorrect: data.incorrect });
       setResultData(data.result);
-      //setQuiz(true);
     } catch (error) {
       logger.error(error);
     } finally {
