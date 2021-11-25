@@ -45,11 +45,11 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     post users_path,
       params: {
         user:
-                {
-                  first_name: "Eve",
-                  last_name: "Smith",
-                  email: "eve@example.com"
-                },
+          {
+            first_name: "Eve",
+            last_name: "Smith",
+            email: "eve@example.com"
+          },
         quiz_id: @quiz.id
       }
     assert_response :success
@@ -62,11 +62,11 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     post users_path,
       params: {
         user:
-                {
-                  first_name: "Eve",
-                  last_name: "Smith",
-                  email: "eve@example.com"
-                },
+          {
+            first_name: "Eve",
+            last_name: "Smith",
+            email: "eve@example.com"
+          },
         quiz_id: @quiz.id
       }
     assert_response :success
@@ -80,11 +80,11 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     post users_path,
       params: {
         user:
-                {
-                  first_name: "Eve",
-                  last_name: "Smith",
-                  email: "eve@example.com"
-                },
+          {
+            first_name: "Eve",
+            last_name: "Smith",
+            email: "eve@example.com"
+          },
         quiz_id: quiz2.id
       }
     assert_response :success
@@ -97,11 +97,11 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     post users_path,
       params: {
         user:
-                {
-                  first_name: "Eve",
-                  last_name: "Smith",
-                  email: "eve@example.com"
-                },
+          {
+            first_name: "Eve",
+            last_name: "Smith",
+            email: "eve@example.com"
+          },
         quiz_id: quiz2.id
       }
     assert_response :success
