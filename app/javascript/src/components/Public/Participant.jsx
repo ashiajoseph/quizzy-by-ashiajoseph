@@ -30,7 +30,7 @@ const Participant = () => {
 
   const { slug } = useParams();
 
-  const passParticipantDetails = async () => {
+  const handleSubmit = async () => {
     setBtnLoading(true);
     try {
       const response = await usersApi.create({
@@ -52,7 +52,7 @@ const Participant = () => {
   };
 
   //Login
-  const handleNext = async e => {
+  const handleValidation = e => {
     e.preventDefault();
     const anyBlankFields = Object.values(userDetails).some(
       value => value.length === 0
@@ -63,7 +63,7 @@ const Participant = () => {
           "Participant Details can't be blank. Please fill in all the details."
         )
       );
-    } else passParticipantDetails();
+    } else handleSubmit();
   };
 
   //fetch -Quiz data
@@ -117,7 +117,7 @@ const Participant = () => {
         <PariticipantForm
           heading={quizData.title}
           setUserDetails={setUserDetails}
-          handleSubmit={handleNext}
+          handleValidation={handleValidation}
           loading={btnLoading}
         />
       )}

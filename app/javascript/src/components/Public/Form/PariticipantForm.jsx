@@ -5,7 +5,7 @@ import Input from "components/Common/Input";
 
 const PariticipantForm = ({
   heading,
-  handleSubmit,
+  handleValidation,
   loading,
   setUserDetails,
 }) => {
@@ -26,7 +26,7 @@ const PariticipantForm = ({
           Welcome to {heading} Quiz
         </h2>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleValidation}>
           <Input
             label="First Name"
             placeholder="Eve"
