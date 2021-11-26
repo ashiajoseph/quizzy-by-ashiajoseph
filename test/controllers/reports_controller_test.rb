@@ -29,32 +29,32 @@ class ReportsControllerTest < ActionDispatch::IntegrationTest
 
   def test_report_not_generated_if_no_quiz_created
     Quiz.delete_all
-    get "/generate_report", headers: @user_header
+    get "/reports/generate_report", headers: @user_header
     assert_response :not_found
     assert_equal response.parsed_body["error"], t("no_quiz", entity: "created")
   end
 
   def test_report_not_generated_if_no_quiz_published
-    get "/generate_report", headers: @user_header
+    get "/reports/generate_report", headers: @user_header
     assert_response :not_found
     assert_equal response.parsed_body["error"], t("no_quiz", entity: "published")
   end
 
   def test_report_data_generation_for_valid_user
     publish_quiz_and_create_attempt_record()
-    get "/generate_report", headers: @user_header
+    get "/reports/generate_report", headers: @user_header
     assert_response :success
   end
 
   def test_report_data_generation_for_valid_user
     publish_quiz_and_create_attempt_record()
-    get "/generate_report"
+    get "/reports/generate_report"
     assert_response :unauthorized
     assert_equal response.parsed_body["error"], t("session.could_not_auth")
   end
 
   def test_export_not_invoked_for_invalid_user
-    get "/export"
+    get "/reports/export"
     assert_response :unauthorized
     assert_equal response.parsed_body["error"], t("session.could_not_auth")
   end

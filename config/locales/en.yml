@@ -12,7 +12,7 @@ en:
   successfully_added: "Successfully %{operation} Question"
   successfully_updated: "Successfully updated %{entity}"
   deleted_successfully: "Deleted Successfully"
-  successfully_submiited: "Submitted Successfully"
+  successfully_submitted: "Submitted Successfully"
   not_found: "%{entity} not found."
   quiz:
     slug:

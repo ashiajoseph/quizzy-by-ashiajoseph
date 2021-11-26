@@ -38,7 +38,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         params: { user: { first_name: "Oliver", last_name: "Smith", email: "oliver@example.com" }, quiz_id: @quiz.id }
     end
     assert_response :success
-    assert_equal response.parsed_body["eligible"], true
+    assert_equal response.parsed_body["eligible_to_take_quiz"], true
   end
 
   def test_existing_participant_eligible_to_attend_quiz_if_not_submitted
@@ -53,7 +53,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         quiz_id: @quiz.id
       }
     assert_response :success
-    assert_equal response.parsed_body["eligible"], true
+    assert_equal response.parsed_body["eligible_to_take_quiz"], true
   end
 
   def test_participant_ineligible_to_attend_same_quiz_more_than_once
@@ -70,7 +70,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         quiz_id: @quiz.id
       }
     assert_response :success
-    assert_equal response.parsed_body["eligible"], false
+    assert_equal response.parsed_body["eligible_to_take_quiz"], false
   end
 
   def test_participant_eligible_to_attend_each_quiz_once
@@ -88,7 +88,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         quiz_id: quiz2.id
       }
     assert_response :success
-    assert_equal response.parsed_body["eligible"], true
+    assert_equal response.parsed_body["eligible_to_take_quiz"], true
   end
 
   def test_attempt_record_created_when_participant_attends_each_quiz

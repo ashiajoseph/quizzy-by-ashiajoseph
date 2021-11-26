@@ -18,7 +18,9 @@ class AttemptsController < ApplicationController
       }
       record
     end
-    unless @attempt.update({ attempt_answers_attributes: record_list })
+    if @attempt.update({ attempt_answers_attributes: record_list })
+      render status: :ok, json: { notice: t("successfully_submitted") }
+    else
       render status: :unprocessable_entity, json: { error: @attempt.errors.full_messages.to_sentence }
     end
   end

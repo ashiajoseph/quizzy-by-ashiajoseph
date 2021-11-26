@@ -44,10 +44,7 @@ const ShowQuestionAnswers = ({
   const publishQuiz = async () => {
     setLoading(true);
     try {
-      const response = await quizzesApi.publish({
-        quizid,
-        payload: { quiz: { title: `${quiz.title} Quiz` } },
-      });
+      const response = await quizzesApi.publish(quizid);
       const { slug } = response.data;
       setQuiz(prev => {
         return { ...prev, slug: slug };

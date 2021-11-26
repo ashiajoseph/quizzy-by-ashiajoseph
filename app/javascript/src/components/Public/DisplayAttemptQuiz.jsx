@@ -40,7 +40,7 @@ const DisplayAttemptQuiz = ({
     await submitAnswers();
   };
 
-  //initial fetch - without answers
+  // initial fetch - without answers
   const fetchQuestionsWithoutCorrectOptions = async () => {
     try {
       const response_question_options = await questionsApi.list(quizData.id);

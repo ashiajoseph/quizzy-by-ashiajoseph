@@ -146,4 +146,12 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
     assert_equal response.parsed_body["error"], t("not_found", entity: "Quiz")
   end
+
+  def test_list_question_and_options
+    get questions_path, params: { quiz_id: @quiz.id }
+    assert_response :success
+    response_body = response.parsed_body
+    assert_equal response_body["questions"].length, @quiz.questions.length
+    assert_equal response_body["options"].length, @quiz.questions.length
+  end
 end

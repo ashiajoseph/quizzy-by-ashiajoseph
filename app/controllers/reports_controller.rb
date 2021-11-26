@@ -5,7 +5,7 @@ class ReportsController < ApplicationController
 
   def generate_report
     quiz_list = @current_user.quizzes
-    if quizList.size != 0
+    if quiz_list.size != 0
       @no_published_quiz_present = quiz_list.all? { |quiz| quiz.slug == nil }
       if !@no_published_quiz_present
         @report = Attempt.includes(:user, :quiz).where(submitted: true, quiz_id: @current_user.quizzes)
