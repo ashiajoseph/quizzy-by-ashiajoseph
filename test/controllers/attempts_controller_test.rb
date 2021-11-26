@@ -21,14 +21,6 @@ class AttemptsControllerTest < ActionDispatch::IntegrationTest
     @attempt = @participant.attempts.create!(quiz_id: @quiz.id)
   end
 
-  def create_attempt_answers_records
-    post "/attempts/create_attempt_answers",
-      params: {
-        attempt_answers_attributes: { "#{@question.id}" => "#{@option2.id}" },
-        id: @attempt.id
-      }
-  end
-
   def test_attempt_answers_created_on_submit
     assert_difference "AttemptAnswer.count", 1 do
       create_attempt_answers_records()
@@ -74,4 +66,14 @@ class AttemptsControllerTest < ActionDispatch::IntegrationTest
     @attempt.reload
     assert_not_equal @attempt.correct_answers_count + @attempt.incorrect_answers_count, 0
   end
+
+  private
+
+    def create_attempt_answers_records
+      post "/attempts/create_attempt_answers",
+        params: {
+          attempt_answers_attributes: { "#{@question.id}" => "#{@option2.id}" },
+          id: @attempt.id
+        }
+    end
 end

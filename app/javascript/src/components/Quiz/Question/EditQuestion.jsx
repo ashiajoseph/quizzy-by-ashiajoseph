@@ -43,7 +43,7 @@ const EditQuestion = ({ history }) => {
     return [...list, ...newOptions];
   };
 
-  const passQuestions = async formattedOptions => {
+  const handleSubmit = async formattedOptions => {
     try {
       await questionsApi.update({
         id,
@@ -63,7 +63,7 @@ const EditQuestion = ({ history }) => {
     }
   };
 
-  const handleSubmit = async e => {
+  const handleValidation = e => {
     e.preventDefault();
     const isBlankQuestion = questionAnswer.question.trim().length === 0;
     const isBlankOptions = optionList.some(
@@ -78,7 +78,7 @@ const EditQuestion = ({ history }) => {
     } else {
       setBtnLoading(true);
       const formattedOptions = formatReturnedOptions();
-      await passQuestions(formattedOptions);
+      handleSubmit(formattedOptions);
     }
   };
 
@@ -133,7 +133,7 @@ const EditQuestion = ({ history }) => {
           setOptionList={setOptionList}
           questionAnswer={questionAnswer}
           setQuestionAnswer={setQuestionAnswer}
-          handleSubmit={handleSubmit}
+          handleValidation={handleValidation}
           loading={btnLoading}
         />
       )}

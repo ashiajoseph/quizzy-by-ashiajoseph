@@ -3,7 +3,7 @@
 class SessionsController < ApplicationController
   def create
     @user = User.find_by(email: login_params[:email].downcase)
-    is_administrator = @user.present? && (@user.role == "administrator")
+    is_administrator = @user.present? && @user.administrator?
     if !@user.present? || !@user.authenticate(login_params[:password])
       render status: :unauthorized, json: { error: t("session.incorrect_credentials") }
     else

@@ -9,6 +9,7 @@ class ExportReportWorker
     quizlist = user.quizzes.order("title ASC")
     report = Attempt.includes(:user, :quiz).where(submitted: true, quiz_id: user.quizzes)
     total report.size
+    sleep 10
     xlsx_package = Axlsx::Package.new
     xlsx_workbook = xlsx_package.workbook
     xlsx_workbook.add_worksheet(name: "Report") do |worksheet|
@@ -17,10 +18,8 @@ class ExportReportWorker
       worksheet.add_row [attempt.quiz.title, "#{attempt.user.first_name} #{attempt.user.last_name}",
 attempt.user.email, attempt.correct_answers_count, attempt.incorrect_answers_count]
       at idx
-      sleep 0.5
     end
   end
-
     xlsx_package.serialize Rails.root.join("tmp", "report_#{self.jid}.xlsx")
   end
 end

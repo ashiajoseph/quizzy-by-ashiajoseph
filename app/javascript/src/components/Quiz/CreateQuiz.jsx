@@ -11,7 +11,7 @@ const CreateQuiz = ({ history }) => {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const passQuizDetails = async title => {
+  const handleSubmit = async title => {
     setLoading(true);
     try {
       await quizzesApi.create({ quiz: { title } });
@@ -23,18 +23,18 @@ const CreateQuiz = ({ history }) => {
     }
   };
 
-  const handleSubmit = e => {
+  const handleValidation = e => {
     e.preventDefault();
     const trimmedTitle = title.trim();
     if (trimmedTitle.length === 0) Toastr.error(Error("Title can't be blank"));
-    else passQuizDetails(trimmedTitle);
+    else handleSubmit(trimmedTitle);
   };
 
   return (
     <Container>
       <QuizForm
         setTitle={setTitle}
-        handleSubmit={handleSubmit}
+        handleValidation={handleValidation}
         loading={loading}
       />
     </Container>
