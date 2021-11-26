@@ -16,7 +16,7 @@ const EditQuiz = ({ history }) => {
   const [loading, setLoading] = useState(true);
   const [btnLoading, setBtnLoading] = useState(false);
 
-  const passQuizDetails = async title => {
+  const handleSubmit = async title => {
     setBtnLoading(true);
     try {
       await quizzesApi.update({
@@ -31,11 +31,11 @@ const EditQuiz = ({ history }) => {
     }
   };
 
-  const handleSubmit = e => {
+  const handleValidation = e => {
     e.preventDefault();
     const trimmedTitle = title.trim();
     if (trimmedTitle.length === 0) Toastr.error(Error("Title can't be blank"));
-    else passQuizDetails(trimmedTitle);
+    else handleSubmit(trimmedTitle);
   };
 
   const fetchQuizDetails = async () => {
@@ -70,7 +70,7 @@ const EditQuiz = ({ history }) => {
           action="update"
           title={title}
           setTitle={setTitle}
-          handleSubmit={handleSubmit}
+          handleValidation={handleValidation}
           loading={btnLoading}
         />
       )}

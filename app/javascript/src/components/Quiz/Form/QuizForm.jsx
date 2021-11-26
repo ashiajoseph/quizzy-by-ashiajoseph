@@ -7,7 +7,7 @@ const QuizForm = ({
   action = "create",
   title,
   setTitle,
-  handleSubmit,
+  handleValidation,
   loading,
 }) => {
   return (
@@ -18,7 +18,7 @@ const QuizForm = ({
             {action == "create" ? "Add new quiz" : "Edit quiz"}
           </h2>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleValidation}>
             <Input
               from="create/edit"
               label="Quiz Title"

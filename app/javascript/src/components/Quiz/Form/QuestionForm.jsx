@@ -8,7 +8,7 @@ import Input from "components/Common/Input";
 
 const QuestionForm = ({
   action = "create",
-  handleSubmit,
+  handleValidation,
   heading,
   questionAnswer,
   setQuestionAnswer,
@@ -60,7 +60,7 @@ const QuestionForm = ({
           </h2>
         </div>
         <div className="w-10/12	my-4">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleValidation}>
             <div className="w-70 mx-auto">
               <Input
                 from="create/edit"

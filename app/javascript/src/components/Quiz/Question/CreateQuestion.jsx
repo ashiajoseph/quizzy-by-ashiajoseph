@@ -22,7 +22,7 @@ const CreateQuestion = ({ history }) => {
   const [heading, setHeading] = useState("");
   const { quizid } = useParams();
 
-  const passQuestions = async () => {
+  const handleSubmit = async () => {
     try {
       const optList = optionList.map((value, index) => {
         const answer = questionAnswer.answer == index;
@@ -45,7 +45,7 @@ const CreateQuestion = ({ history }) => {
     }
   };
 
-  const handleSubmit = async e => {
+  const handleValidation = e => {
     e.preventDefault();
     const isBlankQuestion = questionAnswer.question.trim().length === 0;
     const isBlankOptions = optionList.some(
@@ -59,7 +59,7 @@ const CreateQuestion = ({ history }) => {
       Toastr.error(Error("Option can't be blank"));
     } else {
       setBtnLoading(true);
-      await passQuestions();
+      handleSubmit();
     }
   };
 
@@ -93,7 +93,7 @@ const CreateQuestion = ({ history }) => {
       {valid_quiz && (
         <QuestionForm
           heading={`${heading} Quiz`}
-          handleSubmit={handleSubmit}
+          handleValidation={handleValidation}
           optionList={optionList}
           setOptionList={setOptionList}
           setQuestionAnswer={setQuestionAnswer}

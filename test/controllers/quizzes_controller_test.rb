@@ -7,6 +7,9 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     @user = User.create!(
       first_name: "Sam", last_name: "Smith", email: "sam@example.com", password: "welcome",
       password_confirmation: "welcome", role: "administrator")
+    @another_user = User.create!(
+      first_name: "Ann", last_name: "Smith", email: "ann@example.com", password: "welcome",
+      password_confirmation: "welcome", role: "administrator")
     @quiz = @user.quizzes.create!(title: "Maths")
     @user_header = headers(@user)
   end
@@ -36,7 +39,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_update_quiz_title
     new_title = "Mathematics"
-    quiz_params = { quiz: { title: new_title, setslug: nil } }
+    quiz_params = { quiz: { title: new_title } }
     put quiz_path(@quiz.id), params: quiz_params, headers: @user_header
     assert_response :success
     @quiz.reload
@@ -44,7 +47,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_shouldnt_update_quiz_without_title
-    quiz_params = { quiz: { title: "", setslug: nil } }
+    quiz_params = { quiz: { title: "" } }
     put quiz_path(@quiz.id), params: quiz_params, headers: @user_header
     response_json = response.parsed_body
     assert_equal response_json["error"], "Title can't be blank"
@@ -76,7 +79,7 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
   end
 
-  def test_not_found_error_raised_for_invalid_id
+  def test_not_found_error_raised_for_invalid_quiz_id
     invalid_id = 100
     get quiz_path(invalid_id), headers: @user_header
     assert_response :not_found
@@ -89,12 +92,25 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     @quiz.reload
     get "/quizzes/#{@quiz.slug}/check_slug"
     assert_response :success
-    assert_equal response.parsed_body, { "id" => 1, "title" => "Maths" }
+    assert_equal response.parsed_body, { "id" => @quiz.id, "title" => @quiz.title }
   end
 
   def test_check_slug_raise_not_found_error_on_given_invalid_slug
     get "/quizzes/invalid/check_slug"
     assert_response :not_found
     assert_includes response.parsed_body["error"], "Quiz not found."
+  end
+
+  def test_retrieve_title
+    get "/quizzes/#{@quiz.id}/retrieve_title", headers: @user_header
+    assert_response :success
+    assert_equal response.parsed_body, { "id" => @quiz.id, "title" => @quiz.title }
+  end
+
+  def test_shouldnt_show_quiz_to_unauthorized_user
+    another_user_header = headers(@another_user)
+    get quiz_path(@quiz.id), headers: another_user_header
+    assert_response :forbidden
+    assert_equal response.parsed_body["error"], "Unauthorized Access"
   end
 end
