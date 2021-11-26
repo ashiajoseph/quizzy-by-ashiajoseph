@@ -19,7 +19,7 @@ class ExportReportWorker
          "#{attempt.user.first_name} #{attempt.user.last_name}",
           attempt.user.email,
           attempt.correct_answers_count,
-          attempt.incorrect_answers_coun t]
+          attempt.incorrect_answers_count]
       at idx
     end
   end
