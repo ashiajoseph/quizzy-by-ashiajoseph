@@ -15,8 +15,11 @@ class ExportReportWorker
     xlsx_workbook.add_worksheet(name: "Report") do |worksheet|
     worksheet.add_row %w(Quiz User\ Name Email Correct\ Answer Incorrect\ Answer )
     report.each.with_index(1) do |attempt, idx|
-      worksheet.add_row [attempt.quiz.title, "#{attempt.user.first_name} #{attempt.user.last_name}",
-attempt.user.email, attempt.correct_answers_count, attempt.incorrect_answers_count]
+      worksheet.add_row [ attempt.quiz.title,
+         "#{attempt.user.first_name} #{attempt.user.last_name}",
+          attempt.user.email,
+          attempt.correct_answers_count,
+          attempt.incorrect_answers_coun t]
       at idx
     end
   end
