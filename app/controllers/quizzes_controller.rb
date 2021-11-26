@@ -3,6 +3,7 @@
 class QuizzesController < ApplicationController
   before_action :authenticate_user_using_x_auth_token, except: %i[check_slug]
   before_action :load_quiz, except: %i[index create check_slug]
+
   def index
     @quizzes = @current_user.quizzes.order("created_at DESC").as_json(only: %i[id title ])
   end
