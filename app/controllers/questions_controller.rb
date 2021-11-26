@@ -43,7 +43,9 @@ class QuestionsController < ApplicationController
   private
 
     def quiz_question_params
-      params.require(:mcq).permit(:question, options_attributes: [:id, :content, :answer, :_destroy])
+      params.require(:multiple_choice_question).permit(
+        :question,
+        options_attributes: [:id, :content, :answer, :_destroy])
     end
 
     def load_quiz

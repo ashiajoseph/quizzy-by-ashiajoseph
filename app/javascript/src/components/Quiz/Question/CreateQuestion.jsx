@@ -32,7 +32,7 @@ const CreateQuestion = ({ history }) => {
       const question = questionAnswer.question.trim();
       await questionsApi.create({
         quiz_id: quizid,
-        mcq: {
+        multiple_choice_question: {
           question: question,
           options_attributes: optList,
         },

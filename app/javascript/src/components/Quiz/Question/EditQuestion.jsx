@@ -49,7 +49,7 @@ const EditQuestion = ({ history }) => {
         id,
         payload: {
           quiz_id: quizid,
-          mcq: {
+          multiple_choice_question: {
             question: questionAnswer.question.trim(),
             options_attributes: formattedOptions,
           },
