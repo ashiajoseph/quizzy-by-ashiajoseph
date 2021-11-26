@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   end
   resources :reports do
     member do
-      get "export_download", defaults: { format: "html" }
+      get "export_download"
     end
   end
 
