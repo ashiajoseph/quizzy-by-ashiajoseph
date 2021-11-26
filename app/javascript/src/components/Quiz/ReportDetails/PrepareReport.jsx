@@ -11,8 +11,21 @@ const PrepareReport = () => {
   const [jobId, setJobId] = useState("");
   const interval = useRef(0);
 
-  const downloadReport = () => {
-    window.location.href = `/reports/${jobId}/export_download`;
+  const downloadReport = async () => {
+    try {
+      const response = await reportsApi.export_download(jobId);
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const filename =
+        response.headers["content-disposition"].match(/filename="(.+)"/)[1];
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      logger.error(error);
+    }
   };
   const fetchReportDetails = async () => {
     try {

@@ -29,6 +29,6 @@ class QuizPolicy
   end
 
   def create?
-    true
+    show?
   end
 end
