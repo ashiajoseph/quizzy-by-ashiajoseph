@@ -7,4 +7,4 @@ json.report_data @report do |attempt|
   json.correct_count attempt.correct_answers_count
   json.incorrect_count attempt.incorrect_answers_count
 end
-json.display @content
+json.published_quiz_present !@no_published_quiz_present

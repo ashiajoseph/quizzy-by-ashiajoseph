@@ -4,18 +4,10 @@ class AttemptsController < ApplicationController
   before_action :load_attempt
   after_action :store_correct_and_incorrect_answers_count, only: :create_attempt_answers
 
-  # def update
-  #   if @attempt.update({ submitted: true })
-  #     render status: :ok, json: { notice: t("successfully_submiited") }
-  #   else
-  #     render status: :unprocessable_entity, json: { error: @attempt.errors.full_messages.to_sentence }
-  #   end
-  # end
-
   def create_attempt_answers
     quiz = Quiz.includes(questions: :options).find_by_id(@attempt.quiz_id)
 
-    recordList = quiz.questions.map do |question|
+    record_list = quiz.questions.map do |question|
       record = Hash.new
       user_selected_option = params[:attempt_answers_attributes][question[:id].to_s]
       correct_option = question.options.select { |option| option.answer }
@@ -26,7 +18,7 @@ class AttemptsController < ApplicationController
       }
       record
     end
-    unless @attempt.update({ attempt_answers_attributes: recordList })
+    unless @attempt.update({ attempt_answers_attributes: record_list })
       render status: :unprocessable_entity, json: { error: @attempt.errors.full_messages.to_sentence }
     end
   end

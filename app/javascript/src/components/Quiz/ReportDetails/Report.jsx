@@ -11,13 +11,13 @@ import ReportTable from "../Table/ReportTable";
 const Report = () => {
   const [loading, setLoading] = useState(true);
   const [reportData, setReportData] = useState([]);
-  const [show, setShow] = useState(false);
+  const [showInfoToastr, setShowInfoToastr] = useState(false);
   const fetchReportDetails = async () => {
     try {
       const response = await reportsApi.generate_report();
       const data = response.data;
       setReportData(data.report_data);
-      setShow(data.display);
+      setShowInfoToastr(data.published_quiz_present);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -45,7 +45,7 @@ const Report = () => {
         link_path="/report/prepare"
         hide={reportData.length ? false : true}
       />
-      <ReportTable reportData={reportData} show={show} />
+      <ReportTable reportData={reportData} showInfoToastr={showInfoToastr} />
     </Container>
   );
 };

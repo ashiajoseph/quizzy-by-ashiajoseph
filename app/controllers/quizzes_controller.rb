@@ -20,7 +20,7 @@ class QuizzesController < ApplicationController
 
   def show
     authorize @quiz
-    @questions = @quiz.questions.includes(:options)
+    @questions = @quiz.questions
   end
 
   def update
