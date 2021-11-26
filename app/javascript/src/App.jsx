@@ -60,6 +60,7 @@ const App = () => {
             />
             <Route exact path="/report" component={Report} />
             <Route exact path="/report/prepare" component={PrepareReport} />
+
             <Route path="*" component={ErrorBoundary} />
           </Switch>
         </PrivateRoute>

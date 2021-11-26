@@ -7,7 +7,6 @@ class QuestionsController < ApplicationController
   before_action :load_question, except: %i[create index]
 
   def index
-    # puts "----"
     @questions = @quiz.questions
   end
 

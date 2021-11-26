@@ -12,7 +12,7 @@ const PrepareReport = () => {
   const interval = useRef(0);
 
   const downloadReport = () => {
-    window.location.href = `/export_download/${jobId}`;
+    window.location.href = `/reports/${jobId}/export_download`;
   };
   const fetchReportDetails = async () => {
     try {

@@ -23,14 +23,19 @@ Rails.application.routes.draw do
     resources :reports do
       collection do
         get "generate_report"
+        get "export"
+      end
+      member do
+        get "export_status"
       end
     end
-    # get "generate_report", to: "reports#generate_report"
-    get "/export" => "reports#export"
-    get "/export_status/:id" => "reports#export_status"
+  end
+  resources :reports do
+    member do
+      get "export_download", defaults: { format: "html" }
+    end
   end
 
-  get "/export_download/:id" => "reports#export_download"
   root "home#index"
   get "*path", to: "home#index", via: :all
 end
