@@ -1,13 +1,6 @@
-import React, { useState, useContext } from "react";
-
-import { Paragraph } from "@bigbinary/neeto-icons";
-import { Loading } from "@bigbinary/neeto-icons";
-import { useParams } from "react-router-dom";
-
-import quizzesApi from "apis/quizzes";
+import React from "react";
 
 import NavItem from "../NavBar/NavItem";
-import { quizContext } from "../Quiz/QuizContext";
 
 const PageHeader = ({
   heading,
@@ -15,24 +8,6 @@ const PageHeader = ({
   link_path = "",
   hide = false,
 }) => {
-  const [loading, setLoading] = useState(false);
-  const { totalQuestions, publish, setPublish } = useContext(quizContext);
-  const { quizid } = useParams();
-
-  const publishQuiz = async () => {
-    setLoading(true);
-    try {
-      await quizzesApi.update({
-        quizid,
-        payload: { quiz: { title: heading, setslug: true } },
-      });
-      setPublish(true);
-    } catch (error) {
-      logger.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
   return (
     <div className="pt-8 pb-4 mt-4  flex flex-col">
       <div className="flex justify-between items-center ">
@@ -49,20 +24,6 @@ const PageHeader = ({
               heading={heading}
               style="text-lg text-black rounded-md py-2 px-4 bg-lime mr-5"
             />
-          )}
-          {totalQuestions != 0 && !publish && (
-            <button
-              onClick={publishQuiz}
-              className={` font-semibold text-lg text-black rounded-md py-2 px-4 bg-lime focus:outline-none `}
-            >
-              {loading ? (
-                <Loading />
-              ) : (
-                <>
-                  <Paragraph className="inline" size={20} /> Publish
-                </>
-              )}
-            </button>
           )}
         </div>
       </div>

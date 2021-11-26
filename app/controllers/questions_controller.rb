@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
 class QuestionsController < ApplicationController
-  before_action :authenticate_user_using_x_auth_token
-  before_action :load_quiz
-  before_action :load_question, except: :create
+  before_action :authenticate_user_using_x_auth_token, except: :index
+  before_action :load_quiz_for_participant, only: %i[index]
+  before_action :load_quiz, except: :index
+  before_action :load_question, except: %i[create index]
+
+  def index
+    @questions = @quiz.questions
+  end
 
   def create
     @question = @quiz.questions.new(quiz_question_params)
@@ -38,7 +43,9 @@ class QuestionsController < ApplicationController
   private
 
     def quiz_question_params
-      params.require(:mcq).permit(:question, options_attributes: [:id, :content, :answer, :_destroy])
+      params.require(:multiple_choice_question).permit(
+        :question,
+        options_attributes: [:id, :content, :answer, :_destroy])
     end
 
     def load_quiz
@@ -46,6 +53,10 @@ class QuestionsController < ApplicationController
       unless @quiz
         render status: :not_found, json: { error: t("not_found", entity: "Quiz") }
       end
+    end
+
+    def load_quiz_for_participant
+      @quiz = Quiz.find_by_id(params[:quiz_id])
     end
 
     def load_question

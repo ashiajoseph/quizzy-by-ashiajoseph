@@ -12,7 +12,7 @@ const PariticipantForm = ({
   const handleChange = e => {
     const { name, value } = e.target;
     setUserDetails(prev => {
-      return { ...prev, [name]: value };
+      return { ...prev, [name]: value.trim() };
     });
   };
 

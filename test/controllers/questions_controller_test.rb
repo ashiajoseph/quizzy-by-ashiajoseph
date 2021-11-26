@@ -18,7 +18,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     post questions_path,
       params: {
         quiz_id: @quiz.id,
-        mcq: {
+        multiple_choice_question: {
           question: "question",
           options_attributes: [
              { content: "opt1", answer: true },
@@ -34,7 +34,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     post questions_path,
       params: {
         quiz_id: @quiz.id,
-        mcq: {
+        multiple_choice_question: {
           question: "",
           options_attributes: [
             { content: "opt1", answer: true },
@@ -50,7 +50,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     post questions_path,
       params: {
         quiz_id: @quiz.id,
-        mcq: {
+        multiple_choice_question: {
           question: "question",
           options_attributes: [ ]
         }
@@ -64,7 +64,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     post questions_path,
       params: {
         quiz_id: @quiz.id,
-        mcq:
+        multiple_choice_question:
             {
               question: "question",
               options_attributes: [
@@ -80,7 +80,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     post questions_path,
       params: {
         quiz_id: @quiz.id,
-        mcq: {
+        multiple_choice_question: {
           question: "question",
           options_attributes: [
                { content: "opt1", answer: true },
@@ -94,7 +94,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_update_question_content
     question2 = "another question"
-    questions_params = { quiz_id: @quiz.id, mcq: { question: question2 } }
+    questions_params = { quiz_id: @quiz.id, multiple_choice_question: { question: question2 } }
     put question_path(@quiz.id), params: questions_params, headers: @user_header
     assert_response :success
     @question.reload
@@ -102,7 +102,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_shouldnt_update_without_question_content
-    questions_params = { quiz_id: @quiz.id, mcq: { question: "" } }
+    questions_params = { quiz_id: @quiz.id, multiple_choice_question: { question: "" } }
     put question_path(@quiz.id), params: questions_params, headers: @user_header
     assert_response :unprocessable_entity
     response_json = response.parsed_body
@@ -135,7 +135,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     post questions_path,
       params: {
         quiz_id: invalid_id,
-        mcq:
+        multiple_choice_question:
         {
           question: "question",
           options_attributes: [
@@ -145,5 +145,13 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
       }, headers: @user_header
     assert_response :not_found
     assert_equal response.parsed_body["error"], t("not_found", entity: "Quiz")
+  end
+
+  def test_list_question_and_options
+    get questions_path, params: { quiz_id: @quiz.id }
+    assert_response :success
+    response_body = response.parsed_body
+    assert_equal response_body["questions"].length, @quiz.questions.length
+    assert_equal response_body["options"].length, @quiz.questions.length
   end
 end

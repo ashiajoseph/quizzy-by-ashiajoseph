@@ -1,9 +1,11 @@
 import axios from "axios";
 
-const export_report = () => axios.get("/export");
-const export_status = id => axios.get(`/export_status/${id}`);
-const generate_report = () => axios.get("/generate_report");
-const export_download = id => axios.get(`/export_download/${id}`);
+const generate_report = () => axios.get("/reports/generate_report");
+const export_report = () => axios.get("/reports/export");
+const export_status = id => axios.get(`/reports/${id}/export_status`);
+const export_download = jobId =>
+  axios.get(`/reports/${jobId}/export_download`, { responseType: "blob" });
+
 const reportsApi = {
   export_report,
   export_status,

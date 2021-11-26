@@ -3,6 +3,7 @@
 class QuizzesController < ApplicationController
   before_action :authenticate_user_using_x_auth_token, except: %i[check_slug]
   before_action :load_quiz, except: %i[index create check_slug]
+
   def index
     @quizzes = @current_user.quizzes.order("created_at DESC").as_json(only: %i[id title ])
   end
@@ -20,25 +21,15 @@ class QuizzesController < ApplicationController
 
   def show
     authorize @quiz
-    @questions = @quiz.questions.includes(:options)
+    @questions = @quiz.questions
   end
 
   def update
     authorize @quiz
-    if !quiz_params[:setslug]
-      if @quiz.update(title: quiz_params[:title])
-        render status: :ok, json: { notice: t("successfully_updated", entity: "Quiz") }
-      else
-        render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
-      end
+    if @quiz.update(title: quiz_params[:title])
+      render status: :ok, json: { notice: t("successfully_updated", entity: "Quiz") }
     else
-      slug_candidate = Quiz.set_slug(quiz_params[:title])
-      if @quiz.update(slug: slug_candidate)
-        render status: :ok, json: { notice: t("publish") }
-      else
-        render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
-      end
-
+      render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
     end
   end
 
@@ -55,16 +46,27 @@ class QuizzesController < ApplicationController
     authorize @quiz
   end
 
+  def publish
+    authorize @quiz
+    slug_candidate = @quiz.set_slug()
+    if @quiz.save
+      render status: :ok, json: { notice: t("publish"), slug: slug_candidate }
+    else
+      render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
+    end
+  end
+
   def check_slug
-    quiz = Quiz.find_by(slug: params[:slug])
-    @id = quiz ? quiz.id : nil
-    @title = quiz ? quiz.title : nil
+    @quiz = Quiz.find_by(slug: params[:id])
+    unless @quiz
+      render status: :not_found, json: { error: t("not_found", entity: "Quiz") }
+    end
   end
 
   private
 
     def quiz_params
-      params.require(:quiz).permit(:title, :setslug)
+      params.require(:quiz).permit(:title)
     end
 
     def load_quiz

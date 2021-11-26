@@ -21,7 +21,7 @@ const EditQuiz = ({ history }) => {
     try {
       await quizzesApi.update({
         quizid,
-        payload: { quiz: { title: title, setslug: false } },
+        payload: { quiz: { title: title } },
       });
       setBtnLoading(false);
       history.push("/");

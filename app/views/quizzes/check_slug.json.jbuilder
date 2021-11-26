@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-json.id @id
-json.title @title
+json.id @quiz.id
+json.title @quiz.title

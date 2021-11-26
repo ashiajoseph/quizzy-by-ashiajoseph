@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { PageLoader } from "@bigbinary/neetoui/v2";
+import { Toastr } from "@bigbinary/neetoui/v2";
 import { useParams } from "react-router-dom";
 
 import attemptsApi from "apis/attempts";
@@ -8,8 +9,8 @@ import quizzesApi from "apis/quizzes";
 import usersApi from "apis/users";
 import Container from "components/Common/Container";
 
+import DisplayAttemptQuiz from "./DisplayAttemptQuiz";
 import PariticipantForm from "./Form/PariticipantForm";
-import QuizQA from "./Form/QAForm";
 
 const Participant = () => {
   const [loading, setLoading] = useState(true);
@@ -24,17 +25,12 @@ const Participant = () => {
     email: "",
   });
   const [quizData, setQuizData] = useState({});
-
-  const [questionList, setQuestionList] = useState([]);
-  const [optionList, setOptionList] = useState([]);
-  const [answers, setAnswers] = useState({});
   const [marks, setMarks] = useState({ correct: 0, incorrect: 0 });
   const [resultData, setResultData] = useState({});
+
   const { slug } = useParams();
 
-  //Login
-  const handleNext = async e => {
-    e.preventDefault();
+  const passParticipantDetails = async () => {
     setBtnLoading(true);
     try {
       const response = await usersApi.create({
@@ -43,7 +39,7 @@ const Participant = () => {
       });
       const data = response.data;
       setAttemptId(data.attempt_id);
-      if (!data.eligible) {
+      if (!data.eligible_to_take_quiz) {
         setResult(true);
       }
       setLogin(false);
@@ -55,39 +51,27 @@ const Participant = () => {
     }
   };
 
-  const submitAnswers = async () => {
-    try {
-      await attemptsApi.update(attemptId);
-      await attemptsApi.create({
-        attempt_answers_attributes: answers,
-        id: attemptId,
-      });
-      setResult(true);
-    } catch (error) {
-      logger.error(error);
-    } finally {
-      setBtnLoading(false);
-    }
-  };
-
-  const handleSubmit = async e => {
+  //Login
+  const handleNext = async e => {
     e.preventDefault();
-    setBtnLoading(true);
-    setLoading(true);
-    setQuiz(false);
-    await submitAnswers();
+    const anyBlankFields = Object.values(userDetails).some(
+      value => value.length === 0
+    );
+    if (anyBlankFields) {
+      Toastr.error(
+        Error(
+          "Participant Details can't be blank. Please fill in all the details."
+        )
+      );
+    } else passParticipantDetails();
   };
 
-  //initial fetch - without answers
-  const fetchQA = async () => {
+  //fetch -Quiz data
+  const fetchQuizData = async () => {
     try {
-      const response1 = await quizzesApi.check_slug(slug);
-      const quizdata = response1.data;
-      const response2 = await attemptsApi.list(quizdata.id);
-      const data = response2.data;
+      const response_quiz = await quizzesApi.check_slug(slug);
+      const quizdata = response_quiz.data;
       setQuizData(quizdata);
-      setQuestionList(data.questions);
-      setOptionList(data.options);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -96,17 +80,15 @@ const Participant = () => {
   };
 
   useEffect(() => {
-    fetchQA();
+    fetchQuizData();
   }, []);
 
-  // fetch - with correct option
   const fetchParticipantAnswers = async () => {
     try {
       const response = await attemptsApi.retrieve_attempt_answers(attemptId);
       const data = response.data;
       setMarks({ correct: data.correct, incorrect: data.incorrect });
       setResultData(data.result);
-      setQuiz(true);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -116,6 +98,7 @@ const Participant = () => {
 
   useEffect(() => {
     if (result) {
+      setLoading(true);
       fetchParticipantAnswers();
     }
   }, [result]);
@@ -139,16 +122,14 @@ const Participant = () => {
         />
       )}
       {quiz && (
-        <QuizQA
+        <DisplayAttemptQuiz
           result={result}
-          heading={quizData.title}
-          questionList={questionList}
-          optionList={optionList}
-          handleSubmit={handleSubmit}
-          setAnswers={setAnswers}
+          attemptId={attemptId}
+          quizData={quizData}
+          setQuizData={setQuizData}
+          setResult={setResult}
           marks={marks}
           resultData={resultData}
-          loading={btnLoading}
         />
       )}
     </Container>

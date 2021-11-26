@@ -6,20 +6,20 @@ import { useTable, useSortBy } from "react-table";
 
 import { COLS } from "./tableheader.js";
 
-const ReportTable = ({ reportData, show }) => {
+const ReportTable = ({ reportData, showInfoToastr }) => {
   const cols = useMemo(() => COLS, []);
   const data = useMemo(() => reportData, []);
   const reportSize = reportData.length != 0;
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns: cols, data: data }, useSortBy);
 
-  if (show && !reportSize) {
+  if (showInfoToastr && !reportSize) {
     Toastr.info("No participant has attempted any quiz");
   }
 
   return (
     <>
-      {show && reportSize && (
+      {reportSize && (
         <table
           {...getTableProps()}
           className="w-89 py-12 mx-auto my-12 rounded-md bg-black bg-opacity-70 tracking-wider  "

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { PageLoader } from "@bigbinary/neetoui/v2";
 import { isNil, isEmpty, either } from "ramda";
@@ -10,15 +10,14 @@ import PageHeader from "components/Common/PageHeader";
 
 import EmptyList from "./EmptyList";
 import ShowQuestionAnswers from "./Question/ShowQuestionAnswers";
-import { quizContext } from "./QuizContext";
 
 const ShowQuiz = () => {
   const [loading, setLoading] = useState(true);
   const [quiz, setQuiz] = useState({});
   const [questionList, setQuestionList] = useState([]);
   const [optionList, setOptionList] = useState([]);
+  const [publish, setPublish] = useState(false);
   const empty = useRef(false);
-  const { setTotalQuestions, setPublish, publish } = useContext(quizContext);
   const { quizid } = useParams();
 
   const fetchQuizDetails = async () => {
@@ -27,7 +26,6 @@ const ShowQuiz = () => {
       const data = response.data;
       setQuiz(data.quiz);
       setQuestionList(data.questions);
-      setTotalQuestions(data.questions.length);
       setOptionList(data.options);
       const published = data.quiz.slug ? true : false;
       setPublish(published);
@@ -41,7 +39,7 @@ const ShowQuiz = () => {
 
   useEffect(() => {
     fetchQuizDetails();
-  }, [publish]);
+  }, []);
 
   if (loading) {
     return (
@@ -72,7 +70,10 @@ const ShowQuiz = () => {
               questionList={questionList}
               setQuestionList={setQuestionList}
               optionList={optionList}
-              slug={quiz.slug}
+              publish={publish}
+              setPublish={setPublish}
+              quiz={quiz}
+              setQuiz={setQuiz}
             />
           )}
         </div>

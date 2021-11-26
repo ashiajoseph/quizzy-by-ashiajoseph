@@ -4,7 +4,7 @@ import { Radio } from "@bigbinary/neetoui/v2";
 
 import Button from "components/Common/Button";
 
-const QuizQA = ({
+const QuizAttemptForm = ({
   heading,
   questionList,
   optionList,
@@ -106,4 +106,4 @@ const QuizQA = ({
   );
 };
 
-export default QuizQA;
+export default QuizAttemptForm;

@@ -25,11 +25,13 @@ class AttemptTest < ActiveSupport::TestCase
   def test_attempt_should_not_be_valid_without_quiz
     @attempt.quiz = nil
     assert_not @attempt.valid?
+    assert_includes @attempt.errors.full_messages, "Quiz must exist"
   end
 
   def test_attempt_should_not_be_valid_without_participant
     @attempt.user = nil
     assert_not @attempt.valid?
+    assert_includes @attempt.errors.full_messages, "User must exist"
   end
 
   def test_correct_answers_count_has_default_value_0_initially

@@ -29,32 +29,22 @@ class AttemptsControllerTest < ActionDispatch::IntegrationTest
       }
   end
 
-  def test_list_question_and_option
-    get attempts_path, params: { quizid: @quiz.id }
-    assert_response :success
-    response_body = response.parsed_body
-    assert_equal response_body["questions"].length, @quiz.questions.length
-    assert_equal response_body["options"].length, @quiz.questions.length
-  end
-
-  def test_should_update_attempt_on_submitting_the_quiz
-    put attempt_path(@attempt.id)
-    assert_response :success
-    assert_equal response.parsed_body["notice"], "Submitted Successfully"
-  end
-
-  def test_shouldnt_update_on_giving_invalid_id
-    invalid_id = 100
-    put attempt_path(invalid_id)
-    assert_response :not_found
-    assert_equal response.parsed_body["error"], "Attempt not found."
-  end
-
   def test_attempt_answers_created_on_submit
     assert_difference "AttemptAnswer.count", 1 do
       create_attempt_answers_records()
     end
     assert_response :success
+  end
+
+  def test_shouldnt_update_on_giving_invalid_attempt_id
+    invalid_id = 100
+    post "/attempts/create_attempt_answers",
+      params: {
+        attempt_answers_attributes: { "#{@question.id}" => "#{@option2.id}" },
+        id: invalid_id
+      }
+    assert_response :not_found
+    assert_equal response.parsed_body["error"], "Attempt not found."
   end
 
   def test_attempt_answer_retrieval
@@ -71,7 +61,14 @@ class AttemptsControllerTest < ActionDispatch::IntegrationTest
     assert_equal response.parsed_body["error"], t("not_found", entity: "Attempt")
   end
 
-  def test_scores_updated_after_creating_attempts_record
+  def test_should_update_submitted_on_submitting_the_quiz
+    create_attempt_answers_records()
+    assert_response :success
+    @attempt.reload
+    assert_equal @attempt.submitted, true
+  end
+
+  def test_scores_updated_after_creating_attempt_answers_record
     create_attempt_answers_records()
     assert_response :success
     @attempt.reload
