@@ -15,7 +15,6 @@ const DisplayAttemptQuiz = ({
   marks,
   resultData,
 }) => {
-  logger.info(resultData);
   const [loading, setLoading] = useState(true);
   const [questionList, setQuestionList] = useState([]);
   const [optionList, setOptionList] = useState([]);
