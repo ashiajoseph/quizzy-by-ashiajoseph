@@ -15,7 +15,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def current_user
-    @current_user
-  end
+  private
+
+    def current_user
+      @current_user
+    end
 end
