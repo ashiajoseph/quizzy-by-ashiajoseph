@@ -29,6 +29,6 @@ class QuizPolicy
   end
 
   def create?
-    true
+    user.administrator?
   end
 end

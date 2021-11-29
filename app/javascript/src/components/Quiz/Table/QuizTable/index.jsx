@@ -8,18 +8,64 @@ import { useTable, useSortBy } from "react-table";
 
 import quizzesApi from "apis/quizzes";
 
-import { COLS } from "./tableheader.js";
-
 import DeleteAlert from "../../DeleteAlert";
 
 const QuizTable = ({ quizList, setQuizList, empty }) => {
   let history = useHistory();
   const [showAlert, setShowAlert] = useState(false);
-  const cols = useMemo(() => COLS, []);
   const data = useMemo(() => quizList, [quizList]);
   const deletionData = useRef({ quizid: "", title: "" });
+
+  const columnHeader = [
+    {
+      id: "title",
+      Header: "Quiz Title",
+      accessor: "title",
+      width: 450,
+      Cell: ({ row }) => (
+        <Link
+          to={`quiz/${row.original.id}`}
+          className="hover:underline hover:font-medium"
+        >
+          {row.values.title}
+        </Link>
+      ),
+    },
+    {
+      id: "edit",
+      width: 15,
+      Cell: ({ row }) => (
+        <Tooltip position="right-end" content="Edit">
+          <button
+            type="button"
+            className="focus:outline-none"
+            onClick={() => editQuiz(row.original.id)}
+          >
+            <Edit size={30} className="mx-auto" />
+          </button>
+        </Tooltip>
+      ),
+    },
+    {
+      id: "delete",
+      width: 20,
+      Cell: ({ row }) => (
+        <Tooltip position="right-end" content="Delete">
+          <button
+            className="focus:outline-none"
+            onClick={() => showPrompt(row.original.id, row.original.title)}
+          >
+            <Delete size={28} className="mx-auto neeto-ui-text-error" />
+          </button>
+        </Tooltip>
+      ),
+    },
+  ];
+
+  const columns = useMemo(() => columnHeader, []);
+
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns: cols, data: data }, useSortBy);
+    useTable({ columns: columns, data: data }, useSortBy);
 
   const editQuiz = quizid => {
     history.push(`/quiz/${quizid}/edit`);
@@ -82,54 +128,22 @@ const QuizTable = ({ quizList, setQuizList, empty }) => {
             prepareRow(row);
             const bgColor = ind % 2 == 0 ? "bg-gray-300" : "bg-gray-100";
             return (
-              <tr key={ind} {...row.getRowProps()} className="text-lg ">
+              <tr key={ind} {...row.getRowProps()} className="text-lg">
                 {row.cells.map((cell, ind) => {
                   return (
                     <td
                       key={ind}
-                      {...cell.getCellProps()}
-                      className={`py-4 pr-5 pl-10  capitalize break-all ${bgColor}`}
+                      {...cell.getCellProps({
+                        style: {
+                          width: cell.column.width,
+                        },
+                      })}
+                      className={`py-4 pr-3 pl-10  capitalize break-all ${bgColor}`}
                     >
-                      <Link
-                        to={`quiz/${row.original.id}`}
-                        className="hover:underline hover:font-medium"
-                      >
-                        {cell.render("Cell")}
-                      </Link>
+                      {cell.render("Cell")}
                     </td>
                   );
                 })}
-                <td
-                  key="edit"
-                  className={`py-3 px-6 w-24 text-center ${bgColor}`}
-                >
-                  <Tooltip position="right-end" content="Edit">
-                    <button
-                      className="focus:outline-none"
-                      onClick={() => editQuiz(row.original.id)}
-                    >
-                      <Edit size={30} className="mx-auto" />
-                    </button>
-                  </Tooltip>
-                </td>
-                <td
-                  key="del"
-                  className={` py-3 px-8 w-32 text-center ${bgColor}`}
-                >
-                  <Tooltip position="right-end" content="Delete">
-                    <button
-                      className="focus:outline-none"
-                      onClick={() =>
-                        showPrompt(row.original.id, row.original.title)
-                      }
-                    >
-                      <Delete
-                        size={28}
-                        className="mx-auto neeto-ui-text-error"
-                      />
-                    </button>
-                  </Tooltip>
-                </td>
               </tr>
             );
           })}

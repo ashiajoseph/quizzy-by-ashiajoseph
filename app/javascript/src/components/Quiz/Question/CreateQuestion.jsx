@@ -65,6 +65,7 @@ const CreateQuestion = ({ history }) => {
 
   const fetchTitle = async () => {
     try {
+      await quizzesApi.show(quizid);
       const response = await quizzesApi.retrieve_title(quizid);
       const { title } = response.data;
       setHeading(title);
