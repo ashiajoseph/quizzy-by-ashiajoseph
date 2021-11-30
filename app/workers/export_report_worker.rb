@@ -6,7 +6,6 @@ class ExportReportWorker
 
   def perform (current_user_id)
     user = User.find_by_id(current_user_id)
-    quizlist = user.quizzes.order("title ASC")
     report = Attempt.includes(:user, :quiz).where(submitted: true, quiz_id: user.quizzes)
     total report.size
     sleep 10
