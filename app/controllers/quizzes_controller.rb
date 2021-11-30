@@ -5,7 +5,7 @@ class QuizzesController < ApplicationController
   before_action :load_quiz, except: %i[index create check_slug]
 
   def index
-    @quizzes = @current_user.quizzes.order("created_at DESC").as_json(only: %i[id title])
+    @quizzes = @current_user.quizzes.order("created_at DESC")
   end
 
   def create
@@ -40,10 +40,6 @@ class QuizzesController < ApplicationController
     else
       render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages.to_sentence }
     end
-  end
-
-  def retrieve_title
-    authorize @quiz
   end
 
   def publish

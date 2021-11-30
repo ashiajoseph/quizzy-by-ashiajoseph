@@ -20,7 +20,9 @@ const DisplayAttemptQuiz = ({
   const [optionList, setOptionList] = useState([]);
   const [answers, setAnswers] = useState({});
 
-  const submitAnswers = async () => {
+  const handleSubmit = async e => {
+    e.preventDefault();
+    setLoading(true);
     try {
       await attemptsApi.create({
         attempt_answers_attributes: answers,
@@ -32,12 +34,6 @@ const DisplayAttemptQuiz = ({
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleSubmit = async e => {
-    e.preventDefault();
-    setLoading(true);
-    await submitAnswers();
   };
 
   // initial fetch - without answers

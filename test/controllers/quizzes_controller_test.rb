@@ -101,12 +101,6 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.parsed_body["error"], "Quiz not found."
   end
 
-  def test_retrieve_title
-    get "/quizzes/#{@quiz.id}/retrieve_title", headers: @user_header
-    assert_response :success
-    assert_equal response.parsed_body, { "id" => @quiz.id, "title" => @quiz.title }
-  end
-
   def test_shouldnt_show_quiz_to_unauthorized_user
     another_user_header = headers(@another_user)
     get quiz_path(@quiz.id), headers: another_user_header

@@ -6,7 +6,6 @@ Rails.application.routes.draw do
     resources :quizzes, except: %i[new edit ]
     resources :quizzes do
       member do
-        get "retrieve_title"
         put "publish"
         get "check_slug"
       end

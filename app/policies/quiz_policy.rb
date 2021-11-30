@@ -20,10 +20,6 @@ class QuizPolicy
     show?
   end
 
-  def retrieve_title?
-    show?
-  end
-
   def publish?
     show?
   end

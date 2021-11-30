@@ -8,7 +8,7 @@ class ReportsController < ApplicationController
     if quiz_list.size != 0
       @no_published_quiz_present = quiz_list.all? { |quiz| quiz.slug == nil }
       if !@no_published_quiz_present
-        @report = Attempt.includes(:user, :quiz).where(submitted: true, quiz_id: @current_user.quizzes)
+        @report = Attempt.includes(:user, :quiz).where(submitted: true, quiz: quiz_list)
       else
         render status: :not_found, json: { error: t("no_quiz", entity: "published") }
       end
