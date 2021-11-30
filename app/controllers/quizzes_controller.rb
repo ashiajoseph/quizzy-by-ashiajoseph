@@ -42,10 +42,6 @@ class QuizzesController < ApplicationController
     end
   end
 
-  def retrieve_title
-    authorize @quiz
-  end
-
   def publish
     authorize @quiz
     slug_candidate = @quiz.set_slug()
