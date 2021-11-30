@@ -5,7 +5,7 @@ class QuizzesController < ApplicationController
   before_action :load_quiz, except: %i[index create check_slug]
 
   def index
-    @quizzes = @current_user.quizzes.order("created_at DESC").as_json(only: %i[id title])
+    @quizzes = @current_user.quizzes.order("created_at DESC")
   end
 
   def create
